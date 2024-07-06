@@ -18,19 +18,6 @@ To get started with **AlgoPy**, follow these steps:
 
 Ensure you have Python installed on your system. **AlgoPy** supports Python versions 3.6 and above.
 
-### Installation
-
-You can install **AlgoPy** using pip:
-
-```bash
-pip install AlgoPy
-```
-
-Or, if you're developing locally and have cloned the repository:
-
-```bash
-pip install .
-```
 
 ## Usage
 
@@ -41,7 +28,7 @@ Here's a brief overview of how to use some of the main features of **AlgoPy**.
 To log an informational message:
 
 ```python
-from AlgoPy.logger import LoggerDB
+from File_Logger import LoggerDB
 
 logger = LoggerDB(filename="app.log")
 logger.info("Application started successfully.")
@@ -52,7 +39,7 @@ logger.info("Application started successfully.")
 To sort an array using the quicksort algorithm:
 
 ```python
-from AlgoPy.sorting_and_searching import SortingAndSearching
+from Algorithims import SortingAndSearching
 
 algorithms = SortingAndSearching()
 data = [64, 34, "s", 25, "a", 12, 10, 22, 11, 90]
@@ -66,4 +53,4 @@ We welcome contributions from the community. If you'd like to contribute, please
 
 ## License
 
-**MyLibrary** is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+**AlgoPy** is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
