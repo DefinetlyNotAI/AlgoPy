@@ -4,7 +4,7 @@ setup(
     name='AlgoPy',  # Name of your library
     version='0.1.0',  # Initial version (e.g., 0.1.0)
     description='A brief description of MyLibrary.',  # Short description of your library
-    long_description=open('README.md').read(),  # Long description from README.md
+    long_description=open('ReadMe.md').read(),  # Long description from README.md
     url='https://github.com/DefinetlyNotAI/AlgoPy',  # URL of your library's homepage
     author='Shahm Najeeb',  # Author's name
     author_email='Nirt_12023@outlook.com',  # Author's email
