@@ -24,6 +24,7 @@ class BankAccount:
     def check_transactions(self):
         return self.transactions
 
+
 class Bank:
     def __init__(self):
         self.accounts = {}
@@ -40,6 +41,7 @@ class Bank:
             return account
         else:
             return "Invalid credentials."
+
 
 def main():
     bank = Bank()
@@ -80,6 +82,7 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
