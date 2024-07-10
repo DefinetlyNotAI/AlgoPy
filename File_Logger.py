@@ -2,7 +2,7 @@ from datetime import datetime
 import os
 
 
-class LoggerDB:
+class Log:
     def __init__(self, filename="Server.log", max_size=100):
         """
         Initialize the Logger class.
@@ -114,9 +114,9 @@ class LoggerDB:
 """
 Example usage:
 
-logger = LoggerDB(filename="NAME.EXTENSION", max_size=SIZE)  # Change 'NAME.EXTENSION' to your desired filename
-logger.info("This is an informational message.")
-logger.warning("This is a warning message.")
-logger.error("This is an error message.")
-logger.critical("This is a critical message.")
+log = Log(filename="NAME.EXTENSION", max_size=SIZE)  # Change 'NAME.EXTENSION' to your desired filename
+log.info("This is an informational message.")
+log.warning("This is a warning message.")
+log.error("This is an error message.")
+log.critical("This is a critical message.")
 """
