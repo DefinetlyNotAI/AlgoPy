@@ -7,7 +7,8 @@ that can be represented and is a mix of preset and algorithmic calculations.
 If an error occurs during the conversion process, an error message will be displayed if set to True,
 as well as the class returning False.
 
-COMPLEXITY = O(n*log(n))
+COMPLEXITY = O(n*log(n)) [to_roman] and [to_number]
+COMPLEXITY = O(n*m) [to_ascii]
 
 SPACE COMPLEXITY = O(1)
 """
@@ -83,6 +84,88 @@ class Convert:
             "/V/": 5000,
             "M/V/": 4000,
         }
+
+        Zero = ["  ***  ",
+                " *   * ",
+                "*     *",
+                "*     *",
+                "*     *",
+                " *   * ",
+                "  ***  "]
+
+        One = [" * ",
+               "** ",
+               " * ",
+               " * ",
+               " * ",
+               " * ",
+               "***"]
+
+        Two = [" *** ",
+               "*   *",
+               "*  * ",
+               "  *  ",
+               " *   ",
+               "*    ",
+               "*****"]
+
+        Three = [" *** ",
+                 "*   *",
+                 "    *",
+                 "  ** ",
+                 "    *",
+                 "*   *",
+                 " *** "]
+
+        Four = ["   *  ",
+                "  **  ",
+                " * *  ",
+                "*  *  ",
+                "******",
+                "   *  ",
+                "   *  "]
+
+        Five = ["*****",
+                "*    ",
+                "*    ",
+                " *** ",
+                "    *",
+                "*   *",
+                " *** "]
+
+        Six = [" *** ",
+               "*    ",
+               "*    ",
+               "**** ",
+               "*   *",
+               "*   *",
+               " *** "]
+
+        Seven = ["*****",
+                 "    *",
+                 "   * ",
+                 "  *  ",
+                 " *   ",
+                 "*    ",
+                 "*    "]
+
+        Eight = [" *** ",
+                 "*   *",
+                 "*   *",
+                 " *** ",
+                 "*   *",
+                 "*   *",
+                 " *** "]
+
+        Nine = [" ****",
+                "*   *",
+                "*   *",
+                " ****",
+                "    *",
+                "    *",
+                "    *"]
+
+        self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
         self.error_level = show_errors
 
     def to_roman(self, num):
@@ -144,8 +227,8 @@ class Convert:
             num = 0
             roman = roman.upper()
             while i < len(roman):
-                if i + 1 < len(roman) and roman[i : i + 2] in self.roman_to_numerical:
-                    num += self.roman_to_numerical[roman[i : i + 2]]
+                if i + 1 < len(roman) and roman[i: i + 2] in self.roman_to_numerical:
+                    num += self.roman_to_numerical[roman[i: i + 2]]
                     i += 2
                 else:
                     num += self.roman_to_numerical[roman[i]]
@@ -160,6 +243,44 @@ class Convert:
                 colorlog.error(str(e))
             return False
 
+    def to_ascii(self, Number=None):
+        """
+        Generates ASCII art representation of a Number.
+
+        Parameters:
+            Number (str): The number to convert into ASCII art. If None, user input is requested.
+
+        Returns:
+            str: The ASCII art representation of the input Number.
+        """
+        if Number is None:
+            while True:
+                Number = input("Input a number to expand: ")
+                if Number.isdigit():
+                    break
+                else:
+                    colorlog.error("Invalid input. Please enter a number.")
+        elif not Number.isdigit():
+            if self.error_level:
+                colorlog.error("Invalid input. Please enter a number.")
+            return False
+
+        # Initialize an empty list to store each line of the ASCII art
+        ascii_art_lines = []
+
+        for i in range(7):  # Loop through each row
+            line = ""
+            for j in range(len(Number)):  # Loop through each character (digit) in the number
+                current_num = int(Number[j])
+                digit = self.digits[current_num]
+                line += digit[i] + "  "  # Append the current digit's row to the line
+            ascii_art_lines.append(line)  # Add the completed line to the list
+
+        # Join all lines with newline characters to form the final ASCII art string
+        ascii_art = "\n".join(ascii_art_lines)
+
+        return ascii_art
+
 
 """
 from --- import *
@@ -167,4 +288,5 @@ from --- import *
 convert = Convert(show_errors=False)
 print(convert.to_roman(5000))
 print(convert.to_number("MMMCMXCIX"))
+print(convert.to_ascii(3000))  # Optional, leave empty for dynamic user input
 """
