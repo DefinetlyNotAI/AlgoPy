@@ -19,31 +19,32 @@ class Convert:
                 num -= arabic
         return result
 
-    def to_number(self, roman):
-        """Convert a Roman numeral to an integer."""
-        if not isinstance(roman, str) or any(char not in self.mapping.keys() for char in roman):
-            raise ValueError("Invalid Roman numeral")
-
-        total = 0
+    @staticmethod
+    def to_number(roman):
+        roman_dic = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000, 'IV': 4, 'IX': 9, 'XL': 40,
+                     'XC': 90,
+                     'CD': 400, 'CM': 900}
         i = 0
+        num = 0
         while i < len(roman):
-            s1 = self.mapping.get(int(roman[i]), None)
-            if i + 1 < len(roman):
-                s2 = self.mapping.get(int(roman[i:i+2]), None)
+            if i + 1 < len(roman) and roman[i:i + 2] in roman_dic:
+                num += roman_dic[roman[i:i + 2]]
+                i += 2
             else:
-                s2 = None
+                num += roman_dic[roman[i]]
+                i += 1
+        return num
 
-            if s1 != s2:
-                if s2:
-                    total += self.mapping[int(roman[i:i+2])] - self.mapping[int(roman[i])]
-                else:
-                    total += self.mapping[int(roman[i])]
-            else:
-                total += self.mapping[int(roman[i])]
-            i += 1
-        return total
 
 # Example usage
 convert_obj = Convert()
-print(convert_obj.to_roman(2022))  # Output: MMXXII
-print(convert_obj.to_number('MMXXII'))  # Output: 2022
+print(convert_obj.to_roman(4))  # Output: IV
+print(convert_obj.to_number('IV'))  # Expected output: 4
+print(convert_obj.to_roman(40))  # Output: XL
+print(convert_obj.to_number('XL'))  # Expected output: 40
+print(convert_obj.to_roman(90))  # Output: XC
+print(convert_obj.to_number('XC'))  # Expected output: 90
+print(convert_obj.to_roman(400))  # Output: CD
+print(convert_obj.to_number('CD'))  # Expected output: 400
+print(convert_obj.to_roman(900))  # Output: CM
+print(convert_obj.to_number('CM'))  # Expected output: 900
