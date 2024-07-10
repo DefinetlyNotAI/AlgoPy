@@ -1,5 +1,14 @@
-"""
-Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
+r"""
+Handles both integers and floats seamlessly, converting between types as needed.
+Gracefully ignores non-numeric elements without crashing, enhancing reliability.
+Interactive input method allows for easy testing and experimentation.
+Sorts lists efficiently and finds largest/smallest elements with minimal overhead.
+
+COMPLEXITY = O(n\log(n))
+
+SPACE COMPLEXITY = O(n)
+
+Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 """
 
 
@@ -69,15 +78,11 @@ class Find:
         return List
 
 
-# Usage
+"""
+from --- import *
+
 find = Find()
 list_place = [17, 5.0, "hi", 65.03, 32.0, -4, -5.8]
 print(find.largest(list_place))
 print(find.smallest(list_place))
-
-
-# 1. Flexibility: Handles both integers and floats seamlessly, converting between types as needed.
-# 2. Robustness: Gracefully ignores non-numeric elements without crashing, enhancing reliability.
-# 3. Usability: Interactive input method allows for easy testing and experimentation.
-# 4. Efficiency: Sorts lists efficiently and finds largest/smallest elements with minimal overhead.
-# Complexity = O(n \log n)
+"""

@@ -1,10 +1,53 @@
+r"""
+Converts integers to Roman numerals and vice versa.
+
+Please note that this is not an exhaustive list of all possible Roman numerals
+that can be represented and is a mix of preset and algorithmic calculations.
+
+If an error occurs during the conversion process, an error message will be displayed if set to True,
+as well as the class returning False.
+
+COMPLEXITY = O(n*log(n))
+
+SPACE COMPLEXITY = O(1)
+"""
+
+import colorlog
+
+# Configure colorlog for logging messages with colors
+logger = colorlog.getLogger()
+logger.setLevel(colorlog.INFO)  # Set the log level to INFO to capture all relevant logs
+
+handler = colorlog.StreamHandler()
+formatter = colorlog.ColoredFormatter(
+    "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
+    datefmt=None,
+    reset=True,
+    log_colors={
+        'DEBUG': 'cyan',
+        'INFO': 'green',
+        'WARNING': 'yellow',
+        'ERROR': 'red',
+        'CRITICAL': 'red,bg_white',
+    }
+)
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+
 class Convert:
-    def __init__(self):
+    def __init__(self, show_errors=True):
         """
         Initializes the mapping dictionary with Roman numeral values corresponding to integers.
         Initializes the roman_to_numerical dictionary with integer values corresponding to Roman numerals.
+        Initializes the error_level bool (optional) whether to show error messages. Defaults to True.
         """
         self.mapping = {
+            10000: "/X/",
+            9000: "M/X/",
+            8000: "/VIII/",
+            5000: "/V/",
+            4000: "M/V/",
             1000: "M",
             900: "CM",
             500: "D",
@@ -34,7 +77,13 @@ class Convert:
             "XC": 90,
             "CD": 400,
             "CM": 900,
+            "/X/": 10000,
+            "M/X/": 9000,
+            "/VIII/": 8000,
+            "/V/": 5000,
+            "M/V/": 4000,
         }
+        self.error_level = show_errors
 
     def to_roman(self, num):
         """
@@ -47,13 +96,17 @@ class Convert:
             str: The Roman numeral representation of the input number.
 
         Raises:
-            KeyError: If the input number is not between 1 and 3999.
+            KeyError: If the input number is smaller than 1.
             Exception: If any other error occurs during the conversion process.
         """
         try:
             num = int(num)
-            if num < 1 or num > 3999:
-                exit("Error: Input must be between 1 and 3999 and an integer.")
+            if num <= 1:
+                if self.error_level:
+                    colorlog.error("Input must be greater or equal to 1.")
+                return False
+            if num > 10000 and self.error_level:
+                colorlog.warning("Input is too large. This may result in inaccurate results.")
 
             result = ""
             for numerical, roman in sorted(self.mapping.items(), reverse=True):
@@ -62,9 +115,13 @@ class Convert:
                     num -= numerical
             return result
         except KeyError as ke:
-            exit("Error: Invalid numeral: " + str(ke))
+            if self.error_level:
+                colorlog.error("Invalid numeral: " + str(ke))
+            return False
         except Exception as e:
-            exit("Error: " + str(e))
+            if self.error_level:
+                colorlog.error(str(e))
+            return False
 
     def to_number(self, roman):
         """
@@ -83,6 +140,7 @@ class Convert:
         try:
             i = 0
             num = 0
+            roman = roman.upper()
             while i < len(roman):
                 if i + 1 < len(roman) and roman[i: i + 2] in self.roman_to_numerical:
                     num += self.roman_to_numerical[roman[i: i + 2]]
@@ -92,12 +150,19 @@ class Convert:
                     i += 1
             return num
         except KeyError as ke:
-            exit("Error: Invalid Roman numeral: " + str(ke))
+            if self.error_level:
+                colorlog.error(f"Invalid Roman numeral: {ke}")
+            return False
         except Exception as e:
-            exit("Error: " + str(e))
+            if self.error_level:
+                colorlog.error(str(e))
+            return False
 
 
-# Example usage
-convert = Convert()
-print(convert.to_roman(5))
-print(convert.to_number("IV"))
+"""
+from --- import *
+
+convert = Convert(show_errors=False)
+print(convert.to_roman(5000))
+print(convert.to_number("MMMCMXCIX"))
+"""
