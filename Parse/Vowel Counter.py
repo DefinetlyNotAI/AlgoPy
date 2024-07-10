@@ -6,10 +6,10 @@ def count_vowels(input_string):
             vowel_count += 1
     return vowel_count
 
+
 # Forever loop and basic input system
 while True:
     input_string = input("Enter a string (or 'exit' to quit): ")
     if input_string.lower() == "exit":
         break
     print(f"The number of vowels in the input string is: {count_vowels(input_string)}")
-    

@@ -22,5 +22,6 @@ def fVowel(sWord):
 
     return a + "\n" + e + "\n" + i + "\n" + o + "\n" + u + "\n"
 
+
 while True:
     print(fVowel(input("Input Word: ")))

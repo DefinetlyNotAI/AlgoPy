@@ -12,8 +12,12 @@ class Find:
             List = self.__input_list()
 
         try:
-            converted_list = sorted(float(item) for item in List if isinstance(item, (int, float)))
-            final_list = [int(item) if item.is_integer() else item for item in converted_list]
+            converted_list = sorted(
+                float(item) for item in List if isinstance(item, (int, float))
+            )
+            final_list = [
+                int(item) if item.is_integer() else item for item in converted_list
+            ]
             return final_list
         except ValueError:
             return None
@@ -67,7 +71,7 @@ class Find:
 
 # Usage
 find = Find()
-list_place = [17, 5.0, 'hi', 65.03, 32.0, -4, -5.8]
+list_place = [17, 5.0, "hi", 65.03, 32.0, -4, -5.8]
 print(find.largest(list_place))
 print(find.smallest(list_place))
 

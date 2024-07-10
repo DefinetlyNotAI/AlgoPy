@@ -49,7 +49,7 @@ class LoggerDB:
             None
         """
         if os.path.exists(self.filename):
-            with open(self.filename, 'r') as file:
+            with open(self.filename, "r") as file:
                 line_count = sum(1 for _ in file)
             if line_count > self.size:
                 os.remove(self.filename)
@@ -111,7 +111,7 @@ class LoggerDB:
             f.write(f"CRITICAL: {message} at {self.timestamp()}\n")
 
 
-'''
+"""
 Example usage:
 
 logger = LoggerDB(filename="NAME.EXTENSION", max_size=SIZE)  # Change 'NAME.EXTENSION' to your desired filename
@@ -119,4 +119,4 @@ logger.info("This is an informational message.")
 logger.warning("This is a warning message.")
 logger.error("This is an error message.")
 logger.critical("This is a critical message.")
-'''
+"""

@@ -1,12 +1,14 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 def bubble_sort(arr):
     n = len(arr)
-    for i in range(n-1):
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+
 
 def sort_inputs():
     inputs = input_entry.get("1.0", "end-1c").split("\n")
@@ -27,7 +29,10 @@ def sort_inputs():
         output_text.delete("1.0", "end")
         output_text.insert("end", "Sorted inputs: " + str(inputs))
     else:
-        messagebox.showerror("Error", "Invalid choice. Please select 'Numeric' or 'Alphabetic'.")
+        messagebox.showerror(
+            "Error", "Invalid choice. Please select 'Numeric' or 'Alphabetic'."
+        )
+
 
 root = tk.Tk()
 root.title("Input Sorter")

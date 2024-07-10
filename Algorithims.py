@@ -89,7 +89,7 @@ class SortingAndSearching:
                 k += 1
 
 
-'''
+"""
 # Example usage
 algorithm = SortingAndSearching()
 arr = [64, 34, "s", 25, "a", 12, 10, 22, 11, 90]
@@ -121,4 +121,4 @@ print("Sorted array after Quicksort:", sorted_arr)
 # Merge Sort
 algorithm.merge_sort(arr)
 print("Sorted array after Merge Sort:", arr)
-'''
+"""
