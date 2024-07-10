@@ -24,12 +24,12 @@ formatter = colorlog.ColoredFormatter(
     datefmt=None,
     reset=True,
     log_colors={
-        'DEBUG': 'cyan',
-        'INFO': 'green',
-        'WARNING': 'yellow',
-        'ERROR': 'red',
-        'CRITICAL': 'red,bg_white',
-    }
+        "DEBUG": "cyan",
+        "INFO": "green",
+        "WARNING": "yellow",
+        "ERROR": "red",
+        "CRITICAL": "red,bg_white",
+    },
 )
 handler.setFormatter(formatter)
 logger.addHandler(handler)
@@ -106,7 +106,9 @@ class Convert:
                     colorlog.error("Input must be greater or equal to 1.")
                 return False
             if num > 10000 and self.error_level:
-                colorlog.warning("Input is too large. This may result in inaccurate results.")
+                colorlog.warning(
+                    "Input is too large. This may result in inaccurate results."
+                )
 
             result = ""
             for numerical, roman in sorted(self.mapping.items(), reverse=True):
@@ -142,8 +144,8 @@ class Convert:
             num = 0
             roman = roman.upper()
             while i < len(roman):
-                if i + 1 < len(roman) and roman[i: i + 2] in self.roman_to_numerical:
-                    num += self.roman_to_numerical[roman[i: i + 2]]
+                if i + 1 < len(roman) and roman[i : i + 2] in self.roman_to_numerical:
+                    num += self.roman_to_numerical[roman[i : i + 2]]
                     i += 2
                 else:
                     num += self.roman_to_numerical[roman[i]]
