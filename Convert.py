@@ -18,6 +18,15 @@ from colorlog_setup import *
 
 class Convert:
     def __init__(self, show_errors=True):
+        """
+        Initializes the Convert class with default show_errors set to True.
+
+        Parameters:
+            show_errors (bool): Flag to indicate whether to show errors. Default is True.
+
+        Returns:
+            None
+        """
 
         self.mapping = {
             10000: "/X/",
@@ -60,15 +69,7 @@ class Convert:
             "M/V/": 4000,
         }
 
-        Zero = [
-            "  ***  ",
-            " *   * ",
-            "*     *",
-            "*     *",
-            "*     *",
-            " *   * ",
-            "  ***  ",
-        ]
+        Zero = ["  ***  ", " *   * ", "*     *", "*     *", "*     *", " *   * ", "  ***  "]
 
         One = [" * ", "** ", " * ", " * ", " * ", " * ", "***"]
 
@@ -92,6 +93,24 @@ class Convert:
         self.error_level = show_errors
 
     def to_roman(self, num):
+        """
+        Converts an integer to a Roman numeral representation.
+
+        Args:
+            num (int): The integer to be converted.
+
+        Returns:
+            str: The Roman numeral representation of the input integer.
+
+        Raises:
+            KeyError: If the input integer is invalid.
+            Exception: If an error occurs during the conversion process.
+
+        Notes:
+            - The input integer must be greater than or equal to 1.
+            - If the input integer is greater than 10,000, a warning is raised.
+            - If an error occurs during the conversion process, an error message is displayed if `show_errors` is True.
+        """
         try:
             num = int(num)
             if num <= 1:
@@ -119,13 +138,31 @@ class Convert:
             return False
 
     def to_number(self, roman):
+        """
+        Converts a Roman numeral to its corresponding decimal number.
+
+        Args:
+            roman (str): The Roman numeral to be converted.
+
+        Returns:
+            int: The decimal number corresponding to the input Roman numeral.
+
+        Raises:
+            KeyError: If the input Roman numeral is invalid.
+            Exception: If an error occurs during the conversion process.
+
+        Notes:
+            - The input Roman numeral must be in uppercase.
+            - If the input Roman numeral is invalid, an error message is displayed if `show_errors` is True.
+
+        """
         try:
             i = 0
             num = 0
             roman = roman.upper()
             while i < len(roman):
-                if i + 1 < len(roman) and roman[i : i + 2] in self.roman_to_numerical:
-                    num += self.roman_to_numerical[roman[i : i + 2]]
+                if i + 1 < len(roman) and roman[i: i + 2] in self.roman_to_numerical:
+                    num += self.roman_to_numerical[roman[i: i + 2]]
                     i += 2
                 else:
                     num += self.roman_to_numerical[roman[i]]
@@ -141,6 +178,15 @@ class Convert:
             return False
 
     def to_ascii(self, Number=None):
+        """
+        Generate ASCII art based on the input number and return the ASCII art as a string.
+
+        Parameters:
+            Number (str): The number to be converted to ASCII art.
+
+        Returns:
+            str: The ASCII art representation of the input number.
+        """
         if Number is None:
             while True:
                 Number = input("Input a number to expand: ")
@@ -159,7 +205,7 @@ class Convert:
         for i in range(7):  # Loop through each row
             line = ""
             for j in range(
-                len(Number)
+                    len(Number)
             ):  # Loop through each character (digit) in the number
                 current_num = int(Number[j])
                 digit = self.digits[current_num]

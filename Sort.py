@@ -19,10 +19,31 @@ SPACE COMPLEXITY: O(n) [Sort.using_merge_sort]
 class Sort:
     @staticmethod
     def __integer(Array):
+        """
+        Checks if all elements in the input Array are integers.
+
+        Parameters:
+            Array (list): The input list to check for integer elements.
+
+        Returns:
+            bool: True if all elements are integers, False otherwise.
+        """
         return all(isinstance(item, int) for item in Array)
 
     @staticmethod
     def using_quick_sort(Array):
+        """
+        Sorts the given array using the quicksort algorithm.
+
+        Parameters:
+            Array (list): The array to be sorted.
+
+        Returns:
+            list: The sorted array.
+
+        Raises:
+            ValueError: If the input array contains non-integer elements.
+        """
         if not Sort.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -35,6 +56,20 @@ class Sort:
 
     @staticmethod
     def using_merge_sort(Array):
+        """
+        Sorts the given array using the merge sort algorithm.
+
+        Parameters:
+            Array (list): The array to be sorted.
+
+        Returns:
+            list: The sorted array.
+
+        Raises:
+            ValueError: If the input array contains non-integer elements.
+
+        This function recursively divides the input array into two halves, sorts each half using merge sort, and then merges the two sorted halves into a single sorted array.
+        """
         if not Sort.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -46,6 +81,16 @@ class Sort:
 
     @staticmethod
     def __merge(left, right):
+        """
+        Merges two sorted arrays 'left' and 'right' into a single sorted array.
+
+        Parameters:
+            left (list): The left sorted array.
+            right (list): The right sorted array.
+
+        Returns:
+            list: The merged sorted array containing all elements from 'left' and 'right'.
+        """
         result = []
         i = j = 0
         while i < len(left) and j < len(right):
@@ -61,6 +106,18 @@ class Sort:
 
     @staticmethod
     def using_selection_sort(Array):
+        """
+        Sorts the given array using the selection sort algorithm.
+
+        Parameters:
+            Array (list): The array to be sorted.
+
+        Returns:
+            list: The sorted array.
+
+        Raises:
+            ValueError: If the input array contains non-integer elements.
+        """
         if not Sort.__integer(Array):
             return False
         for i in range(len(Array)):
@@ -73,6 +130,18 @@ class Sort:
 
     @staticmethod
     def using_bubble_sort(Array):
+        """
+        Sorts the given array using the bubble sort algorithm.
+
+        Parameters:
+            Array (list): The array to be sorted.
+
+        Returns:
+            list: The sorted array.
+
+        Raises:
+            ValueError: If the input array contains non-integer elements.
+        """
         if not Sort.__integer(Array):
             return False
         n = len(Array)
@@ -84,6 +153,20 @@ class Sort:
 
     @staticmethod
     def using_insertion_sort(Array):
+        """
+        Sorts the given array using the insertion sort algorithm.
+
+        Parameters:
+            Array (list): The array to be sorted.
+
+        Returns:
+            list: The sorted array.
+
+        Raises:
+            ValueError: If the input array contains non-integer elements.
+
+        This function takes an array as input and sorts it using the insertion sort algorithm. The algorithm iterates through the array, starting from the second element, and compares each element with the elements before it. If an element is smaller than its predecessor, it is shifted to the left until it finds its correct position.
+        """
         if not Sort.__integer(Array):
             return False
         for i in range(1, len(Array)):

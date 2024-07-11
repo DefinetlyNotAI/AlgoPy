@@ -9,16 +9,22 @@ COMPLEXITY = O(m) [email]
 
 SPACE COMPLEXITY = O(k) [email]
 """
+from colorlog_setup import *
 
 
 class Validate:
     def __init__(self, warnings=True):
+        """
+        Initialize the Validate object with a list of common domains and domain variants.
+
+        Parameters:
+            warnings (bool): Flag to enable or disable warnings. Default is True.
+        """
         self.common_domains = [
             "google.com",
             "gmail.com",
             "outlook.com",
             "yahoo.com",
-            "proton.me",
         ]
         self.domain_variants = [
             ".com",
@@ -275,6 +281,28 @@ class Validate:
         self.warnings = warnings
 
     def email(self, email):
+        """
+        Validate an email address.
+
+        Args:
+            email (str): The email address to validate.
+
+        Returns:
+            bool: True if the email is valid, False otherwise.
+
+        This function checks if an email address is valid by performing the following steps:
+        1. Ensure there is exactly one '@' symbol in the email address.
+        2. Convert the email address to lowercase and check if it ends with a common domain or domain variant.
+        3. Check the length constraints of the name and domain_tld.
+        4. Split the email address into name and domain_tld.
+        5. Split the domain_tld into domain and tld.
+        6. Check if the domain is a common domain or a variant of a common domain.
+        7. Special handling for .co domain.
+        8. Check if the tld is a recognized domain variant.
+
+        Note:
+            The function assumes that the common_domains and domain_variants lists are defined in the Validate class.
+        """
         # Ensure there's exactly one '@'
         if email.count("@") != 1:
             return False
@@ -556,18 +584,17 @@ class Validate:
             return True
 
         # Unique domain check with warning for unrecognized domains
-        if tld not in self.domain_variants:
+        if tld not in self.domain_variants or domain not in self.common_domains.remove(".com"):
             if self.warnings:
-                print(f"Warning: Unrecognized domain '{domain}.{tld}'.")
+                colorlog.warning(f"Unrecognized domain '{domain}.{tld}'.")
             return True
 
         return False
 
 
-# Testing the EmailValidator class
 """
 validate = Validate(warnings=True)
-if validate.email("HsVJQ@example.com"):
+if validate.email("example@secret.com"):
     print("Valid")
 else:
     print("Invalid")
