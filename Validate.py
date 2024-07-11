@@ -5,9 +5,9 @@ returns
     False if email is invalid
     True if email is valid
 
-COMPLEXITY = O(m)
+COMPLEXITY = O(m) [email]
 
-SPACE COMPLEXITY = O(k)
+SPACE COMPLEXITY = O(k) [email]
 """
 
 

@@ -13,27 +13,7 @@ COMPLEXITY = O(n*m) [to_ascii]
 SPACE COMPLEXITY = O(1) [For everything]
 """
 
-import colorlog
-
-# Configure colorlog for logging messages with colors
-logger = colorlog.getLogger()
-logger.setLevel(colorlog.INFO)  # Set the log level to INFO to capture all relevant logs
-
-handler = colorlog.StreamHandler()
-formatter = colorlog.ColoredFormatter(
-    "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
-    datefmt=None,
-    reset=True,
-    log_colors={
-        "DEBUG": "cyan",
-        "INFO": "green",
-        "WARNING": "yellow",
-        "ERROR": "red",
-        "CRITICAL": "red,bg_white",
-    },
-)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+from setup import *
 
 
 class Convert:
@@ -243,14 +223,11 @@ class Convert:
 
 
 """
-from --- import *
+from Convert import *
 
 convert = Convert(show_errors=False)
+
 print(convert.to_roman(5000))
 print(convert.to_number("MMMCMXCIX"))
 print(convert.to_ascii(3000))  # Optional, leave empty for dynamic user input
-
-EXAMPLE:
-From roman to ascii numerically:
-    convert.to_ascii(convert.to_number("MMMCMXCIX"))
 """
