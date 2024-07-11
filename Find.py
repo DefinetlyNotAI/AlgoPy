@@ -1,19 +1,4 @@
-"""
-Handles both integers and floats seamlessly, converting between types as needed.
-Gracefully ignores non-numeric elements without crashing, enhancing reliability.
-Interactive input method allows for easy testing and experimentation.
-Sorts lists efficiently and finds largest/smallest elements with minimal overhead.
-Finds the number of vowels in a word.
-Either totally, or by vowel.
-Includes special words that have y as either an active vowel or as a passive vowel.
 
-TIME COMPLEXITY = O(n / log n ) [Find.largest] [Find.smallest]
-TIME COMPLEXITY = O(m*n) [Find.total_vowels] [Find.every_vowel]
-TIME COMPLEXITY = O(n) [Find.value_index]
-
-SPACE COMPLEXITY = O(n) [Find.largest] [Find.smallest]
-SPACE COMPLEXITY = O(1) [Find.value_index] [Find.total_vowels] [Find.every_vowel]
-"""
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 

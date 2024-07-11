@@ -1,14 +1,4 @@
-"""
-Email Validator, Super basic and static, just checks for @ and . and some usual domains.
 
-returns
-    False if email is invalid
-    True if email is valid
-
-COMPLEXITY = O(m) [email]
-
-SPACE COMPLEXITY = O(k) [email]
-"""
 from colorlog_setup import *
 
 

@@ -1,19 +1,4 @@
-"""
-Provides a unified interface for sorting arrays/lists of comparable items using various sorting algorithms.
-Supports sorting of mixed data types by comparing their string representations, allowing for flexibility in input.
-Incorporates best practices for algorithm implementation, including efficient use of static methods for reusable logic.
-Quicksort and merge sort are implemented recursively, demonstrating advanced recursion techniques and divide-and-conquer strategies.
-Selection sort, bubble sort, and insertion sort are included for educational purposes, showcasing simpler sorting mechanisms.
-Each sorting method is designed to handle arrays/lists of any size, with optimizations for performance and memory usage.
-If an error occurs it returns False.
 
-TIME COMPLEXITY: O(n^2) [Sort.using_selection] [Sort.using_bubble] [Sort.using_insertion]
-TIME COMPLEXITY: O(n log n) [Sort.using_quicksort] [Sort.using_merge_sort]
-
-SPACE COMPLEXITY: O(1) [Sort.using_selection] [Sort.using_bubble] [Sort.using_insertion]
-SPACE COMPLEXITY: O(log n) [Sort.using_quicksort]
-SPACE COMPLEXITY: O(n) [Sort.using_merge_sort]
-"""
 
 
 class Sort:

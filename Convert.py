@@ -1,17 +1,4 @@
-"""
-Converts integers to Roman numerals and vice versa.
 
-Please note that this is not an exhaustive list of all possible Roman numerals
-that can be represented and is a mix of preset and algorithmic calculations.
-
-If an error occurs during the conversion process, an error message will be displayed if set to True,
-as well as the class returning False.
-
-COMPLEXITY = O(n*log(n)) [Convert.to_roman] [Convert.to_number]
-COMPLEXITY = O(n*m) [Convert.to_ascii]
-
-SPACE COMPLEXITY = O(1) [Convert.to_ascii] [Convert.to_roman] [Convert.to_number]
-"""
 
 from colorlog_setup import *
 

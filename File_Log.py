@@ -1,15 +1,4 @@
-"""
-Manages logging operations for applications, supporting various severity levels (info, warning, error, critical).
-Automatically rotates the log file based on size, ensuring that no single log file exceeds a specified maximum size.
-Maintains a default filename ('Server.log') unless otherwise specified during instantiation.
-Utilizes static methods for timestamp generation, promoting reusability across different instances.
-Ensures thread safety by managing file access through context managers, preventing concurrent modifications.
-Efficiently appends log messages to the file, incorporating timestamps for precise logging.
-Removes the existing log file if it exceeds the maximum size, automatically starting fresh without manual intervention.
 
-TIME COMPLEXITY: O(n) [Log.info] [Log.warning] [Log.error] [Log.critical]
-SPACE COMPLEXITY: O(n) [Log.info] [Log.warning] [Log.error] [Log.critical]
-"""
 
 from datetime import datetime
 import os
