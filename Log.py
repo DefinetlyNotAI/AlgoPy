@@ -1,21 +1,22 @@
+"""
+Manages logging operations for applications, supporting various severity levels (info, warning, error, critical).
+Automatically rotates the log file based on size, ensuring that no single log file exceeds a specified maximum size.
+Maintains a default filename ('Server.log') unless otherwise specified during instantiation.
+Utilizes static methods for timestamp generation, promoting reusability across different instances.
+Ensures thread safety by managing file access through context managers, preventing concurrent modifications.
+Efficiently appends log messages to the file, incorporating timestamps for precise logging.
+Removes the existing log file if it exceeds the maximum size, automatically starting fresh without manual intervention.
+
+TIME COMPLEXITY: O(n) [Log.info] [Log.warning] [Log.error] [Log.critical]
+SPACE COMPLEXITY: O(n) [Log.info] [Log.warning] [Log.error] [Log.critical]
+"""
+
 from datetime import datetime
 import os
 
 
 class Log:
     def __init__(self, filename="Server.log", max_size=100):
-        """
-        Initialize the Logger class.
-
-        This method initializes the Logger class and allows setting the filename attribute through initialization parameters. It also checks if the file exists and creates it if it doesn't.
-
-        Parameters:
-            filename (str): The name of the log file. Defaults to 'Server.log'.
-            max_size (int): The maximum size of the log file in bytes. Defaults to 100.
-
-        Returns:
-            None
-        """
         # Use the provided filename or default to 'Server.log'
         self.filename = str(filename)
         self.size = int(max_size)
@@ -26,13 +27,7 @@ class Log:
                 pass  # Empty file content is fine here since we append logs
 
     @staticmethod
-    def timestamp():
-        """
-        Get the current date and time and format it as a string in the format 'YYYY-MM-DD HH:MM:SS'.
-
-        Returns:
-            str: The formatted timestamp.
-        """
+    def __timestamp():
         # Get the current date and time
         now = datetime.now()
 
@@ -41,13 +36,7 @@ class Log:
 
         return time
 
-    def remove(self):
-        """
-        Removes the log file if it exists and is larger than the maximum size.
-
-        Returns:
-            None
-        """
+    def __remove(self):
         if os.path.exists(self.filename):
             with open(self.filename, "r") as file:
                 line_count = sum(1 for _ in file)
@@ -55,60 +44,24 @@ class Log:
                 os.remove(self.filename)
 
     def info(self, message):
-        """
-        Writes an informational message to the log file.
-
-        Parameters:
-            message (str): The informational message to be written.
-
-        Returns:
-            None
-        """
-        self.remove()
+        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"INFO: {message} at {self.timestamp()}\n")
+            f.write(f"INFO: {message} at {self.__timestamp()}\n")
 
     def warning(self, message):
-        """
-        Writes a warning message to the log file.
-
-        Parameters:
-            message (str): The warning message to be written.
-
-        Returns:
-            None
-        """
-        self.remove()
+        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"WARNING: {message} at {self.timestamp()}\n")
+            f.write(f"WARNING: {message} at {self.__timestamp()}\n")
 
     def error(self, message):
-        """
-        Writes an error message to the log file.
-
-        Parameters:
-            message (str): The error message to be written.
-
-        Returns:
-            None
-        """
-        self.remove()
+        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"ERROR: {message} at {self.timestamp()}\n")
+            f.write(f"ERROR: {message} at {self.__timestamp()}\n")
 
     def critical(self, message):
-        """
-        Writes an error message to the log file.
-
-        Parameters:
-            message (str): The error message to be written.
-
-        Returns:
-            None
-        """
-        self.remove()
+        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"CRITICAL: {message} at {self.timestamp()}\n")
+            f.write(f"CRITICAL: {message} at {self.__timestamp()}\n")
 
 
 """

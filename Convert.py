@@ -7,13 +7,13 @@ that can be represented and is a mix of preset and algorithmic calculations.
 If an error occurs during the conversion process, an error message will be displayed if set to True,
 as well as the class returning False.
 
-COMPLEXITY = O(n*log(n)) [to_roman] and [to_number]
-COMPLEXITY = O(n*m) [to_ascii]
+COMPLEXITY = O(n*log(n)) [Convert.to_roman] [Convert.to_number]
+COMPLEXITY = O(n*m) [Convert.to_ascii]
 
-SPACE COMPLEXITY = O(1) [For everything]
+SPACE COMPLEXITY = O(1) [Convert.to_ascii] [Convert.to_roman] [Convert.to_number]
 """
 
-from setup import *
+from colorlog_setup import *
 
 
 class Convert:
@@ -60,85 +60,33 @@ class Convert:
             "M/V/": 4000,
         }
 
-        Zero = ["  ***  ",
-                " *   * ",
-                "*     *",
-                "*     *",
-                "*     *",
-                " *   * ",
-                "  ***  "]
+        Zero = [
+            "  ***  ",
+            " *   * ",
+            "*     *",
+            "*     *",
+            "*     *",
+            " *   * ",
+            "  ***  ",
+        ]
 
-        One = [" * ",
-               "** ",
-               " * ",
-               " * ",
-               " * ",
-               " * ",
-               "***"]
+        One = [" * ", "** ", " * ", " * ", " * ", " * ", "***"]
 
-        Two = [" *** ",
-               "*   *",
-               "*  * ",
-               "  *  ",
-               " *   ",
-               "*    ",
-               "*****"]
+        Two = [" *** ", "*   *", "*  * ", "  *  ", " *   ", "*    ", "*****"]
 
-        Three = [" *** ",
-                 "*   *",
-                 "    *",
-                 "  ** ",
-                 "    *",
-                 "*   *",
-                 " *** "]
+        Three = [" *** ", "*   *", "    *", "  ** ", "    *", "*   *", " *** "]
 
-        Four = ["   *  ",
-                "  **  ",
-                " * *  ",
-                "*  *  ",
-                "******",
-                "   *  ",
-                "   *  "]
+        Four = ["   *  ", "  **  ", " * *  ", "*  *  ", "******", "   *  ", "   *  "]
 
-        Five = ["*****",
-                "*    ",
-                "*    ",
-                " *** ",
-                "    *",
-                "*   *",
-                " *** "]
+        Five = ["*****", "*    ", "*    ", " *** ", "    *", "*   *", " *** "]
 
-        Six = [" *** ",
-               "*    ",
-               "*    ",
-               "**** ",
-               "*   *",
-               "*   *",
-               " *** "]
+        Six = [" *** ", "*    ", "*    ", "**** ", "*   *", "*   *", " *** "]
 
-        Seven = ["*****",
-                 "    *",
-                 "   * ",
-                 "  *  ",
-                 " *   ",
-                 "*    ",
-                 "*    "]
+        Seven = ["*****", "    *", "   * ", "  *  ", " *   ", "*    ", "*    "]
 
-        Eight = [" *** ",
-                 "*   *",
-                 "*   *",
-                 " *** ",
-                 "*   *",
-                 "*   *",
-                 " *** "]
+        Eight = [" *** ", "*   *", "*   *", " *** ", "*   *", "*   *", " *** "]
 
-        Nine = [" ****",
-                "*   *",
-                "*   *",
-                " ****",
-                "    *",
-                "    *",
-                "    *"]
+        Nine = [" ****", "*   *", "*   *", " ****", "    *", "    *", "    *"]
 
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
         self.error_level = show_errors
@@ -176,8 +124,8 @@ class Convert:
             num = 0
             roman = roman.upper()
             while i < len(roman):
-                if i + 1 < len(roman) and roman[i: i + 2] in self.roman_to_numerical:
-                    num += self.roman_to_numerical[roman[i: i + 2]]
+                if i + 1 < len(roman) and roman[i : i + 2] in self.roman_to_numerical:
+                    num += self.roman_to_numerical[roman[i : i + 2]]
                     i += 2
                 else:
                     num += self.roman_to_numerical[roman[i]]
@@ -210,7 +158,9 @@ class Convert:
 
         for i in range(7):  # Loop through each row
             line = ""
-            for j in range(len(Number)):  # Loop through each character (digit) in the number
+            for j in range(
+                len(Number)
+            ):  # Loop through each character (digit) in the number
                 current_num = int(Number[j])
                 digit = self.digits[current_num]
                 line += digit[i] + "  "  # Append the current digit's row to the line

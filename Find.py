@@ -7,12 +7,12 @@ Finds the number of vowels in a word.
 Either totally, or by vowel.
 Includes special words that have y as either an active vowel or as a passive vowel.
 
-COMPLEXITY = O(n / log n ) [largest] [smallest]
-COMPLEXITY = O(m*n) [total_vowels] [every_vowel]
-COMPLEXITY = O(n) [value_index]
+TIME COMPLEXITY = O(n / log n ) [Find.largest] [Find.smallest]
+TIME COMPLEXITY = O(m*n) [Find.total_vowels] [Find.every_vowel]
+TIME COMPLEXITY = O(n) [Find.value_index]
 
-SPACE COMPLEXITY = O(n) [largest] [smallest]
-SPACE COMPLEXITY = O(1) [value_index] [total_vowels] [every_vowel]
+SPACE COMPLEXITY = O(n) [Find.largest] [Find.smallest]
+SPACE COMPLEXITY = O(1) [Find.value_index] [Find.total_vowels] [Find.every_vowel]
 """
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
@@ -106,14 +106,6 @@ class Find:
         return vowels
 
     @staticmethod
-    def value_index(array, value_to_find):
-        # Iterate over the list with enumerate to get both index and value
-        for index, value in enumerate(array):
-            if value == value_to_find:
-                return index  # Return the index if the value matches
-        return False  # Return False if the value was not found in the list
-
-    @staticmethod
     def __count_character(Word, Vowel):
         # Counter
         count = 0
@@ -165,15 +157,26 @@ class Find:
             result += self.__count_character(Word, vowel) + "\n"
         return result.rstrip("\n")
 
+    @staticmethod
+    def value_index(array, value_to_find):
+        # Iterate over the list with enumerate to get both index and value
+        for index, value in enumerate(array):
+            if value == value_to_find:
+                return index  # Return the index if the value matches
+        return False  # Return False if the value was not found in the list
+
 
 """
-from --- import *
-
+# Example Setup
 find = Find()
+
+# Example List
 list_place = [17, 5.0, "hi", 65.03, 32.0, -4, -5.8]
+
+# Example Usage
 print(find.largest(list_place))
 print(find.smallest(list_place))
-print(find.value_from_list(list_place, 32.0))
+print(find.value_index(list_place, 32.0))
 print(find.every_vowel("Hola"))
 print(find.total_vowels("Hola"))
 """

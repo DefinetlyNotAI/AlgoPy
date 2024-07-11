@@ -23,30 +23,6 @@ Ensure you have Python installed on your system. **AlgoPy** supports Python vers
 
 Here's a brief overview of how to use some of the main features of **AlgoPy**.
 
-### Logging
-
-To log an informational message:
-
-```python
-from File_Logger import LoggerDB
-
-logger = LoggerDB(filename="app.log")
-logger.info("Application started successfully.")
-```
-
-### Sorting and Searching
-
-To sort an array using the quicksort algorithm:
-
-```python
-from Algorithims import SortingAndSearching
-
-algorithms = SortingAndSearching()
-data = [64, 34, "s", 25, "a", 12, 10, 22, 11, 90]
-sorted_data = algorithms.quicksort(data.copy())
-print(sorted_data)
-```
-
 ## Contributing
 
 We welcome contributions from the community. If you'd like to contribute, please fork the repository, make your changes, and submit a pull request.
