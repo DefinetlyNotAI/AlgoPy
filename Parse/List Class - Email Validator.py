@@ -1,7 +1,7 @@
 """
 Email Validator, Super basic and static, just checks for @ and . and some usual domains.
 
-:returns
+returns
     False if email is invalid
     True if email is valid
 

@@ -1,4 +1,4 @@
-r"""
+"""
 Converts integers to Roman numerals and vice versa.
 
 Please note that this is not an exhaustive list of all possible Roman numerals
@@ -10,7 +10,7 @@ as well as the class returning False.
 COMPLEXITY = O(n*log(n)) [to_roman] and [to_number]
 COMPLEXITY = O(n*m) [to_ascii]
 
-SPACE COMPLEXITY = O(1)
+SPACE COMPLEXITY = O(1) [For everything]
 """
 
 import colorlog
@@ -38,11 +38,7 @@ logger.addHandler(handler)
 
 class Convert:
     def __init__(self, show_errors=True):
-        """
-        Initializes the mapping dictionary with Roman numeral values corresponding to integers.
-        Initializes the roman_to_numerical dictionary with integer values corresponding to Roman numerals.
-        Initializes the error_level bool (optional) whether to show error messages. Defaults to True.
-        """
+
         self.mapping = {
             10000: "/X/",
             9000: "M/X/",
@@ -63,7 +59,6 @@ class Convert:
             4: "IV",
             1: "I",
         }
-        # Initialize the roman_to_numerical dictionary here since it's used in both methods.
         self.roman_to_numerical = {
             "I": 1,
             "V": 5,
@@ -169,19 +164,6 @@ class Convert:
         self.error_level = show_errors
 
     def to_roman(self, num):
-        """
-        Converts an integer number to its corresponding Roman numeral representation.
-
-        Parameters:
-            num (int): The integer number to be converted.
-
-        Returns:
-            str: The Roman numeral representation of the input number.
-
-        Raises:
-            KeyError: If the input number is smaller than 1.
-            Exception: If any other error occurs during the conversion process.
-        """
         try:
             num = int(num)
             if num <= 1:
@@ -209,19 +191,6 @@ class Convert:
             return False
 
     def to_number(self, roman):
-        """
-        Converts a Roman numeral to its corresponding integer representation.
-
-        Parameters:
-            roman (str): The Roman numeral to be converted.
-
-        Returns:
-            int: The integer representation of the input Roman numeral.
-
-        Raises:
-            KeyError: If the input Roman numeral is not valid.
-            Exception: If any other error occurs during the conversion process.
-        """
         try:
             i = 0
             num = 0
@@ -244,15 +213,6 @@ class Convert:
             return False
 
     def to_ascii(self, Number=None):
-        """
-        Generates ASCII art representation of a Number.
-
-        Parameters:
-            Number (str): The number to convert into ASCII art. If None, user input is requested.
-
-        Returns:
-            str: The ASCII art representation of the input Number.
-        """
         if Number is None:
             while True:
                 Number = input("Input a number to expand: ")

@@ -68,20 +68,4 @@ class Sort:
                 j += 1
                 k += 1
 
-
-class Search:
-    @staticmethod
-    def binary_search(arr, x):
-        low = 0
-        high = len(arr) - 1
-        while low <= high:
-            mid = (high + low) // 2
-            if arr[mid] == x:
-                return mid
-            elif str(arr[mid]) < str(x):
-                low = mid + 1
-            else:
-                high = mid - 1
-        return -1
-
 # Refactor variable names, docstring

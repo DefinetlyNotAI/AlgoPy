@@ -4,9 +4,11 @@ Gracefully ignores non-numeric elements without crashing, enhancing reliability.
 Interactive input method allows for easy testing and experimentation.
 Sorts lists efficiently and finds largest/smallest elements with minimal overhead.
 
-COMPLEXITY = O(n\log(n))
+COMPLEXITY = O(n \ log n ) [largest] and [smallest]
+COMPLEXITY = O(n) [value_index]
 
-SPACE COMPLEXITY = O(n)
+SPACE COMPLEXITY = O(n) [largest] and [smallest]
+SPACE COMPLEXITY = O(1) [value_index]
 
 Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 """
@@ -14,9 +16,6 @@ Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft 
 
 class Find:
     def __sort(self, List):
-        """
-        Sorts a list of numbers in ascending order after converting all integers to floats.
-        """
         if List is None:
             List = self.__input_list()
 
@@ -32,9 +31,6 @@ class Find:
             return None
 
     def largest(self, List=None):
-        """
-        Returns the largest element in the given list.
-        """
         largeList = self.__sort(List)
 
         if largeList is None:
@@ -43,9 +39,6 @@ class Find:
         return largeList[-1] if largeList else None
 
     def smallest(self, List=None):
-        """
-        Returns the smallest element in the given list.
-        """
         smallList = self.__sort(List)
 
         if smallList is None:
@@ -55,9 +48,6 @@ class Find:
 
     @staticmethod
     def __input_list():
-        """
-        Takes given numbers from the user and adds them to a list.
-        """
         List = []
         while True:
             try:
@@ -77,6 +67,14 @@ class Find:
 
         return List
 
+    @staticmethod
+    def value_index(array, value_to_find):
+        # Iterate over the list with enumerate to get both index and value
+        for index, value in enumerate(array):
+            if value == value_to_find:
+                return index  # Return the index if the value matches
+        return False  # Return False if the value was not found in the list
+
 
 """
 from --- import *
@@ -85,4 +83,7 @@ find = Find()
 list_place = [17, 5.0, "hi", 65.03, 32.0, -4, -5.8]
 print(find.largest(list_place))
 print(find.smallest(list_place))
+print(find.value_from_list(list_place, 32.0))
+print(find.every_vowel("Hola"))
+print(find.total_vowels("Hola"))
 """
