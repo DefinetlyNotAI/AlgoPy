@@ -18,47 +18,50 @@ SPACE COMPLEXITY: O(n) [Sort.using_merge_sort]
 
 class Sort:
     @staticmethod
-    def using_selection(arr):
-        for i in range(len(arr)):
+    def using_selection(Array):
+        for i in range(len(Array)):
             min_index = i
-            for j in range(i + 1, len(arr)):
-                if str(arr[j]) < str(arr[min_index]):
+            for j in range(i + 1, len(Array)):
+                if str(Array[j]) < str(Array[min_index]):
                     min_index = j
 
-            arr[i], arr[min_index] = arr[min_index], arr[i]
+            Array[i], Array[min_index] = Array[min_index], Array[i]
+        return Array
 
     @staticmethod
-    def using_bubble(arr):
-        n = len(arr)
+    def using_bubble(Array):
+        n = len(Array)
         for i in range(n):
             for j in range(0, n - i - 1):
-                if str(arr[j]) > str(arr[j + 1]):
-                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                if str(Array[j]) > str(Array[j + 1]):
+                    Array[j], Array[j + 1] = Array[j + 1], Array[j]
+        return Array
 
     @staticmethod
-    def using_insertion(arr):
-        for i in range(1, len(arr)):
-            key = arr[i]
+    def using_insertion(Array):
+        for i in range(1, len(Array)):
+            key = Array[i]
             j = i - 1
-            while j >= 0 and str(key) < str(arr[j]):
-                arr[j + 1] = arr[j]
+            while j >= 0 and str(key) < str(Array[j]):
+                Array[j + 1] = Array[j]
                 j -= 1
-            arr[j + 1] = key
+            Array[j + 1] = key
+        return Array
 
-    def using_quicksort(self, arr):
-        if len(arr) <= 1:
-            return arr
-        pivot = arr[len(arr) // 2]
-        left = [x for x in arr if str(x) < str(pivot)]
-        middle = [x for x in arr if str(x) == str(pivot)]
-        right = [x for x in arr if str(x) > str(pivot)]
+    def using_quicksort(self, Array):
+        if len(Array) <= 1:
+            return Array
+        pivot = Array[len(Array) // 2]
+        left = [x for x in Array if str(x) < str(pivot)]
+        middle = [x for x in Array if str(x) == str(pivot)]
+        right = [x for x in Array if str(x) > str(pivot)]
         return self.using_quicksort(left) + middle + self.using_quicksort(right)
 
-    def using_merge_sort(self, arr):
-        if len(arr) > 1:
-            mid = len(arr) // 2
-            L = arr[:mid]
-            R = arr[mid:]
+    def using_merge_sort(self, Array):
+        if len(Array) > 1:
+            mid = len(Array) // 2
+            L = Array[:mid]
+            R = Array[mid:]
 
             self.using_merge_sort(L)
             self.using_merge_sort(R)
@@ -66,19 +69,46 @@ class Sort:
             i = j = k = 0
             while i < len(L) and j < len(R):
                 if str(L[i]) < str(R[j]):
-                    arr[k] = L[i]
+                    Array[k] = L[i]
                     i += 1
                 else:
-                    arr[k] = R[j]
+                    Array[k] = R[j]
                     j += 1
                 k += 1
 
             while i < len(L):
-                arr[k] = L[i]
+                Array[k] = L[i]
                 i += 1
                 k += 1
 
             while j < len(R):
-                arr[k] = R[j]
+                Array[k] = R[j]
                 j += 1
                 k += 1
+
+        return Array
+
+
+# Sample array containing integers and strings
+sort = Sort()
+sample_array = [1, 37, 5, 78, 99, 5]
+
+# Using selection sort
+print("Selection Sort:")
+print(sort.using_selection(sample_array.copy()))
+
+# Using bubble sort
+print("\nBubble Sort:")
+print(sort.using_bubble(sample_array.copy()))
+
+# Using insertion sort
+print("\nInsertion Sort:")
+print(sort.using_insertion(sample_array.copy()))
+
+# Using quicksort
+print("\nQuicksort:")
+print(sort.using_quicksort(sample_array.copy()))
+
+# Using merge sort
+print("\nMerge Sort:")
+print(sort.using_merge_sort(sample_array.copy()))
