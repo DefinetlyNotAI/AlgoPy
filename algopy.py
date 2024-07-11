@@ -59,6 +59,7 @@ Complexities
     SPACE COMPLEXITY = O(log n) [Sort.using_quicksort]
 """
 
+# Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 from colorlog_setup import *
 from datetime import datetime
 import os
@@ -1325,7 +1326,7 @@ class Convert:
         Generate ASCII art based on the input number and return the ASCII art as a string.
 
         Parameters:
-            Number (str): The number to be converted to ASCII art.
+            Number (str or int, optional): The number to be converted to ASCII art.
 
         Returns:
             str: The ASCII art representation of the input number.
@@ -1338,9 +1339,12 @@ class Convert:
                 else:
                     colorlog.error("Invalid input. Please enter a number.")
         elif not Number.isdigit():
-            if self.error_level:
-                colorlog.error("Invalid input. Please enter a number.")
-            return False
+            try:
+                Number = str(Number)
+            except Exception:
+                if self.error_level:
+                    colorlog.error("Invalid input. Please enter a number.")
+                return False
 
         # Initialize an empty list to store each line of the ASCII art
         ascii_art_lines = []
