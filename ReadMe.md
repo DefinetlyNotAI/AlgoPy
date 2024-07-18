@@ -1,5 +1,14 @@
 # AlgoPy
 
+<div align="center">
+    <a href="https://github.com/DefinetlyNotAI/AlgoPy/issues"><img src="https://img.shields.io/github/issues/DefinetlyNotAI/AlgoPy" alt="GitHub Issues"></a>
+    <a href="https://github.com/DefinetlyNotAI/AlgoPy/tags"><img src="https://img.shields.io/github/v/tag/DefinetlyNotAI/AlgoPy" alt="GitHub Tag"></a>
+    <a href="https://github.com/DefinetlyNotAI/AlgoPy/graphs/commit-activity"><img src="https://img.shields.io/github/commit-activity/t/DefinetlyNotAI/AlgoPy" alt="GitHub Commit Activity"></a>
+    <a href="https://github.com/DefinetlyNotAI/AlgoPy/languages"><img src="https://img.shields.io/github/languages/count/DefinetlyNotAI/AlgoPy" alt="GitHub Language Count"></a>
+    <a href="https://github.com/DefinetlyNotAI/AlgoPy/actions"><img src="https://img.shields.io/github/check-runs/DefinetlyNotAI/AlgoPy/main" alt="GitHub Branch Check Runs"></a>
+    <a href="https://github.com/DefinetlyNotAI/AlgoPy"><img src="https://img.shields.io/github/repo-size/DefinetlyNotAI/AlgoPy" alt="GitHub Repo Size"></a>
+</div>
+
 ## Overview
 
 **AlgoPy** is a comprehensive collection of utilities designed to streamline various tasks in software development. It includes robust logging capabilities and efficient algorithms for sorting and searching data structures. Whether you're building applications or maintaining systems, **MyLibrary** offers tools to enhance productivity and reliability.
