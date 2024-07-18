@@ -17,7 +17,7 @@
 
 - Powerful logging system for tracking application events and errors.
 - Efficient sorting and searching algorithms for quick data manipulation.
-- Easy-to-use API for rapid integration into projects.
+- Easy-to-use Library for rapid integration into projects.
 
 ## Getting Started
 
