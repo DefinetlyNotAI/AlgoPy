@@ -5,6 +5,7 @@
   - [Log.warning]
   - [Log.error]
   - [Log.critical]
+  - [Convert.memory]
 
 - **O(n)**:
   - [Find.value_index]
@@ -54,6 +55,7 @@
   - [Convert.hex_to_dec]
   - [Convert.dec_to_hex]
   - [Convert.dec_to_bin]
+  - [Convert.memory]
 
 - O(n):
   - [Find.largest]
@@ -1253,6 +1255,30 @@ class Convert:
             "/V/": 5000,
             "M/V/": 4000,
         }
+        self.memory_dict = {
+            'Bit': 1,
+            'Byte': 8,
+            'KB': 8 * 1000,
+            'MB': 8 * (1000 ** 2),
+            'GB': 8 * (1000 ** 3),
+            'TB': 8 * (1000 ** 4),
+            'PB': 8 * (1000 ** 5),
+            'KiB': 8 * 1024,
+            'MiB': 8 * (1024 ** 2),
+            'GiB': 8 * (1024 ** 3),
+            'TiB': 8 * (1024 ** 4),
+            'PiB': 8 * (1024 ** 5),
+            'Kb': 1000,
+            'Mb': 1000 ** 2,
+            'Gb': 1000 ** 3,
+            'Tb': 1000 ** 4,
+            'Pb': 1000 ** 5,
+            'Kib': 1024,
+            'Mib': 1024 ** 2,
+            'Gib': 1024 ** 3,
+            'Tib': 1024 ** 4,
+            'Pib': 1024 ** 5,
+        }
 
         Zero = ["  ***  ", " *   * ", "*     *", "*     *", "*     *", " *   * ", "  ***  "]
 
@@ -1571,3 +1597,48 @@ class Convert:
             if self.error_level:
                 colorlog.error(f"Conversion failed: {e}")
             return False
+
+    def memory(self, number=None, input_unit=None, output_unit=None):
+        """
+        Converts a given number from one memory unit to another.
+
+        Capital Letters are used for memory units.
+        Memory units must use a small case letter for the letter `i` if using base 1024. (KibiByte)
+        Memory units must use a small case letter for the letter `b` if using bits. (KiloBit / KibiBit)
+        Memory units must use capital letters other than those 2 rules.
+        Bit and Byte are the only exception and are written fully with only the first letter capitalised.
+        Examples: KB, KiB, Kb and Kib
+        Reaches until PiB
+
+        Args:
+            number (int): The number to be converted.
+            input_unit (str): The unit of the given number. Must exist in `memory_dict`.
+            output_unit (str): The desired unit for the converted number. Must exist in `memory_dict`.
+
+        Raises:
+            ValueError: If the input number is not an integer, or if either the input or output unit does not exist in `memory_dict`.
+
+        Returns:
+            str: The converted number with two decimal places and the output unit.
+
+        """
+        # Ensure the inputs are valid
+        if number is None or input_unit is None or output_unit is None:
+            if self.error_level:
+                colorlog.error("Invalid input. Number, input_unit, and output_unit must all be provided.")
+            return False
+        if not isinstance(number, int) or input_unit not in self.memory_dict or output_unit not in self.memory_dict:
+            if self.error_level:
+                colorlog.error("Invalid input. Number must be an integer, and both units must exist in memory_dict.")
+            return False
+
+        # Step 1 & 2: Convert the number to bits
+        input_factor = self.memory_dict[input_unit]
+        number_in_bits = number * input_factor
+
+        # Step 3 & 4: Convert back to the desired unit
+        output_factor = self.memory_dict[output_unit]
+        final_number = number_in_bits / output_factor
+
+        # Step 5: Return the final converted value as a string
+        return f"{final_number:.2f} {output_unit}"
