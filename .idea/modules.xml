@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/AlgoPy.iml" filepath="$PROJECT_DIR$/.idea/AlgoPy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Calcula-PC/.idea/Calcula-PC.iml" filepath="$PROJECT_DIR$/Calcula-PC/.idea/Calcula-PC.iml" />
     </modules>
   </component>
 </project>
