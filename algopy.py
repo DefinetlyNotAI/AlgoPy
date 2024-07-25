@@ -1,62 +1,74 @@
 """
-Convert()
-    Converts integers to Roman numerals and vice versa.
-    Please note that this is not an exhaustive list of all possible Roman numerals
-    that can be represented and is a mix of preset and algorithmic calculations.
-    If an error occurs during the conversion process, an error message will be displayed if set to True,
-    as well as the class returning False.
+### Time Complexity
+- **O(1)**:
+  - [Log.info]
+  - [Log.warning]
+  - [Log.error]
+  - [Log.critical]
+  - [Convert.memory]
 
-Log()
-    Manages logging operations for applications, supporting various severity levels (info, warning, error, critical).
-    Automatically rotates the log file based on size, ensuring that no single log file exceeds a specified maximum size.
-    Maintains a default filename ('Server.log') unless otherwise specified during instantiation.
-    Utilizes static methods for timestamp generation, promoting reusability across different instances.
-    Ensures thread safety by managing file access through context managers, preventing concurrent modifications.
-    Efficiently appends log messages to the file, incorporating timestamps for precise logging.
-    Removes the existing log file if it exceeds the maximum size, automatically starting fresh without manual intervention.
+- **O(n)**:
+  - [Find.value_index]
+  - [Validate.email]
+  - [Convert.dec_to_roman]
+  - [Convert.roman_to_dec]
+  - [Find.total_vowels]
+  - [Find.every_vowel]
+  - [Convert.bin_to_dec]
+  - [Convert.bin_to_hex]
+  - [Convert.hex_to_bin]
+  - [Convert.hex_to_dec]
 
-Find()
-    Handles both integers and floats seamlessly, converting between types as needed.
-    Gracefully ignores non-numeric elements without crashing, enhancing reliability.
-    Interactive input method allows for easy testing and experimentation.
-    Sorts lists efficiently and finds largest/smallest elements with minimal overhead.
-    Finds the number of vowels in a word.
-    Either totally, or by vowel.
-    Includes special words that have y as either an active vowel or as a passive vowel.
+- **O(log n)**:
+  - [Convert.dec_to_hex]
+  - [Convert.dec_to_bin]
 
-Sort()
-    Provides a unified interface for sorting arrays/lists of comparable items using various sorting algorithms.
-    Supports sorting of mixed data types by comparing their string representations, allowing for flexibility in input.
-    Incorporates best practices for algorithm implementation, including efficient use of static methods for reusable logic.
-    Quicksort and merge sort are implemented recursively, demonstrating advanced recursion techniques and divide-and-conquer strategies.
-    Selection sort, bubble sort, and insertion sort are included for educational purposes, showcasing simpler sorting mechanisms.
-    Each sorting method is designed to handle arrays/lists of any size, with optimizations for performance and memory usage.
-    If an error occurs it returns False.
+- **O(n log n)**:
+  - [Find.largest]
+  - [Find.smallest]
+  - [Sort.using_quicksort]
+  - [Sort.using_merge_sort]
 
-Validate()
-    Email Validator, Super basic and static, just checks for @ and . and some usual domains.
-    Returns False if email is invalid
-    Returns True if email is valid
-    Checks include:
-            1. Ensure there is exactly one '@' symbol in the email address.
-            2. Convert the email address to lowercase and check if it ends with a common domain or domain variant.
-            3. Check the length constraints of the name and domain_tld.
-            4. Split the email address into name and domain_tld.
-            5. Split the domain_tld into domain and tld.
-            6. Check if the domain is a common domain or a variant of a common domain.
-            7. Special handling for .co domain.
-            8. Check if the tld is a recognized domain variant.
+- **O(n * m)**:
+  - [Convert.dec_to_ascii]
 
-Complexities
-    TIME COMPLEXITY = O(n) [Log.info] [Log.warning] [Log.error] [Log.critical] [Find.value_index] [Validate.email]
-    TIME COMPLEXITY = O(n / log n ) [Find.largest] [Find.smallest]
-    TIME COMPLEXITY = O(n * log n ) [Convert.to_roman] [Convert.to_number] [Sort.using_quicksort] [Sort.using_merge_sort]
-    TIME COMPLEXITY = O(n * m) [Convert.to_ascii] [Find.total_vowels] [Find.every_vowel]
-    TIME COMPLEXITY = O(n ^ 2) [Sort.using_selection] [Sort.using_bubble] [Sort.using_insertion]
+- **O(n^2)**:
+  - [Sort.using_selection]
+  - [Sort.using_bubble]
+  - [Sort.using_insertion]
 
-    SPACE COMPLEXITY = O(1) [Find.value_index] [Find.total_vowels] [Find.every_vowel] [Sort.using_selection] [Sort.using_bubble] [Sort.using_insertion] [Convert.to_ascii] [Convert.to_roman] [Convert.to_number]
-    SPACE COMPLEXITY = O(n) [Find.largest] [Find.smallest] [Log.info] [Log.warning] [Log.error] [Log.critical] [Sort.using_merge_sort] [Validate.email]
-    SPACE COMPLEXITY = O(log n) [Sort.using_quicksort]
+
+### Space Complexity
+- O(1):
+  - [Find.value_index]
+  - [Find.total_vowels]
+  - [Find.every_vowel]
+  - [Sort.using_selection]
+  - [Sort.using_bubble]
+  - [Sort.using_insertion]
+  - [Convert.dec_to_ascii]
+  - [Convert.dec_to_roman]
+  - [Convert.roman_to_dec]
+  - [Convert.bin_to_dec]
+  - [Convert.bin_to_hex]
+  - [Convert.hex_to_bin]
+  - [Convert.hex_to_dec]
+  - [Convert.dec_to_hex]
+  - [Convert.dec_to_bin]
+  - [Convert.memory]
+
+- O(n):
+  - [Find.largest]
+  - [Find.smallest]
+  - [Log.info]
+  - [Log.warning]
+  - [Log.error]
+  - [Log.critical]
+  - [Sort.using_merge_sort]
+  - [Validate.email]
+
+- O(log n):
+  - [Sort.using_quicksort]
 """
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
@@ -96,7 +108,6 @@ class Log:
 
         Initializes the `filename` and `size` attributes of the Log instance.
         If the log file does not exist, it creates an empty file with the specified name.
-
         """
         # Use the provided filename or default to 'Server.log'
         self.filename = str(filename)
@@ -196,7 +207,7 @@ class Log:
 
 
 class Find:
-    def __init__(self):
+    def __init__(self, show_errors=True):
         """
         Words that have y as either an active vowel or as a passive vowel
         """
@@ -235,14 +246,16 @@ class Find:
             "Daddy",
             "Quickly",
         ]
+        self.error_level = show_errors
 
     def __sort(self, List):
         """
         Sorts a list of numbers, converting them to floats if needed. Returns the sorted list.
         """
         if List is None:
-            List = self.__input_list()
-
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         try:
             converted_list = sorted(
                 float(item) for item in List if isinstance(item, (int, float))
@@ -254,37 +267,7 @@ class Find:
         except ValueError:
             return None
 
-    @staticmethod
-    def __input_list():
-        """
-        Prompts the user to input a list of numbers.
-
-        Returns:
-            List[float]: The list of numbers entered by the user.
-
-        Raises:
-            ValueError: If the user enters an invalid input for the number of numbers or for each individual number.
-        """
-        List = []
-        while True:
-            try:
-                nAmountNos = int(input("How many numbers: "))
-                break
-            except ValueError:
-                print("Invalid input. Please enter a valid integer.")
-
-        for _ in range(nAmountNos):
-            while True:
-                try:
-                    nNo = float(input("Give me a number: "))
-                    List.append(nNo)
-                    break
-                except ValueError:
-                    print("Invalid input. Please enter a valid number.")
-
-        return List
-
-    def __vowel_y(self, string, only_lowercase=False):
+    def __vowel_y(self, string=None, only_lowercase=False):
         """
         Determines the vowels in a given string, taking into account special cases for the letter 'y'.
 
@@ -295,6 +278,10 @@ class Find:
         Returns:
             str: The vowels present in the string, taking into account special cases for 'y'.
         """
+        if string is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if self.__value_index(self.special_y_words, string):
             if only_lowercase:
                 vowels = "aeiouy"
@@ -357,11 +344,15 @@ class Find:
         Returns:
             int or None: The largest element from the list if it contains only integers, None otherwise.
         """
+        if List is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         largeList = self.__sort(List)
-
         if largeList is None:
-            raise ValueError("List contains non-integer elements.")
-
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         return largeList[-1] if largeList else None
 
     def smallest(self, List=None):
@@ -377,11 +368,15 @@ class Find:
         Raises:
             ValueError: If the list contains non-integer elements.
         """
+        if List is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         smallList = self.__sort(List)
-
         if smallList is None:
-            raise ValueError("List contains non-integer elements.")
-
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         return smallList[0] if smallList else None
 
     def total_vowels(self, Word=None):
@@ -395,7 +390,9 @@ class Find:
             int: The total count of vowels in the input word.
         """
         if Word is None:
-            Word = input("Enter a word: ")
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
@@ -411,15 +408,16 @@ class Find:
             int: The total count of vowels in the input word.
         """
         if Word is None:
-            Word = input("Enter a word: ")
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         result = ""
         vowels = self.__vowel_y(Word, True)
         for vowel in vowels:
             result += self.__count_character(Word, vowel) + "\n"
         return result.rstrip("\n")
 
-    @staticmethod
-    def value_index(array, value_to_find):
+    def value_index(self, array=None, value_to_find=None):
         """
         A function to find the index of a specific value in an array.
 
@@ -430,6 +428,10 @@ class Find:
         Returns:
             int or bool: The index of the value in the array if found, False otherwise.
         """
+        if array is None or value_to_find is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         # Iterate over the list with enumerate to get both index and value
         for index, value in enumerate(array):
             if value == value_to_find:
@@ -438,8 +440,11 @@ class Find:
 
 
 class Sort:
+    def __init__(self, show_errors=True):
+        self.error_level = show_errors
+
     @staticmethod
-    def __integer(Array):
+    def __integer(Array=None):
         """
         Checks if all elements in the input Array are integers.
 
@@ -449,10 +454,10 @@ class Sort:
         Returns:
             bool: True if all elements are integers, False otherwise.
         """
+
         return all(isinstance(item, int) for item in Array)
 
-    @staticmethod
-    def using_quick_sort(Array):
+    def using_quick_sort(self, Array=None):
         """
         Sorts the given array using the quicksort algorithm.
 
@@ -465,6 +470,10 @@ class Sort:
         Raises:
             ValueError: If the input array contains non-integer elements.
         """
+        if Array is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -473,10 +482,9 @@ class Sort:
         left = [x for x in Array if x < pivot]
         middle = [x for x in Array if x == pivot]
         right = [x for x in Array if x > pivot]
-        return Sort.using_quick_sort(left) + middle + Sort.using_quick_sort(right)
+        return self.using_quick_sort(left) + middle + self.using_quick_sort(right)
 
-    @staticmethod
-    def using_merge_sort(Array):
+    def using_merge_sort(self, Array=None):
         """
         Sorts the given array using the merge sort algorithm.
 
@@ -491,6 +499,10 @@ class Sort:
 
         This function recursively divides the input array into two halves, sorts each half using merge sort, and then merges the two sorted halves into a single sorted array.
         """
+        if Array is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -525,8 +537,7 @@ class Sort:
         result.extend(right[j:])
         return result
 
-    @staticmethod
-    def using_selection_sort(Array):
+    def using_selection_sort(self, Array=None):
         """
         Sorts the given array using the selection sort algorithm.
 
@@ -539,6 +550,10 @@ class Sort:
         Raises:
             ValueError: If the input array contains non-integer elements.
         """
+        if Array is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         for i in range(len(Array)):
@@ -549,8 +564,7 @@ class Sort:
             Array[i], Array[min_index] = Array[min_index], Array[i]
         return Array
 
-    @staticmethod
-    def using_bubble_sort(Array):
+    def using_bubble_sort(self, Array=None):
         """
         Sorts the given array using the bubble sort algorithm.
 
@@ -563,6 +577,10 @@ class Sort:
         Raises:
             ValueError: If the input array contains non-integer elements.
         """
+        if Array is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         n = len(Array)
@@ -572,8 +590,7 @@ class Sort:
                     Array[j], Array[j + 1] = Array[j + 1], Array[j]
         return Array
 
-    @staticmethod
-    def using_insertion_sort(Array):
+    def using_insertion_sort(self, Array=None):
         """
         Sorts the given array using the insertion sort algorithm.
 
@@ -588,6 +605,10 @@ class Sort:
 
         This function takes an array as input and sorts it using the insertion sort algorithm. The algorithm iterates through the array, starting from the second element, and compares each element with the elements before it. If an element is smaller than its predecessor, it is shifted to the left until it finds its correct position.
         """
+        if Array is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         for i in range(1, len(Array)):
@@ -601,12 +622,12 @@ class Sort:
 
 
 class Validate:
-    def __init__(self, warnings=True):
+    def __init__(self, show_errors=True):
         """
         Initialize the Validate object with a list of common domains and domain variants.
 
         Parameters:
-            warnings (bool): Flag to enable or disable warnings. Default is True.
+            show_errors (bool): Flag to enable or disable warnings. Default is True.
         """
         self.common_domains = [
             "google.com",
@@ -866,9 +887,9 @@ class Validate:
             "zw",
             "uk",
         ]
-        self.warnings = warnings
+        self.error_level = show_errors
 
-    def email(self, email):
+    def email(self, email=None):
         """
         Validate an email address.
 
@@ -891,10 +912,13 @@ class Validate:
         Note:
             The function assumes that the common_domains and domain_variants lists are defined in the Validate class.
         """
+        if email is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         # Ensure there's exactly one '@'
         if email.count("@") != 1:
             return False
-
         # Convert to lowercase and check for @ and .
         if not email.lower().endswith(
                 (
@@ -1173,10 +1197,9 @@ class Validate:
 
         # Unique domain check with warning for unrecognized domains
         if tld not in self.domain_variants or domain not in self.common_domains.remove(".com"):
-            if self.warnings:
+            if self.error_level:
                 colorlog.warning(f"Unrecognized domain '{domain}.{tld}'.")
             return True
-
         return False
 
 
@@ -1232,6 +1255,30 @@ class Convert:
             "/V/": 5000,
             "M/V/": 4000,
         }
+        self.memory_dict = {
+            'Bit': 1,
+            'Byte': 8,
+            'KB': 8 * 1000,
+            'MB': 8 * (1000 ** 2),
+            'GB': 8 * (1000 ** 3),
+            'TB': 8 * (1000 ** 4),
+            'PB': 8 * (1000 ** 5),
+            'KiB': 8 * 1024,
+            'MiB': 8 * (1024 ** 2),
+            'GiB': 8 * (1024 ** 3),
+            'TiB': 8 * (1024 ** 4),
+            'PiB': 8 * (1024 ** 5),
+            'Kb': 1000,
+            'Mb': 1000 ** 2,
+            'Gb': 1000 ** 3,
+            'Tb': 1000 ** 4,
+            'Pb': 1000 ** 5,
+            'Kib': 1024,
+            'Mib': 1024 ** 2,
+            'Gib': 1024 ** 3,
+            'Tib': 1024 ** 4,
+            'Pib': 1024 ** 5,
+        }
 
         Zero = ["  ***  ", " *   * ", "*     *", "*     *", "*     *", " *   * ", "  ***  "]
 
@@ -1256,7 +1303,7 @@ class Convert:
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
         self.error_level = show_errors
 
-    def to_roman(self, num):
+    def dec_to_roman(self, num=None):
         """
         Converts an integer to a Roman numeral representation.
 
@@ -1275,6 +1322,10 @@ class Convert:
             - If the input integer is greater than 10,000, a warning is raised.
             - If an error occurs during the conversion process, an error message is displayed if `show_errors` is True.
         """
+        if num is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         try:
             num = int(num)
             if num <= 1:
@@ -1301,7 +1352,7 @@ class Convert:
                 colorlog.error(str(e))
             return False
 
-    def to_number(self, roman):
+    def roman_to_dec(self, roman=None):
         """
         Converts a Roman numeral to its corresponding decimal number.
 
@@ -1320,6 +1371,18 @@ class Convert:
             - If the input Roman numeral is invalid, an error message is displayed if `show_errors` is True.
 
         """
+        if not isinstance(roman, str):
+            if self.error_level:
+                colorlog.error("Input must be a string.")
+            return False
+        elif not roman.isupper():
+            if self.error_level:
+                colorlog.error("Input must be uppercase.")
+            return False
+        elif roman is None:
+            if self.error_level:
+                colorlog.error("Input cannot be None.")
+            return False
         try:
             i = 0
             num = 0
@@ -1341,7 +1404,7 @@ class Convert:
                 colorlog.error(str(e))
             return False
 
-    def to_ascii(self, Number=None):
+    def dec_to_ascii(self, Number=None):
         """
         Generate ASCII art based on the input number and return the ASCII art as a string.
 
@@ -1352,12 +1415,9 @@ class Convert:
             str: The ASCII art representation of the input number.
         """
         if Number is None:
-            while True:
-                Number = input("Input a number to expand: ")
-                if Number.isdigit():
-                    break
-                else:
-                    colorlog.error("Invalid input. Please enter a number.")
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         elif not Number.isdigit():
             try:
                 Number = str(Number)
@@ -1383,3 +1443,202 @@ class Convert:
         ascii_art = "\n".join(ascii_art_lines)
 
         return ascii_art
+
+    def __check_input_type(self, value, expected_type):
+        """Checks if the input value is of the expected type."""
+        if not isinstance(value, expected_type):
+            if self.error_level:
+                colorlog.error(f"Expected {expected_type.__name__}, got {type(value).__name__}")
+            return False
+        return True
+
+    def bin_to_hex(self, Binary_Number=None):
+        """
+        Converts a binary number to hexadecimal.
+
+        Args:
+            Binary_Number (str) (int): The binary number as a string.
+
+        Returns:
+            str: The hexadecimal representation of the binary number, or False if an error occurred.
+        """
+        if Binary_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No binary number provided")
+            return False
+        Binary_Number = str(Binary_Number)
+        if not self.__check_input_type(Binary_Number, str):
+            return False
+        try:
+            Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]  # Remove the '0x' prefix
+            return Hexadecimal_Number.upper()
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def bin_to_dec(self, Binary_Number=None):
+        """
+        Converts a binary number to decimal.
+
+        Args:
+            Binary_Number (str) (int): The binary number as a string.
+
+        Returns:
+            int: The decimal representation of the binary number, or False if an error occurred.
+        """
+        if Binary_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No binary number provided")
+            return False
+        Binary_Number = str(Binary_Number)
+        if not self.__check_input_type(Binary_Number, str):
+            return False
+        try:
+            return int(Binary_Number, 2)
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def dec_to_hex(self, Decimal_Number=None):
+        """
+        Converts a decimal number to hexadecimal.
+
+        Args:
+            Decimal_Number (int) (str): The decimal number.
+
+        Returns:
+            str: The hexadecimal representation of the decimal number, or False if an error occurred.
+        """
+        Decimal_Number = int(Decimal_Number)
+        if Decimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No decimal number provided")
+            return False
+        if not self.__check_input_type(Decimal_Number, (int, str)):
+            return False
+        try:
+            Hexadecimal_Number = hex(Decimal_Number)[2:]  # Remove the '0x' prefix
+            return Hexadecimal_Number.upper()
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def dec_to_bin(self, Decimal_Number=None):
+        """
+        Converts a decimal number to binary.
+
+        Args:
+            Decimal_Number (int) (str): The decimal number.
+
+        Returns:
+            str: The binary representation of the decimal number, or False if an error occurred.
+        """
+        Decimal_Number = int(Decimal_Number)
+        if Decimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No decimal number provided")
+            return False
+        if not self.__check_input_type(Decimal_Number, (int, str)):
+            return False
+        try:
+            Binary_Number = bin(Decimal_Number)[2:]  # Remove the '0b' prefix
+            return Binary_Number
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def hex_to_bin(self, Hexadecimal_Number=None):
+        """
+        Converts a hexadecimal number to binary.
+
+        Args:
+            Hexadecimal_Number (str): The hexadecimal number as a string.
+
+        Returns:
+            str: The binary representation of the hexadecimal number, or False if an error occurred.
+        """
+        if Hexadecimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No hexadecimal number provided")
+            return False
+        if not self.__check_input_type(Hexadecimal_Number, str):
+            return False
+        try:
+            Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]  # Remove the '0b' prefix
+            return Binary_Number
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion number system conversion failed: {e}")
+            return False
+
+    def hex_to_dec(self, Hexadecimal_Number=None):
+        """
+        Converts a hexadecimal number to decimal.
+
+        Args:
+            Hexadecimal_Number (str): The hexadecimal number as a string.
+
+        Returns:
+            int: The decimal representation of the hexadecimal number, or False if an error occurred.
+        """
+        if Hexadecimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No hexadecimal number provided")
+            return False
+        if not self.__check_input_type(Hexadecimal_Number, str):
+            return False
+        try:
+            return int(Hexadecimal_Number, 16)
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def memory(self, number=None, input_unit=None, output_unit=None):
+        """
+        Converts a given number from one memory unit to another.
+
+        Capital Letters are used for memory units.
+        Memory units must use a small case letter for the letter `i` if using base 1024. (KibiByte)
+        Memory units must use a small case letter for the letter `b` if using bits. (KiloBit / KibiBit)
+        Memory units must use capital letters other than those 2 rules.
+        Bit and Byte are the only exception and are written fully with only the first letter capitalised.
+        Examples: KB, KiB, Kb and Kib
+        Reaches until PiB
+
+        Args:
+            number (int): The number to be converted.
+            input_unit (str): The unit of the given number. Must exist in `memory_dict`.
+            output_unit (str): The desired unit for the converted number. Must exist in `memory_dict`.
+
+        Raises:
+            ValueError: If the input number is not an integer, or if either the input or output unit does not exist in `memory_dict`.
+
+        Returns:
+            str: The converted number with two decimal places and the output unit.
+
+        """
+        # Ensure the inputs are valid
+        if number is None or input_unit is None or output_unit is None:
+            if self.error_level:
+                colorlog.error("Invalid input. Number, input_unit, and output_unit must all be provided.")
+            return False
+        if not isinstance(number, int) or input_unit not in self.memory_dict or output_unit not in self.memory_dict:
+            if self.error_level:
+                colorlog.error("Invalid input. Number must be an integer, and both units must exist in memory_dict.")
+            return False
+
+        # Step 1 & 2: Convert the number to bits
+        input_factor = self.memory_dict[input_unit]
+        number_in_bits = number * input_factor
+
+        # Step 3 & 4: Convert back to the desired unit
+        output_factor = self.memory_dict[output_unit]
+        final_number = number_in_bits / output_factor
+
+        # Step 5: Return the final converted value as a string
+        return f"{final_number:.2f} {output_unit}"

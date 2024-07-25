@@ -31,6 +31,8 @@ Ensure you have Python installed on your system. **AlgoPy** supports Python vers
 ## Usage
 
 Here's a brief overview of how to use some of the main features of **AlgoPy**.
+Do note if an error occurs, it will be displayed in the console and return `False`,
+the error can be omitted from the console by setting `show_errors` to `False`.
 
 ### Table of Contents
 
@@ -47,7 +49,7 @@ The `Validate` class provides methods to check the validity of various inputs.
 ```python
 from algopy import Validate
 
-validate = Validate(warnings=True)
+validate = Validate(show_errors=True)
 if validate.email("example@secret.com"):
     print("Valid")
 else:
@@ -61,11 +63,18 @@ The `Convert` class offers functions to convert between numbers and Roman numera
 ```python
 from algopy import Convert
 
-convert = Convert(show_errors=False)
+convert = Convert(show_errors=True)
 
-print(convert.to_roman(5000))
-print(convert.to_number("MMMCMXCIX"))
-print(convert.to_ascii(3000))  # Optional, leave empty for dynamic user input
+print(convert.dec_to_roman(5000))
+print(convert.roman_to_dec("MMMCMXCIX"))
+print(convert.dec_to_ascii(65))
+print(convert.bin_to_hex("1010"))
+print(convert.bin_to_dec(1010))
+print(convert.dec_to_hex("10"))
+print(convert.dec_to_bin(10))
+print(convert.hex_to_bin("A"))
+print(convert.hex_to_dec("A"))
+print(convert.memory(500, 'KiB', 'Mb'))  # Example: Convert 500 KiB to Mb (KibiByte to Megabit)
 ```
 
 ### Find
@@ -75,7 +84,7 @@ The `Find` class includes methods for searching and analyzing lists.
 ```python
 from algopy import Find
 
-find = Find()
+find = Find(show_errors=True)
 
 list_place = [17, 5.0, "hi", 65.03, 32.0, -4, -5.8]
 
@@ -108,7 +117,7 @@ The `Sort` class provides various sorting algorithms to sort arrays.
 ```python
 from algopy import Sort
 
-sort = Sort()
+sort = Sort(show_errors=True)
 arr = [34, 5, 7, 23, 32, 4]
 
 print("Original array:", arr)
