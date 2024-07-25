@@ -75,7 +75,7 @@ The `Find` class includes methods for searching and analyzing lists.
 ```python
 from algopy import Find
 
-find = Find()
+find = Find(show_errors=False)
 
 list_place = [17, 5.0, "hi", 65.03, 32.0, -4, -5.8]
 
@@ -108,7 +108,7 @@ The `Sort` class provides various sorting algorithms to sort arrays.
 ```python
 from algopy import Sort
 
-sort = Sort()
+sort = Sort(show_errors=False)
 arr = [34, 5, 7, 23, 32, 4]
 
 print("Original array:", arr)
