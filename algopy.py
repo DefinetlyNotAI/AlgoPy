@@ -236,13 +236,14 @@ class Find:
             "Quickly",
         ]
 
-    def __sort(self, List):
+    @staticmethod
+    def __sort(List):
         """
         Sorts a list of numbers, converting them to floats if needed. Returns the sorted list.
         """
         if List is None:
-            List = self.__input_list()
-
+            colorlog.error("No input given.")
+            exit(1)
         try:
             converted_list = sorted(
                 float(item) for item in List if isinstance(item, (int, float))
@@ -253,36 +254,6 @@ class Find:
             return final_list
         except ValueError:
             return None
-
-    @staticmethod
-    def __input_list():
-        """
-        Prompts the user to input a list of numbers.
-
-        Returns:
-            List[float]: The list of numbers entered by the user.
-
-        Raises:
-            ValueError: If the user enters an invalid input for the number of numbers or for each individual number.
-        """
-        List = []
-        while True:
-            try:
-                nAmountNos = int(input("How many numbers: "))
-                break
-            except ValueError:
-                print("Invalid input. Please enter a valid integer.")
-
-        for _ in range(nAmountNos):
-            while True:
-                try:
-                    nNo = float(input("Give me a number: "))
-                    List.append(nNo)
-                    break
-                except ValueError:
-                    print("Invalid input. Please enter a valid number.")
-
-        return List
 
     def __vowel_y(self, string, only_lowercase=False):
         """
@@ -360,7 +331,8 @@ class Find:
         largeList = self.__sort(List)
 
         if largeList is None:
-            raise ValueError("List contains non-integer elements.")
+            colorlog.error("No input given.")
+            exit(1)
 
         return largeList[-1] if largeList else None
 
@@ -380,7 +352,8 @@ class Find:
         smallList = self.__sort(List)
 
         if smallList is None:
-            raise ValueError("List contains non-integer elements.")
+            colorlog.error("No input given.")
+            exit(1)
 
         return smallList[0] if smallList else None
 
@@ -395,7 +368,8 @@ class Find:
             int: The total count of vowels in the input word.
         """
         if Word is None:
-            Word = input("Enter a word: ")
+            colorlog.error("No input given.")
+            exit(1)
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
@@ -411,7 +385,8 @@ class Find:
             int: The total count of vowels in the input word.
         """
         if Word is None:
-            Word = input("Enter a word: ")
+            colorlog.error("No input given.")
+            exit(1)
         result = ""
         vowels = self.__vowel_y(Word, True)
         for vowel in vowels:
@@ -419,7 +394,7 @@ class Find:
         return result.rstrip("\n")
 
     @staticmethod
-    def value_index(array, value_to_find):
+    def value_index(array=None, value_to_find=None):
         """
         A function to find the index of a specific value in an array.
 
@@ -430,6 +405,9 @@ class Find:
         Returns:
             int or bool: The index of the value in the array if found, False otherwise.
         """
+        if array is None or value_to_find is None:
+            colorlog.error("No input given.")
+            return False
         # Iterate over the list with enumerate to get both index and value
         for index, value in enumerate(array):
             if value == value_to_find:
@@ -439,7 +417,7 @@ class Find:
 
 class Sort:
     @staticmethod
-    def __integer(Array):
+    def __integer(Array=None):
         """
         Checks if all elements in the input Array are integers.
 
@@ -449,10 +427,11 @@ class Sort:
         Returns:
             bool: True if all elements are integers, False otherwise.
         """
+
         return all(isinstance(item, int) for item in Array)
 
     @staticmethod
-    def using_quick_sort(Array):
+    def using_quick_sort(Array=None):
         """
         Sorts the given array using the quicksort algorithm.
 
@@ -465,6 +444,9 @@ class Sort:
         Raises:
             ValueError: If the input array contains non-integer elements.
         """
+        if Array is None:
+            colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -476,7 +458,7 @@ class Sort:
         return Sort.using_quick_sort(left) + middle + Sort.using_quick_sort(right)
 
     @staticmethod
-    def using_merge_sort(Array):
+    def using_merge_sort(Array=None):
         """
         Sorts the given array using the merge sort algorithm.
 
@@ -491,6 +473,9 @@ class Sort:
 
         This function recursively divides the input array into two halves, sorts each half using merge sort, and then merges the two sorted halves into a single sorted array.
         """
+        if Array is None:
+            colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -526,7 +511,7 @@ class Sort:
         return result
 
     @staticmethod
-    def using_selection_sort(Array):
+    def using_selection_sort(Array=None):
         """
         Sorts the given array using the selection sort algorithm.
 
@@ -539,6 +524,9 @@ class Sort:
         Raises:
             ValueError: If the input array contains non-integer elements.
         """
+        if Array is None:
+            colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         for i in range(len(Array)):
@@ -550,7 +538,7 @@ class Sort:
         return Array
 
     @staticmethod
-    def using_bubble_sort(Array):
+    def using_bubble_sort(Array=None):
         """
         Sorts the given array using the bubble sort algorithm.
 
@@ -563,6 +551,9 @@ class Sort:
         Raises:
             ValueError: If the input array contains non-integer elements.
         """
+        if Array is None:
+            colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         n = len(Array)
@@ -573,7 +564,7 @@ class Sort:
         return Array
 
     @staticmethod
-    def using_insertion_sort(Array):
+    def using_insertion_sort(Array=None):
         """
         Sorts the given array using the insertion sort algorithm.
 
@@ -588,6 +579,9 @@ class Sort:
 
         This function takes an array as input and sorts it using the insertion sort algorithm. The algorithm iterates through the array, starting from the second element, and compares each element with the elements before it. If an element is smaller than its predecessor, it is shifted to the left until it finds its correct position.
         """
+        if Array is None:
+            colorlog.error("No input given.")
+            return False
         if not Sort.__integer(Array):
             return False
         for i in range(1, len(Array)):
@@ -868,7 +862,7 @@ class Validate:
         ]
         self.warnings = warnings
 
-    def email(self, email):
+    def email(self, email=None):
         """
         Validate an email address.
 
@@ -891,10 +885,12 @@ class Validate:
         Note:
             The function assumes that the common_domains and domain_variants lists are defined in the Validate class.
         """
+        if email is None:
+            colorlog.error("No input given.")
+            return False
         # Ensure there's exactly one '@'
         if email.count("@") != 1:
             return False
-
         # Convert to lowercase and check for @ and .
         if not email.lower().endswith(
                 (
@@ -1254,9 +1250,9 @@ class Convert:
         Nine = [" ****", "*   *", "*   *", " ****", "    *", "    *", "    *"]
 
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
-        self.error_level = show_errors
+        self.error_level = show_errors  # TODO, add this to all methods
 
-    def to_roman(self, num):
+    def to_roman(self, num=None):
         """
         Converts an integer to a Roman numeral representation.
 
@@ -1275,6 +1271,10 @@ class Convert:
             - If the input integer is greater than 10,000, a warning is raised.
             - If an error occurs during the conversion process, an error message is displayed if `show_errors` is True.
         """
+        if num is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         try:
             num = int(num)
             if num <= 1:
@@ -1301,7 +1301,7 @@ class Convert:
                 colorlog.error(str(e))
             return False
 
-    def to_number(self, roman):
+    def to_number(self, roman=None):
         """
         Converts a Roman numeral to its corresponding decimal number.
 
@@ -1320,6 +1320,18 @@ class Convert:
             - If the input Roman numeral is invalid, an error message is displayed if `show_errors` is True.
 
         """
+        if not isinstance(roman, str):
+            if self.error_level:
+                colorlog.error("Input must be a string.")
+            return False
+        elif not roman.isupper():
+            if self.error_level:
+                colorlog.error("Input must be uppercase.")
+            return False
+        elif roman is None:
+            if self.error_level:
+                colorlog.error("Input cannot be None.")
+            return False
         try:
             i = 0
             num = 0
@@ -1352,12 +1364,8 @@ class Convert:
             str: The ASCII art representation of the input number.
         """
         if Number is None:
-            while True:
-                Number = input("Input a number to expand: ")
-                if Number.isdigit():
-                    break
-                else:
-                    colorlog.error("Invalid input. Please enter a number.")
+            colorlog.error("No input given.")
+            exit(1)
         elif not Number.isdigit():
             try:
                 Number = str(Number)
