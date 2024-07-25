@@ -9,10 +9,18 @@
 - **O(n)**:
   - [Find.value_index]
   - [Validate.email]
-  - [Convert.to_roman]
-  - [Convert.to_number]
+  - [Convert.dec_to_roman]
+  - [Convert.roman_to_dec]
   - [Find.total_vowels]
   - [Find.every_vowel]
+  - [Convert.bin_to_dec]
+  - [Convert.bin_to_hex]
+  - [Convert.hex_to_bin]
+  - [Convert.hex_to_dec]
+
+- **O(log n)**:
+  - [Convert.dec_to_hex]
+  - [Convert.dec_to_bin]
 
 - **O(n log n)**:
   - [Find.largest]
@@ -21,7 +29,7 @@
   - [Sort.using_merge_sort]
 
 - **O(n * m)**:
-  - [Convert.to_ascii]
+  - [Convert.dec_to_ascii]
 
 - **O(n^2)**:
   - [Sort.using_selection]
@@ -37,9 +45,15 @@
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
-  - [Convert.to_ascii]
-  - [Convert.to_roman]
-  - [Convert.to_number]
+  - [Convert.dec_to_ascii]
+  - [Convert.dec_to_roman]
+  - [Convert.roman_to_dec]
+  - [Convert.bin_to_dec]
+  - [Convert.bin_to_hex]
+  - [Convert.hex_to_bin]
+  - [Convert.hex_to_dec]
+  - [Convert.dec_to_hex]
+  - [Convert.dec_to_bin]
 
 - O(n):
   - [Find.largest]
@@ -1263,7 +1277,7 @@ class Convert:
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
         self.error_level = show_errors
 
-    def to_roman(self, num=None):
+    def dec_to_roman(self, num=None):
         """
         Converts an integer to a Roman numeral representation.
 
@@ -1312,7 +1326,7 @@ class Convert:
                 colorlog.error(str(e))
             return False
 
-    def to_number(self, roman=None):
+    def roman_to_dec(self, roman=None):
         """
         Converts a Roman numeral to its corresponding decimal number.
 
@@ -1364,7 +1378,7 @@ class Convert:
                 colorlog.error(str(e))
             return False
 
-    def to_ascii(self, Number=None):
+    def dec_to_ascii(self, Number=None):
         """
         Generate ASCII art based on the input number and return the ASCII art as a string.
 
@@ -1403,3 +1417,157 @@ class Convert:
         ascii_art = "\n".join(ascii_art_lines)
 
         return ascii_art
+
+    def __check_input_type(self, value, expected_type):
+        """Checks if the input value is of the expected type."""
+        if not isinstance(value, expected_type):
+            if self.error_level:
+                colorlog.error(f"Expected {expected_type.__name__}, got {type(value).__name__}")
+            return False
+        return True
+
+    def bin_to_hex(self, Binary_Number=None):
+        """
+        Converts a binary number to hexadecimal.
+
+        Args:
+            Binary_Number (str) (int): The binary number as a string.
+
+        Returns:
+            str: The hexadecimal representation of the binary number, or False if an error occurred.
+        """
+        if Binary_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No binary number provided")
+            return False
+        Binary_Number = str(Binary_Number)
+        if not self.__check_input_type(Binary_Number, str):
+            return False
+        try:
+            Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]  # Remove the '0x' prefix
+            return Hexadecimal_Number.upper()
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def bin_to_dec(self, Binary_Number=None):
+        """
+        Converts a binary number to decimal.
+
+        Args:
+            Binary_Number (str) (int): The binary number as a string.
+
+        Returns:
+            int: The decimal representation of the binary number, or False if an error occurred.
+        """
+        if Binary_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No binary number provided")
+            return False
+        Binary_Number = str(Binary_Number)
+        if not self.__check_input_type(Binary_Number, str):
+            return False
+        try:
+            return int(Binary_Number, 2)
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def dec_to_hex(self, Decimal_Number=None):
+        """
+        Converts a decimal number to hexadecimal.
+
+        Args:
+            Decimal_Number (int) (str): The decimal number.
+
+        Returns:
+            str: The hexadecimal representation of the decimal number, or False if an error occurred.
+        """
+        Decimal_Number = int(Decimal_Number)
+        if Decimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No decimal number provided")
+            return False
+        if not self.__check_input_type(Decimal_Number, (int, str)):
+            return False
+        try:
+            Hexadecimal_Number = hex(Decimal_Number)[2:]  # Remove the '0x' prefix
+            return Hexadecimal_Number.upper()
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def dec_to_bin(self, Decimal_Number=None):
+        """
+        Converts a decimal number to binary.
+
+        Args:
+            Decimal_Number (int) (str): The decimal number.
+
+        Returns:
+            str: The binary representation of the decimal number, or False if an error occurred.
+        """
+        Decimal_Number = int(Decimal_Number)
+        if Decimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No decimal number provided")
+            return False
+        if not self.__check_input_type(Decimal_Number, (int, str)):
+            return False
+        try:
+            Binary_Number = bin(Decimal_Number)[2:]  # Remove the '0b' prefix
+            return Binary_Number
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
+
+    def hex_to_bin(self, Hexadecimal_Number=None):
+        """
+        Converts a hexadecimal number to binary.
+
+        Args:
+            Hexadecimal_Number (str): The hexadecimal number as a string.
+
+        Returns:
+            str: The binary representation of the hexadecimal number, or False if an error occurred.
+        """
+        if Hexadecimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No hexadecimal number provided")
+            return False
+        if not self.__check_input_type(Hexadecimal_Number, str):
+            return False
+        try:
+            Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]  # Remove the '0b' prefix
+            return Binary_Number
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion number system conversion failed: {e}")
+            return False
+
+    def hex_to_dec(self, Hexadecimal_Number=None):
+        """
+        Converts a hexadecimal number to decimal.
+
+        Args:
+            Hexadecimal_Number (str): The hexadecimal number as a string.
+
+        Returns:
+            int: The decimal representation of the hexadecimal number, or False if an error occurred.
+        """
+        if Hexadecimal_Number is None:
+            if self.error_level:
+                colorlog.error("Conversion failed: No hexadecimal number provided")
+            return False
+        if not self.__check_input_type(Hexadecimal_Number, str):
+            return False
+        try:
+            return int(Hexadecimal_Number, 16)
+        except ValueError as e:
+            if self.error_level:
+                colorlog.error(f"Conversion failed: {e}")
+            return False
