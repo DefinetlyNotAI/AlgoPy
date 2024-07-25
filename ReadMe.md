@@ -47,7 +47,7 @@ The `Validate` class provides methods to check the validity of various inputs.
 ```python
 from algopy import Validate
 
-validate = Validate(warnings=True)
+validate = Validate(show_errors=True)
 if validate.email("example@secret.com"):
     print("Valid")
 else:

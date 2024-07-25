@@ -3,11 +3,3 @@ Bit -> Byte convertor etc               (Param: number, type=bit, output=bit)
     number is the inputed number
     type is what the number is, bit, byte, kb, mb, gb, tb, pb, it also should include the special MiB and Mb other than MB
     output is the type you want it to output, like bit or byte, not allowed to be the same as type
-
-
-
-
-
-
-
-Removed user inputting

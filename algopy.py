@@ -96,7 +96,6 @@ class Log:
 
         Initializes the `filename` and `size` attributes of the Log instance.
         If the log file does not exist, it creates an empty file with the specified name.
-
         """
         # Use the provided filename or default to 'Server.log'
         self.filename = str(filename)
@@ -196,7 +195,7 @@ class Log:
 
 
 class Find:
-    def __init__(self):
+    def __init__(self, show_errors=True):
         """
         Words that have y as either an active vowel or as a passive vowel
         """
@@ -235,15 +234,16 @@ class Find:
             "Daddy",
             "Quickly",
         ]
+        self.error_level = show_errors
 
-    @staticmethod
-    def __sort(List):
+    def __sort(self, List):
         """
         Sorts a list of numbers, converting them to floats if needed. Returns the sorted list.
         """
         if List is None:
-            colorlog.error("No input given.")
-            exit(1)
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         try:
             converted_list = sorted(
                 float(item) for item in List if isinstance(item, (int, float))
@@ -255,7 +255,7 @@ class Find:
         except ValueError:
             return None
 
-    def __vowel_y(self, string, only_lowercase=False):
+    def __vowel_y(self, string=None, only_lowercase=False):
         """
         Determines the vowels in a given string, taking into account special cases for the letter 'y'.
 
@@ -266,6 +266,10 @@ class Find:
         Returns:
             str: The vowels present in the string, taking into account special cases for 'y'.
         """
+        if string is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         if self.__value_index(self.special_y_words, string):
             if only_lowercase:
                 vowels = "aeiouy"
@@ -328,12 +332,15 @@ class Find:
         Returns:
             int or None: The largest element from the list if it contains only integers, None otherwise.
         """
+        if List is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         largeList = self.__sort(List)
-
         if largeList is None:
-            colorlog.error("No input given.")
-            exit(1)
-
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         return largeList[-1] if largeList else None
 
     def smallest(self, List=None):
@@ -349,12 +356,15 @@ class Find:
         Raises:
             ValueError: If the list contains non-integer elements.
         """
+        if List is None:
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         smallList = self.__sort(List)
-
         if smallList is None:
-            colorlog.error("No input given.")
-            exit(1)
-
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         return smallList[0] if smallList else None
 
     def total_vowels(self, Word=None):
@@ -368,8 +378,9 @@ class Find:
             int: The total count of vowels in the input word.
         """
         if Word is None:
-            colorlog.error("No input given.")
-            exit(1)
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
@@ -385,16 +396,16 @@ class Find:
             int: The total count of vowels in the input word.
         """
         if Word is None:
-            colorlog.error("No input given.")
-            exit(1)
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         result = ""
         vowels = self.__vowel_y(Word, True)
         for vowel in vowels:
             result += self.__count_character(Word, vowel) + "\n"
         return result.rstrip("\n")
 
-    @staticmethod
-    def value_index(array=None, value_to_find=None):
+    def value_index(self, array=None, value_to_find=None):
         """
         A function to find the index of a specific value in an array.
 
@@ -406,7 +417,8 @@ class Find:
             int or bool: The index of the value in the array if found, False otherwise.
         """
         if array is None or value_to_find is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         # Iterate over the list with enumerate to get both index and value
         for index, value in enumerate(array):
@@ -416,6 +428,9 @@ class Find:
 
 
 class Sort:
+    def __init__(self, show_errors=True):
+        self.error_level = show_errors
+
     @staticmethod
     def __integer(Array=None):
         """
@@ -430,8 +445,7 @@ class Sort:
 
         return all(isinstance(item, int) for item in Array)
 
-    @staticmethod
-    def using_quick_sort(Array=None):
+    def using_quick_sort(self, Array=None):
         """
         Sorts the given array using the quicksort algorithm.
 
@@ -445,7 +459,8 @@ class Sort:
             ValueError: If the input array contains non-integer elements.
         """
         if Array is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         if not Sort.__integer(Array):
             return False
@@ -455,10 +470,9 @@ class Sort:
         left = [x for x in Array if x < pivot]
         middle = [x for x in Array if x == pivot]
         right = [x for x in Array if x > pivot]
-        return Sort.using_quick_sort(left) + middle + Sort.using_quick_sort(right)
+        return self.using_quick_sort(left) + middle + self.using_quick_sort(right)
 
-    @staticmethod
-    def using_merge_sort(Array=None):
+    def using_merge_sort(self, Array=None):
         """
         Sorts the given array using the merge sort algorithm.
 
@@ -474,7 +488,8 @@ class Sort:
         This function recursively divides the input array into two halves, sorts each half using merge sort, and then merges the two sorted halves into a single sorted array.
         """
         if Array is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         if not Sort.__integer(Array):
             return False
@@ -510,8 +525,7 @@ class Sort:
         result.extend(right[j:])
         return result
 
-    @staticmethod
-    def using_selection_sort(Array=None):
+    def using_selection_sort(self, Array=None):
         """
         Sorts the given array using the selection sort algorithm.
 
@@ -525,7 +539,8 @@ class Sort:
             ValueError: If the input array contains non-integer elements.
         """
         if Array is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         if not Sort.__integer(Array):
             return False
@@ -537,8 +552,7 @@ class Sort:
             Array[i], Array[min_index] = Array[min_index], Array[i]
         return Array
 
-    @staticmethod
-    def using_bubble_sort(Array=None):
+    def using_bubble_sort(self, Array=None):
         """
         Sorts the given array using the bubble sort algorithm.
 
@@ -552,7 +566,8 @@ class Sort:
             ValueError: If the input array contains non-integer elements.
         """
         if Array is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         if not Sort.__integer(Array):
             return False
@@ -563,8 +578,7 @@ class Sort:
                     Array[j], Array[j + 1] = Array[j + 1], Array[j]
         return Array
 
-    @staticmethod
-    def using_insertion_sort(Array=None):
+    def using_insertion_sort(self, Array=None):
         """
         Sorts the given array using the insertion sort algorithm.
 
@@ -580,7 +594,8 @@ class Sort:
         This function takes an array as input and sorts it using the insertion sort algorithm. The algorithm iterates through the array, starting from the second element, and compares each element with the elements before it. If an element is smaller than its predecessor, it is shifted to the left until it finds its correct position.
         """
         if Array is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         if not Sort.__integer(Array):
             return False
@@ -595,12 +610,12 @@ class Sort:
 
 
 class Validate:
-    def __init__(self, warnings=True):
+    def __init__(self, show_errors=True):
         """
         Initialize the Validate object with a list of common domains and domain variants.
 
         Parameters:
-            warnings (bool): Flag to enable or disable warnings. Default is True.
+            show_errors (bool): Flag to enable or disable warnings. Default is True.
         """
         self.common_domains = [
             "google.com",
@@ -860,7 +875,7 @@ class Validate:
             "zw",
             "uk",
         ]
-        self.warnings = warnings
+        self.error_level = show_errors
 
     def email(self, email=None):
         """
@@ -886,7 +901,8 @@ class Validate:
             The function assumes that the common_domains and domain_variants lists are defined in the Validate class.
         """
         if email is None:
-            colorlog.error("No input given.")
+            if self.error_level:
+                colorlog.error("No input given.")
             return False
         # Ensure there's exactly one '@'
         if email.count("@") != 1:
@@ -1169,10 +1185,9 @@ class Validate:
 
         # Unique domain check with warning for unrecognized domains
         if tld not in self.domain_variants or domain not in self.common_domains.remove(".com"):
-            if self.warnings:
+            if self.error_level:
                 colorlog.warning(f"Unrecognized domain '{domain}.{tld}'.")
             return True
-
         return False
 
 
@@ -1250,7 +1265,7 @@ class Convert:
         Nine = [" ****", "*   *", "*   *", " ****", "    *", "    *", "    *"]
 
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
-        self.error_level = show_errors  # TODO, add this to all methods
+        self.error_level = show_errors
 
     def to_roman(self, num=None):
         """
@@ -1364,8 +1379,9 @@ class Convert:
             str: The ASCII art representation of the input number.
         """
         if Number is None:
-            colorlog.error("No input given.")
-            exit(1)
+            if self.error_level:
+                colorlog.error("No input given.")
+            return False
         elif not Number.isdigit():
             try:
                 Number = str(Number)
