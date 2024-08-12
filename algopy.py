@@ -98,24 +98,25 @@ logger.addHandler(handler)
 
 
 class Log:
-    def __init__(self, filename="Server.log", max_size=None):
+    def __init__(self, filename="Server.log"):
         """
         Initializes a new instance of the Log class.
 
         Args:
             filename (str, optional): The name of the log file. Defaults to "Server.log".
-            max_size (int, optional): The maximum size of the log file in bytes. Defaults to infinity.
 
         Initializes the `filename` and `size` attributes of the Log instance.
         If the log file does not exist, it creates an empty file with the specified name.
         """
         # Use the provided filename or default to 'Server.log'
         self.filename = str(filename)
-        self.size = int(max_size)
 
         # Check if the file exists and create it if it doesn't
         if not os.path.exists(self.filename):
-            with open(self.filename, "w"):
+            with open(self.filename, "w") as log_file:
+                log_file.write(
+                    "|-----Timestamp-----|--Log Level--|-----------------------------------------------------------------------Log Messages-----------------------------------------------------------------------|\n"
+                )
                 pass  # Empty file content is fine here since we append logs
 
     @staticmethod
@@ -128,26 +129,9 @@ class Log:
         """
         # Get the current date and time
         now = datetime.now()
-
         # Format the timestamp as a string
         time = f"{now.strftime('%Y-%m-%d %H:%M:%S')}"
-
         return time
-
-    def __remove(self):
-        """
-        Remove the log file if it exists and the number of lines in the file exceeds the specified size.
-
-        This function checks if the log file specified by the `filename` attribute exists. If it does, it opens the file in read mode and counts the number of lines in the file. If the number of lines is greater than the specified `size`, the file is removed.
-
-        Returns:
-            None
-        """
-        if os.path.exists(self.filename) and self.size is not None:
-            with open(self.filename, "r") as file:
-                line_count = sum(1 for _ in file)
-            if line_count > self.size:
-                os.remove(self.filename)
 
     def info(self, message):
         """
@@ -159,9 +143,8 @@ class Log:
         Returns:
             None
         """
-        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"INFO: {message} at {self.__timestamp()}\n")
+            f.write(f"[{self.__timestamp()}] > INFO:       {message}\n")
 
     def warning(self, message):
         """
@@ -173,9 +156,8 @@ class Log:
         Returns:
             None
         """
-        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"WARNING: {message} at {self.__timestamp()}\n")
+            f.write(f"[{self.__timestamp()}] > WARNING:    {message}\n")
 
     def error(self, message):
         """
@@ -187,9 +169,8 @@ class Log:
         Returns:
             None
         """
-        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"ERROR: {message} at {self.__timestamp()}\n")
+            f.write(f"[{self.__timestamp()}] > ERROR:      {message}\n")
 
     def critical(self, message):
         """
@@ -201,9 +182,8 @@ class Log:
         Returns:
             None
         """
-        self.__remove()
         with open(self.filename, "a") as f:
-            f.write(f"CRITICAL: {message} at {self.__timestamp()}\n")
+            f.write(f"[{self.__timestamp()}] > CRITICAL:   {message}\n")
 
 
 class Find:
