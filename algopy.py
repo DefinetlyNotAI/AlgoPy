@@ -71,8 +71,6 @@
   - [Sort.using_quicksort]
 """
 
-# TODO Replace return false with raise
-
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 from datetime import datetime
 import os
@@ -254,7 +252,6 @@ class LOG:
 
 class Find:
     def __init__(self):
-        # Words that have y as either an active vowel or as a passive vowel
         self.special_y_words = [
             "Cry",
             "Dry",
@@ -293,21 +290,19 @@ class Find:
     @staticmethod
     def __sort(List):
         if List is None:
-            raise "No input given."
-        try:
-            converted_list = sorted(
+            raise Exception("No input given.")
+
+        converted_list = sorted(
                 float(item) for item in List if isinstance(item, (int, float))
             )
-            final_list = [
+        final_list = [
                 int(item) if item.is_integer() else item for item in converted_list
             ]
-            return final_list
-        except ValueError:
-            return None
+        return final_list
 
     def __vowel_y(self, string=None, only_lowercase=False):
         if string is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if self.__value_index(self.special_y_words, string):
             if only_lowercase:
                 vowels = "aeiouy"
@@ -322,10 +317,7 @@ class Find:
 
     @staticmethod
     def __count_character(Word, Vowel):
-        # Counter
         count = 0
-
-        # For loop to find length of word
         for i in range(len(Word)):
             if Word[i] == Vowel:
                 count += 1
@@ -334,38 +326,37 @@ class Find:
 
     @staticmethod
     def __value_index(array, Word):
-        # Iterate over the list with enumerate to get both index and value
         for index, value in enumerate(array):
             if value == Word:
-                return True  # Return True if the value matches
+                return True
         return False
 
     def largest(self, List=None):
         if List is None:
-            raise "No input given."
+            raise Exception("No input given.")
         largeList = self.__sort(List)
         if largeList is None:
-            raise "No input given."
+            raise Exception("No input given.")
         return largeList[-1] if largeList else None
 
     def smallest(self, List=None):
         if List is None:
-            raise "No input given."
+            raise Exception("No input given.")
         smallList = self.__sort(List)
         if smallList is None:
-            raise "No input given."
+            raise Exception("No input given.")
         return smallList[0] if smallList else None
 
     def total_vowels(self, Word=None):
         if Word is None:
-            raise "No input given."
+            raise Exception("No input given.")
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
 
     def every_vowel(self, Word=None):
         if Word is None:
-            raise "No input given."
+            raise Exception("No input given.")
         result = ""
         vowels = self.__vowel_y(Word, True)
         for vowel in vowels:
@@ -375,12 +366,11 @@ class Find:
     @staticmethod
     def value_index(array=None, value_to_find=None):
         if array is None or value_to_find is None:
-            raise "No input given."
-        # Iterate over the list with enumerate to get both index and value
+            raise Exception("No input given.")
         for index, value in enumerate(array):
             if value == value_to_find:
-                return index  # Return the index if the value matches
-        return False  # Return False if the value was not found in the list
+                return index
+        return False
 
 
 class Sort:
@@ -390,7 +380,7 @@ class Sort:
 
     def using_quick_sort(self, Array):
         if Array is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if not self.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -403,7 +393,7 @@ class Sort:
 
     def using_merge_sort(self, Array):
         if Array is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if not self.__integer(Array):
             return False
         if len(Array) <= 1:
@@ -430,7 +420,7 @@ class Sort:
 
     def using_selection_sort(self, Array):
         if Array is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if not self.__integer(Array):
             return False
         for i in range(len(Array)):
@@ -443,7 +433,7 @@ class Sort:
 
     def using_bubble_sort(self, Array):
         if Array is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if not self.__integer(Array):
             return False
         n = len(Array)
@@ -455,7 +445,7 @@ class Sort:
 
     def using_insertion_sort(self, Array):
         if Array is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if not self.__integer(Array):
             return False
         for i in range(1, len(Array)):
@@ -732,35 +722,22 @@ class Validate:
 
     def email(self, email):
         if email is None:
-            raise "No input given."
-        # Ensure there's exactly one '@'
+            raise Exception("No input given.")
         if email.count("@") != 1:
             return False
-        # Convert to lowercase and check for @ and .
         for item in self.common_domains:
             if not email.lower().endswith(item):
                 return False
-
         name, domain_tld = email.split("@")
-
-        # Check for length constraints
         if len(name) > 64 or len(domain_tld) > 255:
             return False
-
-        # Splitting domain and TLD
         domain, tld = domain_tld.split(".")
-
-        # Checking for common domains and variants
         if domain in self.common_domains or f"{domain}.{tld}" in self.common_domains:
             return True
-
-        # Special handling for .co
         if tld == "co":
             if len(domain) > 64:
                 return False
             return True
-
-        # Unique domain check with warning for unrecognized domains
         if tld not in self.domain_variants or domain not in self.common_domains.remove(".com"):
             if self.show_warnings:
                 print(f"Unrecognized domain '{domain}.{tld}'.")
@@ -859,166 +836,125 @@ class Convert:
 
     def dec_to_roman(self, Number):
         if Number is None:
-            raise "No input given."
-        try:
-            Number = int(Number)
-            if Number <= 1:
-                raise "Input must be greater or equal to 1."
-            if Number > 10000 and self.show_warnings:
-                print(
-                    "Input is too large. This may result in inaccurate results."
-                )
+            raise Exception("No input given.")
+        Number = int(Number)
+        if Number <= 1:
+            raise Exception("Input must be greater or equal to 1.")
+        if Number > 10000 and self.show_warnings:
+            print(
+                "Input is too large. This may result in inaccurate results."
+            )
 
-            result = ""
-            for numerical, roman in sorted(self.mapping.items(), reverse=True):
-                while Number >= numerical:
-                    result += roman
-                    Number -= numerical
-            return result
-        except KeyError as ke:
-            raise ("Invalid numeral: " + str(ke))
-        except Exception as e:
-            raise (str(e))
+        result = ""
+        for numerical, roman in sorted(self.mapping.items(), reverse=True):
+            while Number >= numerical:
+                result += roman
+                Number -= numerical
+        return result
 
     def roman_to_dec(self, Roman):
         if not isinstance(Roman, str):
-            raise "Input must be a string."
+            raise Exception("Input must be a string.")
         elif not Roman.isupper():
-            raise "Input must be uppercase."
+            raise Exception("Input must be uppercase.")
         elif Roman is None:
-            raise "Input cannot be None."
-        try:
-            i = 0
-            num = 0
-            Roman = Roman.upper()
-            while i < len(Roman):
-                if i + 1 < len(Roman) and Roman[i: i + 2] in self.roman_to_numerical:
-                    num += self.roman_to_numerical[Roman[i: i + 2]]
-                    i += 2
-                else:
-                    num += self.roman_to_numerical[Roman[i]]
-                    i += 1
-            return num
-        except KeyError as ke:
-            raise f"Invalid Roman numeral: {ke}"
-        except Exception as e:
-            raise (str(e))
+            raise Exception("Input cannot be None.")
+        i = 0
+        num = 0
+        Roman = Roman.upper()
+        while i < len(Roman):
+            if i + 1 < len(Roman) and Roman[i: i + 2] in self.roman_to_numerical:
+                num += self.roman_to_numerical[Roman[i: i + 2]]
+                i += 2
+            else:
+                num += self.roman_to_numerical[Roman[i]]
+                i += 1
+        return num
 
     def dec_to_ascii(self, Number):
         if Number is None:
-            raise "No input given."
+            raise Exception("No input given.")
         elif not Number.isdigit():
-            try:
-                Number = str(Number)
-            except Exception:
-                raise "Invalid input. Please enter a number."
-
-        # Initialize an empty list to store each line of the ASCII art
+            raise Exception("Invalid input. Please enter a number.")
         ascii_art_lines = []
-
-        for i in range(7):  # Loop through each row
+        for i in range(7):
             line = ""
             for j in range(
                     len(Number)
-            ):  # Loop through each character (digit) in the number
+            ):
                 current_num = int(Number[j])
                 digit = self.digits[current_num]
-                line += digit[i] + "  "  # Append the current digit's row to the line
-            ascii_art_lines.append(line)  # Add the completed line to the list
-
-        # Join all lines with newline characters to form the final ASCII art string
+                line += digit[i] + "  "
+            ascii_art_lines.append(line)
         ascii_art = "\n".join(ascii_art_lines)
-
         return ascii_art
 
     @staticmethod
     def __check_input_type(value, expected_type):
         if not isinstance(value, expected_type):
-            raise f"Expected {expected_type.__name__}, got {type(value).__name__}"
+            raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
         return True
 
     def bin_to_hex(self, Binary_Number):
         if Binary_Number is None:
-            raise "Conversion failed: No binary number provided"
+            raise Exception("Conversion failed: No binary number provided")
         Binary_Number = str(Binary_Number)
         if not self.__check_input_type(Binary_Number, str):
             return False
-        try:
-            Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]  # Remove the '0x' prefix
-            return Hexadecimal_Number.upper()
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+        Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]
+        return Hexadecimal_Number.upper()
 
     def bin_to_dec(self, Binary_Number):
         if Binary_Number is None:
-            raise "Conversion failed: No binary number provided"
+            raise Exception("Conversion failed: No binary number provided")
         Binary_Number = str(Binary_Number)
         if not self.__check_input_type(Binary_Number, str):
             return False
-        try:
-            return int(Binary_Number, 2)
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+        return int(Binary_Number, 2)
 
     def dec_to_hex(self, Decimal_Number):
         Decimal_Number = int(Decimal_Number)
         if Decimal_Number is None:
-            raise "Conversion failed: No decimal number provided"
+            raise Exception("Conversion failed: No decimal number provided")
         if not self.__check_input_type(Decimal_Number, (int, str)):
             return False
-        try:
-            Hexadecimal_Number = hex(Decimal_Number)[2:]  # Remove the '0x' prefix
-            return Hexadecimal_Number.upper()
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+        Hexadecimal_Number = hex(Decimal_Number)[2:]
+        return Hexadecimal_Number.upper()
 
     def dec_to_bin(self, Decimal_Number):
         Decimal_Number = int(Decimal_Number)
         if Decimal_Number is None:
-            raise "Conversion failed: No decimal number provided"
+            raise Exception("Conversion failed: No decimal number provided")
         if not self.__check_input_type(Decimal_Number, (int, str)):
             return False
-        try:
-            Binary_Number = bin(Decimal_Number)[2:]  # Remove the '0b' prefix
-            return Binary_Number
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+        Binary_Number = bin(Decimal_Number)[2:]
+        return Binary_Number
 
     def hex_to_bin(self, Hexadecimal_Number):
         if Hexadecimal_Number is None:
-            raise "Conversion failed: No hexadecimal number provided"
+            raise Exception("Conversion failed: No hexadecimal number provided")
         if not self.__check_input_type(Hexadecimal_Number, str):
             return False
-        try:
-            Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]  # Remove the '0b' prefix
-            return Binary_Number
-        except ValueError as e:
-            raise f"Conversion number system conversion failed: {e}"
+        Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]
+        return Binary_Number
 
     def hex_to_dec(self, Hexadecimal_Number):
         if Hexadecimal_Number is None:
-            raise "Conversion failed: No hexadecimal number provided"
+            raise Exception("Conversion failed: No hexadecimal number provided")
         if not self.__check_input_type(Hexadecimal_Number, str):
             return False
-        try:
-            return int(Hexadecimal_Number, 16)
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+        return int(Hexadecimal_Number, 16)
 
     def memory(self, number, input_unit, output_unit):
-        # Ensure the inputs are valid
         if number is None or input_unit is None or output_unit is None:
-            raise "Invalid input. Number, input_unit, and output_unit must all be provided."
+            raise Exception("Invalid input. Number, input_unit, and output_unit must all be provided.")
         if not isinstance(number, int) or input_unit not in self.memory_dict or output_unit not in self.memory_dict:
-            raise "Invalid input. Number must be an integer, and both units must exist in memory_dict."
-
-        # Step 1 & 2: Convert the number to bits
+            raise Exception("Invalid input. Number must be an integer, and both units must exist in memory_dict.")
         input_factor = self.memory_dict[input_unit]
         number_in_bits = number * input_factor
-
-        # Step 3 & 4: Convert back to the desired unit
         output_factor = self.memory_dict[output_unit]
         final_number = number_in_bits / output_factor
-
-        # Step 5: Return the final converted value as a string
         return f"{final_number:.2f} {output_unit}"
+
+
+Sort().using_quick_sort(None)
