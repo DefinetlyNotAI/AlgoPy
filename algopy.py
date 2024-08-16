@@ -73,8 +73,13 @@
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 from datetime import datetime
+import heapq
+import random
 import os
 import colorlog
+
+
+# TODO redoc everything
 
 
 class LOG:
@@ -293,11 +298,11 @@ class Find:
             raise Exception("No input given.")
 
         converted_list = sorted(
-                float(item) for item in List if isinstance(item, (int, float))
-            )
+            float(item) for item in List if isinstance(item, (int, float))
+        )
         final_list = [
-                int(item) if item.is_integer() else item for item in converted_list
-            ]
+            int(item) if item.is_integer() else item for item in converted_list
+        ]
         return final_list
 
     def __vowel_y(self, string=None, only_lowercase=False):
@@ -375,14 +380,14 @@ class Find:
 
 class Sort:
     @staticmethod
-    def __integer(Array):
+    def __isinteger(Array):
         return all(isinstance(item, int) for item in Array)
 
     def using_quick_sort(self, Array):
         if Array is None:
             raise Exception("No input given.")
-        if not self.__integer(Array):
-            return False
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         if len(Array) <= 1:
             return Array
         pivot = Array[len(Array) // 2]
@@ -394,8 +399,8 @@ class Sort:
     def using_merge_sort(self, Array):
         if Array is None:
             raise Exception("No input given.")
-        if not self.__integer(Array):
-            return False
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         if len(Array) <= 1:
             return Array
         mid = len(Array) // 2
@@ -421,8 +426,8 @@ class Sort:
     def using_selection_sort(self, Array):
         if Array is None:
             raise Exception("No input given.")
-        if not self.__integer(Array):
-            return False
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         for i in range(len(Array)):
             min_index = i
             for j in range(i + 1, len(Array)):
@@ -434,8 +439,8 @@ class Sort:
     def using_bubble_sort(self, Array):
         if Array is None:
             raise Exception("No input given.")
-        if not self.__integer(Array):
-            return False
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         n = len(Array)
         for i in range(n):
             for j in range(0, n - i - 1):
@@ -446,8 +451,8 @@ class Sort:
     def using_insertion_sort(self, Array):
         if Array is None:
             raise Exception("No input given.")
-        if not self.__integer(Array):
-            return False
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         for i in range(1, len(Array)):
             key = Array[i]
             j = i - 1
@@ -456,6 +461,64 @@ class Sort:
                 j -= 1
             Array[j + 1] = key
         return Array
+
+    def using_heap_sort(self, Array):
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        heapq.heapify(Array)
+        return [heapq.heappop(Array) for _ in range(len(Array))]
+
+    def using_radix_sort(self, Array):
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        max_value = max(Array)
+        max_exponent = len(str(max_value))
+        for exponent in range(max_exponent):
+            digits = [[] for _ in range(10)]
+            for num in Array:
+                digit = (num // 10 ** exponent) % 10
+                digits[digit].append(num)
+            Array = []
+            for digit_list in digits:
+                Array.extend(digit_list)
+        return Array
+
+    def using_counting_sort(self, Array):
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        max_value = max(Array)
+        min_value = min(Array)
+        range_of_elements = max_value - min_value + 1
+        count = [0] * range_of_elements
+        output = [0] * len(Array)
+        for num in Array:
+            count[num - min_value] += 1
+        for i in range(1, len(count)):
+            count[i] += count[i - 1]
+        for num in reversed(Array):
+            output[count[num - min_value] - 1] = num
+            count[num - min_value] -= 1
+        return output
+
+    def using_bogo_sort(self, Array):
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+
+        while not self.__is_sorted(Array):
+            random.shuffle(Array)
+        return Array
+
+    @staticmethod
+    def __is_sorted(Array):
+        return all(Array[i] <= Array[i + 1] for i in range(len(Array) - 1))
 
 
 class Validate:
@@ -955,6 +1018,3 @@ class Convert:
         output_factor = self.memory_dict[output_unit]
         final_number = number_in_bits / output_factor
         return f"{final_number:.2f} {output_unit}"
-
-
-Sort().using_quick_sort(None)
