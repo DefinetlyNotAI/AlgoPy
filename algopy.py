@@ -71,71 +71,109 @@
   - [Sort.using_quicksort]
 """
 
+# TODO replace errors with raise, remove colorlog except with Log class
+
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 from datetime import datetime
 import os
 import colorlog
 
-# Configure colorlog for logging messages with colors
-logger = colorlog.getLogger()
-logger.setLevel(colorlog.INFO)  # Set the log level to INFO to capture all relevant logs
 
-handler = colorlog.StreamHandler()
-formatter = colorlog.ColoredFormatter(
-    "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
-    datefmt=None,
-    reset=True,
-    log_colors={
-        "DEBUG": "cyan",
-        "INFO": "green",
-        "WARNING": "yellow",
-        "ERROR": "red",
-        "CRITICAL": "red,bg_white",
-    },
-)
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
-
-class Log:
-    def __init__(self, filename="Server.log"):
+class LOG:
+    def __init__(self, filename="Server.log", DEBUG=False, debug_color="cyan", info_color="green", warning_color="yellow", error_color="red", critical_color="red", colorlog_fmt_parameters="%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s"):
         """
-        Initializes a new instance of the Log class.
+        Initializes a new instance of the LOG class.
+
+        IMPORTANT: This class requires colorlog to be installed and also uses it in the INFO level,
+        To use the debug level, set DEBUG to True.
+
+        If you are using colorlog, DO NOT INITIALIZE IT MANUALLY, USE THE LOG CLASS PARAMETER'S INSTEAD.
+        Sorry for any inconvenience that may arise.
 
         Args:
             filename (str, optional): The name of the log file. Defaults to "Server.log".
+            DEBUG (bool, optional): Whether to use the debug level. Defaults to False (which uses the INFO level).
+            debug_color (str, optional): The color of the debug level. Defaults to "cyan".
+            info_color (str, optional): The color of the info level. Defaults to "green".
+            warning_color (str, optional): The color of the warning level. Defaults to "yellow".
+            error_color (str, optional): The color of the error level. Defaults to "red".
+            critical_color (str, optional): The color of the critical level. Defaults to "red".
+            colorlog_fmt_parameters (str, optional): The format of the log message. Defaults to "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s".
 
-        Initializes the `filename` and `size` attributes of the Log instance.
-        If the log file does not exist, it creates an empty file with the specified name.
+        Returns:
+            None
         """
-        # Use the provided filename or default to 'Server.log'
+        # Configure colorlog for logging messages with colors
+        logger = colorlog.getLogger()
+        if DEBUG:
+            logger.setLevel(colorlog.DEBUG)  # Set the log level to DEBUG to capture all relevant logs
+        else:
+            logger.setLevel(colorlog.INFO)  # Set the log level to INFO to capture all relevant logs
+        handler = colorlog.StreamHandler()
+        formatter = colorlog.ColoredFormatter(
+            colorlog_fmt_parameters,
+            datefmt=None,
+            reset=True,
+            log_colors={
+                "DEBUG": debug_color,
+                "INFO": info_color,
+                "WARNING": warning_color,
+                "ERROR": error_color,
+                "CRITICAL": critical_color,
+            },
+        )
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
         self.filename = str(filename)
-
-        # Check if the file exists and create it if it doesn't
         if not os.path.exists(self.filename):
-            with open(self.filename, "w") as log_file:
-                log_file.write(
-                    "|-----Timestamp-----|--Log Level--|-----------------------------------------------------------------------Log Messages-----------------------------------------------------------------------|\n"
-                )
-                pass  # Empty file content is fine here since we append logs
+            self.__only("|" + "-" * 19 + "|" + "-" * 13 + "|" + "-" * 154 + "|")
+            self.__only("|     Timestamp     |  LOG Level  |" + " " * 71 + "LOG Messages" + " " * 71 + "|")
+        self.__only("|" + "-" * 19 + "|" + "-" * 13 + "|" + "-" * 154 + "|")
 
     @staticmethod
     def __timestamp():
         """
-        Retrieves the current date and time and formats it into a string timestamp.
+        Returns the current timestamp as a string in the format 'YYYY-MM-DD HH:MM:SS'.
 
         Returns:
-            str: A string representing the formatted timestamp.
+            str: The current timestamp.
         """
-        # Get the current date and time
         now = datetime.now()
-        # Format the timestamp as a string
         time = f"{now.strftime('%Y-%m-%d %H:%M:%S')}"
         return time
 
+    def __only(self, message):
+        with open(self.filename, "a") as f:
+            f.write(f"{message}\n")
+
+    @staticmethod
+    def __pad_message(message):
+        """
+        Adds spaces to the end of a message until its length is exactly 153 characters.
+
+        Parameters:
+        - message (str): The input message string.
+
+        Returns:
+        - str: The padded message with a length of exactly 153 characters.
+        """
+        # Calculate the number of spaces needed
+        num_spaces = 153 - len(message)
+
+        if num_spaces > 0:
+            # If the message is shorter than 153 characters, add spaces to the end
+            padded_message = message + ' ' * num_spaces
+        else:
+            # If the message is already longer than 153 characters, truncate it to the first 153 characters
+            padded_message = message[:150]
+            padded_message += "..."
+
+        padded_message += "|"
+        return padded_message
+
     def info(self, message):
         """
-        Writes an information log message to the log file.
+        Logs an informational message to the log file.
 
         Args:
             message (str): The message to be logged.
@@ -143,12 +181,13 @@ class Log:
         Returns:
             None
         """
+        colorlog.info(message)
         with open(self.filename, "a") as f:
-            f.write(f"[{self.__timestamp()}] > INFO:       {message}\n")
+            f.write(f"[{self.__timestamp()}] > INFO:     | {self.__pad_message(message)}\n")
 
     def warning(self, message):
         """
-        Writes a warning log message to the log file.
+        Logs a warning message to the log file.
 
         Args:
             message (str): The warning message to be logged.
@@ -156,12 +195,13 @@ class Log:
         Returns:
             None
         """
+        colorlog.warning(message)
         with open(self.filename, "a") as f:
-            f.write(f"[{self.__timestamp()}] > WARNING:    {message}\n")
+            f.write(f"[{self.__timestamp()}] > WARNING:  | {self.__pad_message(message)}\n")
 
     def error(self, message):
         """
-        Writes an error log message to the log file.
+        Logs an error message to the log file.
 
         Args:
             message (str): The error message to be logged.
@@ -169,12 +209,13 @@ class Log:
         Returns:
             None
         """
+        colorlog.error(message)
         with open(self.filename, "a") as f:
-            f.write(f"[{self.__timestamp()}] > ERROR:      {message}\n")
+            f.write(f"[{self.__timestamp()}] > ERROR:    | {self.__pad_message(message)}\n")
 
     def critical(self, message):
         """
-        Writes a critical log message to the log file.
+        Writes a critical message to the log file.
 
         Args:
             message (str): The critical message to be logged.
@@ -182,8 +223,9 @@ class Log:
         Returns:
             None
         """
+        colorlog.critical(message)
         with open(self.filename, "a") as f:
-            f.write(f"[{self.__timestamp()}] > CRITICAL:   {message}\n")
+            f.write(f"[{self.__timestamp()}] > CRITICAL: | {self.__pad_message(message)}\n")
 
 
 class Find:

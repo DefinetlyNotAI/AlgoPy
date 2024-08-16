@@ -102,7 +102,7 @@ The `Log` class facilitates logging messages with different severity levels.
 ```python
 from algopy import Log
 
-log = Log(filename="NAME.EXTENSION", max_size="SIZE")  # Change 'NAME.EXTENSION' to your desired filename
+log = Log(filename="NAME.EXTENSION")  # Change 'NAME.EXTENSION' to your desired filename
 
 log.info("This is an informational message.")
 log.warning("This is a warning message.")
