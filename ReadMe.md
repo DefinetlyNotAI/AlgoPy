@@ -74,7 +74,7 @@ print(convert.dec_to_hex("10"))
 print(convert.dec_to_bin(10))
 print(convert.hex_to_bin("A"))
 print(convert.hex_to_dec("A"))
-print(convert.memory(500, 'KiB', 'Mb'))  # Example: Convert 500 KiB to Mb (KibiByte to Megabit)
+print(convert.convert_memory(500, 'KiB', 'Mb'))  # Example: Convert 500 KiB to Mb (KibiByte to Megabit)
 ```
 
 ### Find
