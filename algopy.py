@@ -1,4 +1,10 @@
 """
+------------------------------------------------------------------------------------------------------------------------
+
+N = number of elements to process.
+M = difference between the largest number and smallest number in the list.
+K = integers length of the largest number in the list.
+
 ### Time Complexity
 - **O(1)**:
   - [Log.info]
@@ -19,6 +25,9 @@
   - [Convert.hex_to_bin]
   - [Convert.hex_to_dec]
 
+- **O(n + m)**:
+  - [Sort.using_counting_sort]
+
 - **O(log n)**:
   - [Convert.dec_to_hex]
   - [Convert.dec_to_bin]
@@ -28,15 +37,21 @@
   - [Find.smallest]
   - [Sort.using_quicksort]
   - [Sort.using_merge_sort]
+  - [Sort.using_heap_sort]
 
-- **O(n * m)**:
+- **O(n * k)**:
   - [Convert.dec_to_ascii]
+  - [Sort.using_radix_sort]
 
 - **O(n^2)**:
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
 
+- **O((n+1)! / 2) OR Unbounded(infinite)**:
+  - [Sort.using_bogo_sort]
+
+------------------------------------------------------------------------------------------------------------------------
 
 ### Space Complexity
 - O(1):
@@ -46,6 +61,7 @@
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
+  - [Sort.using_heap_sort]
   - [Convert.dec_to_ascii]
   - [Convert.dec_to_roman]
   - [Convert.roman_to_dec]
@@ -56,6 +72,8 @@
   - [Convert.dec_to_hex]
   - [Convert.dec_to_bin]
   - [Convert.memory]
+  - [Sort.using_bogo_sort]
+
 
 - O(n):
   - [Find.largest]
@@ -67,8 +85,16 @@
   - [Sort.using_merge_sort]
   - [Validate.email]
 
+- **O(n + k)**:
+  - [Sort.using_radix_sort]
+
+- **O(n + m)**:
+  - [Sort.using_counting_sort]
+
 - O(log n):
   - [Sort.using_quicksort]
+
+------------------------------------------------------------------------------------------------------------------------
 """
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
