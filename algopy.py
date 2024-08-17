@@ -1,4 +1,11 @@
 """
+------------------------------------------------------------------------------------------------------------------------
+
+N = number of elements to process.
+M = difference between the largest number and smallest number in the list.
+K = integers length of the largest number in the list.
+H = height of the tree.
+
 ### Time Complexity
 - **O(1)**:
   - [Log.info]
@@ -10,6 +17,9 @@
 - **O(n)**:
   - [Find.value_index]
   - [Validate.email]
+  - [Validate.url]
+  - [Validate.phone_number]
+  - [Validate.CreditCard()]
   - [Convert.dec_to_roman]
   - [Convert.roman_to_dec]
   - [Find.total_vowels]
@@ -18,6 +28,12 @@
   - [Convert.bin_to_hex]
   - [Convert.hex_to_bin]
   - [Convert.hex_to_dec]
+  - [Sort.LinkedList().append]
+  - [Sort.LinkedList().return_elements]
+  - [Sort.TreeNode().sort]
+
+- **O(n + m)**:
+  - [Sort.using_counting_sort]
 
 - **O(log n)**:
   - [Convert.dec_to_hex]
@@ -28,15 +44,22 @@
   - [Find.smallest]
   - [Sort.using_quicksort]
   - [Sort.using_merge_sort]
+  - [Sort.using_heap_sort]
 
-- **O(n * m)**:
+- **O(n * k)**:
   - [Convert.dec_to_ascii]
+  - [Sort.using_radix_sort]
 
 - **O(n^2)**:
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
+  - [Sort.LinkedList().using_bubble]
 
+- **O((n+1)! / 2) OR Unbounded(infinite)**:
+  - [Sort.using_bogo_sort]
+
+------------------------------------------------------------------------------------------------------------------------
 
 ### Space Complexity
 - O(1):
@@ -46,6 +69,7 @@
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
+  - [Sort.using_heap_sort]
   - [Convert.dec_to_ascii]
   - [Convert.dec_to_roman]
   - [Convert.roman_to_dec]
@@ -56,6 +80,13 @@
   - [Convert.dec_to_hex]
   - [Convert.dec_to_bin]
   - [Convert.memory]
+  - [Sort.using_bogo_sort]
+  - [Validate.email]
+  - [Validate.url]
+  - [Validate.phone_number]
+  - [Validate.CreditCard()]
+  - [Sort.LinkedList().using_bubble]
+  - [Sort.LinkedList().append]
 
 - O(n):
   - [Find.largest]
@@ -65,21 +96,34 @@
   - [Log.error]
   - [Log.critical]
   - [Sort.using_merge_sort]
-  - [Validate.email]
+  - [Sort.LinkedList().return_elements]
+
+- O(h):
+  - [Sort.TreeNode().sort]
+
+- **O(n + k)**:
+  - [Sort.using_radix_sort]
+
+- **O(n + m)**:
+  - [Sort.using_counting_sort]
 
 - O(log n):
   - [Sort.using_quicksort]
+
+------------------------------------------------------------------------------------------------------------------------
 """
-
-# TODO Replace return false with raise
-
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
-from datetime import datetime
+
+import heapq
 import os
+import random
+import re
+from datetime import datetime
+
 import colorlog
 
 
-class LOG:
+class Log:
     def __init__(self, filename="Server.log", use_colorlog=True, DEBUG=False, debug_color="cyan", info_color="green",
                  warning_color="yellow", error_color="red", critical_color="red",
                  colorlog_fmt_parameters="%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s"):
@@ -254,7 +298,6 @@ class LOG:
 
 class Find:
     def __init__(self):
-        # Words that have y as either an active vowel or as a passive vowel
         self.special_y_words = [
             "Cry",
             "Dry",
@@ -291,23 +334,21 @@ class Find:
         ]
 
     @staticmethod
-    def __sort(List):
+    def __sort(List: list) -> list[int | float]:
         if List is None:
-            raise "No input given."
-        try:
-            converted_list = sorted(
-                float(item) for item in List if isinstance(item, (int, float))
-            )
-            final_list = [
-                int(item) if item.is_integer() else item for item in converted_list
-            ]
-            return final_list
-        except ValueError:
-            return None
+            raise Exception("No input given.")
 
-    def __vowel_y(self, string=None, only_lowercase=False):
+        converted_list = sorted(
+            float(item) for item in List if isinstance(item, (int, float))
+        )
+        final_list = [
+            int(item) if item.is_integer() else item for item in converted_list
+        ]
+        return final_list
+
+    def __vowel_y(self, string: str, only_lowercase=False) -> str:
         if string is None:
-            raise "No input given."
+            raise Exception("No input given.")
         if self.__value_index(self.special_y_words, string):
             if only_lowercase:
                 vowels = "aeiouy"
@@ -321,11 +362,8 @@ class Find:
         return vowels
 
     @staticmethod
-    def __count_character(Word, Vowel):
-        # Counter
+    def __count_character(Word: str, Vowel: str) -> str:
         count = 0
-
-        # For loop to find length of word
         for i in range(len(Word)):
             if Word[i] == Vowel:
                 count += 1
@@ -333,39 +371,38 @@ class Find:
         return f"{Vowel} {count}"
 
     @staticmethod
-    def __value_index(array, Word):
-        # Iterate over the list with enumerate to get both index and value
+    def __value_index(array: list, Word: str) -> bool:
         for index, value in enumerate(array):
             if value == Word:
-                return True  # Return True if the value matches
+                return True
         return False
 
-    def largest(self, List=None):
+    def largest_in_array(self, List: list[int | float]) -> int | float:
         if List is None:
-            raise "No input given."
+            raise Exception("No input given.")
         largeList = self.__sort(List)
         if largeList is None:
-            raise "No input given."
+            raise Exception("No input given.")
         return largeList[-1] if largeList else None
 
-    def smallest(self, List=None):
+    def smallest_in_array(self, List: list[int | float]) -> int | float:
         if List is None:
-            raise "No input given."
+            raise Exception("No input given.")
         smallList = self.__sort(List)
         if smallList is None:
-            raise "No input given."
+            raise Exception("No input given.")
         return smallList[0] if smallList else None
 
-    def total_vowels(self, Word=None):
+    def total_vowels_in_string(self, Word: str) -> int:
         if Word is None:
-            raise "No input given."
+            raise Exception("No input given.")
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
 
-    def every_vowel(self, Word=None):
+    def every_vowel_in_string(self, Word: str) -> str:
         if Word is None:
-            raise "No input given."
+            raise Exception("No input given.")
         result = ""
         vowels = self.__vowel_y(Word, True)
         for vowel in vowels:
@@ -373,48 +410,26 @@ class Find:
         return result.rstrip("\n")
 
     @staticmethod
-    def value_index(array=None, value_to_find=None):
-        if array is None or value_to_find is None:
-            raise "No input given."
-        # Iterate over the list with enumerate to get both index and value
-        for index, value in enumerate(array):
+    def value_index_in_array(List: list, value_to_find: any) -> int | bool:
+        if List is None or value_to_find is None:
+            raise Exception("No input given.")
+        for index, value in enumerate(List):
             if value == value_to_find:
-                return index  # Return the index if the value matches
-        return False  # Return False if the value was not found in the list
+                return index
+        return False
 
 
 class Sort:
     @staticmethod
-    def __integer(Array):
+    def __isinteger(Array: list[int | float]) -> bool:
         return all(isinstance(item, int) for item in Array)
 
-    def using_quick_sort(self, Array):
-        if Array is None:
-            raise "No input given."
-        if not self.__integer(Array):
-            return False
-        if len(Array) <= 1:
-            return Array
-        pivot = Array[len(Array) // 2]
-        left = [x for x in Array if x < pivot]
-        middle = [x for x in Array if x == pivot]
-        right = [x for x in Array if x > pivot]
-        return self.using_quick_sort(left) + middle + self.using_quick_sort(right)
-
-    def using_merge_sort(self, Array):
-        if Array is None:
-            raise "No input given."
-        if not self.__integer(Array):
-            return False
-        if len(Array) <= 1:
-            return Array
-        mid = len(Array) // 2
-        left = Array[:mid]
-        right = Array[mid:]
-        return Sort.__merge(self.using_merge_sort(left), self.using_merge_sort(right))
+    @staticmethod
+    def __is_sorted(Array: list[int | float]) -> bool:
+        return all(Array[i] <= Array[i + 1] for i in range(len(Array) - 1))
 
     @staticmethod
-    def __merge(left, right):
+    def __merge(left: list[int | float], right: list[int | float]) -> list[int | float]:
         result = []
         i = j = 0
         while i < len(left) and j < len(right):
@@ -428,11 +443,36 @@ class Sort:
         result.extend(right[j:])
         return result
 
-    def using_selection_sort(self, Array):
+    def using_quick_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
-            raise "No input given."
-        if not self.__integer(Array):
-            return False
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        if len(Array) <= 1:
+            return Array
+        pivot = Array[len(Array) // 2]
+        left = [x for x in Array if x < pivot]
+        middle = [x for x in Array if x == pivot]
+        right = [x for x in Array if x > pivot]
+        return self.using_quick_sort(left) + middle + self.using_quick_sort(right)
+
+    def using_merge_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        if len(Array) <= 1:
+            return Array
+        mid = len(Array) // 2
+        left = Array[:mid]
+        right = Array[mid:]
+        return Sort.__merge(self.using_merge_sort(left), self.using_merge_sort(right))
+
+    def using_selection_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         for i in range(len(Array)):
             min_index = i
             for j in range(i + 1, len(Array)):
@@ -441,11 +481,11 @@ class Sort:
             Array[i], Array[min_index] = Array[min_index], Array[i]
         return Array
 
-    def using_bubble_sort(self, Array):
+    def using_bubble_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
-            raise "No input given."
-        if not self.__integer(Array):
-            return False
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         n = len(Array)
         for i in range(n):
             for j in range(0, n - i - 1):
@@ -453,11 +493,11 @@ class Sort:
                     Array[j], Array[j + 1] = Array[j + 1], Array[j]
         return Array
 
-    def using_insertion_sort(self, Array):
+    def using_insertion_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
-            raise "No input given."
-        if not self.__integer(Array):
-            return False
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
         for i in range(1, len(Array)):
             key = Array[i]
             j = i - 1
@@ -467,304 +507,279 @@ class Sort:
             Array[j + 1] = key
         return Array
 
+    def using_heap_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        heapq.heapify(Array)
+        return [heapq.heappop(Array) for _ in range(len(Array))]
+
+    def using_radix_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        max_value = max(Array)
+        max_exponent = len(str(max_value))
+        for exponent in range(max_exponent):
+            digits = [[] for _ in range(10)]
+            for num in Array:
+                digit = (num // 10 ** exponent) % 10
+                digits[digit].append(num)
+            Array = []
+            for digit_list in digits:
+                Array.extend(digit_list)
+        return Array
+
+    def using_counting_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        max_value = max(Array)
+        min_value = min(Array)
+        range_of_elements = max_value - min_value + 1
+        count = [0] * range_of_elements
+        output = [0] * len(Array)
+        for num in Array:
+            count[num - min_value] += 1
+        for i in range(1, len(count)):
+            count[i] += count[i - 1]
+        for num in reversed(Array):
+            output[count[num - min_value] - 1] = num
+            count[num - min_value] -= 1
+        return output
+
+    def using_bogo_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+
+        while not self.__is_sorted(Array):
+            random.shuffle(Array)
+        return Array
+
+    class LinkedList:
+        def __init__(self, Data=None):
+            self.head = None
+            self.data = Data
+            self.next = None
+
+        def __merge(self, start, mid, end):
+            if start is None:
+                return end
+            if end is None:
+                return start
+
+            if start.data <= end.data:
+                start.next = self.__merge(start.next, mid, end)
+            else:
+                end.next = self.__merge(start, mid, end)
+                start, end = end, start
+
+            return start
+
+        def append(self, data: int | float) -> None:
+            if not self.head:
+                self.head = Sort().LinkedList(data)
+            else:
+                current = self.head
+                while current.next:
+                    current = current.next
+                current.next = Sort().LinkedList(data)
+
+        def return_elements(self) -> list[int | float]:
+            elements = []
+            current_node = self.head
+            while current_node:
+                elements.append(current_node.data)
+                current_node = current_node.next
+            return elements
+
+        def using_bubble(self) -> None:
+            if self.head is None:
+                return
+
+            swapped = True
+            while swapped:
+                swapped = False
+                current = self.head
+                while current.next is not None:
+                    if current.data > current.next.data:
+                        current.data, current.next.data = current.next.data, current.data
+                        swapped = True
+                    current = current.next
+
+    class TreeNode:
+        def __init__(self, val=0, left=None, right=None):
+            self.val = val
+            self.left = left
+            self.right = right
+
+        def sort(self, root) -> list[int | float]:
+            if root is None:
+                return []
+
+            left_values = self.sort(root.left)
+            values = [root.val]
+            right_values = self.sort(root.right)
+
+            return left_values + values + right_values
+
 
 class Validate:
-    def __init__(self, show_warnings=False):
-        self.common_domains = [
-            "google.com",
-            "gmail.com",
-            "outlook.com",
-            "yahoo.com",
-        ]
-        self.domain_variants = [
-            ".com",
-            ".net",
-            ".org",
-            ".io",
-            ".me",
-            "ad",
-            "ae",
-            "af",
-            "ag",
-            "ai",
-            "al",
-            "am",
-            "an",
-            "ao",
-            "aq",
-            "ar",
-            "as",
-            "at",
-            "au",
-            "aw",
-            "ax",
-            "az",
-            "ba",
-            "bb",
-            "bd",
-            "be",
-            "bf",
-            "bg",
-            "bh",
-            "bi",
-            "bj",
-            "bm",
-            "bn",
-            "bo",
-            "br",
-            "bs",
-            "bt",
-            "bw",
-            "by",
-            "bz",
-            "ca",
-            "cd",
-            "cf",
-            "cg",
-            "ch",
-            "ci",
-            "ck",
-            "cl",
-            "cm",
-            "cn",
-            "co",
-            "cr",
-            "cu",
-            "cv",
-            "cw",
-            "cx",
-            "cy",
-            "cz",
-            "de",
-            "dj",
-            "dk",
-            "dm",
-            "do",
-            "dz",
-            "ec",
-            "ee",
-            "eg",
-            "eh",
-            "er",
-            "es",
-            "et",
-            "fi",
-            "fj",
-            "fk",
-            "fm",
-            "fo",
-            "fr",
-            "ga",
-            "gb",
-            "gd",
-            "ge",
-            "gf",
-            "gg",
-            "gh",
-            "gi",
-            "gl",
-            "gm",
-            "gn",
-            "gp",
-            "gr",
-            "gt",
-            "gu",
-            "gw",
-            "gy",
-            "hk",
-            "hm",
-            "hn",
-            "hr",
-            "ht",
-            "hu",
-            "id",
-            "ie",
-            "il",
-            "im",
-            "in",
-            "io",
-            "iq",
-            "ir",
-            "is",
-            "it",
-            "je",
-            "jm",
-            "jo",
-            "jp",
-            "ke",
-            "kg",
-            "kh",
-            "ki",
-            "km",
-            "kn",
-            "kp",
-            "kr",
-            "kw",
-            "ky",
-            "kz",
-            "la",
-            "lb",
-            "lc",
-            "li",
-            "lk",
-            "lr",
-            "ls",
-            "lt",
-            "lu",
-            "lv",
-            "ly",
-            "ma",
-            "mc",
-            "md",
-            "me",
-            "mg",
-            "mh",
-            "mk",
-            "ml",
-            "mm",
-            "mn",
-            "mo",
-            "mp",
-            "mq",
-            "mr",
-            "ms",
-            "mt",
-            "mu",
-            "mv",
-            "mw",
-            "mx",
-            "my",
-            "mz",
-            "na",
-            "nc",
-            "ne",
-            "nf",
-            "ng",
-            "ni",
-            "nl",
-            "no",
-            "np",
-            "nr",
-            "nu",
-            "nz",
-            "om",
-            "pa",
-            "pe",
-            "pf",
-            "pg",
-            "ph",
-            "pk",
-            "pl",
-            "pm",
-            "pn",
-            "pr",
-            "ps",
-            "pt",
-            "pw",
-            "py",
-            "qa",
-            "re",
-            "ro",
-            "rs",
-            "ru",
-            "rw",
-            "sa",
-            "sb",
-            "sc",
-            "sd",
-            "se",
-            "sg",
-            "sh",
-            "si",
-            "sj",
-            "sk",
-            "sl",
-            "sm",
-            "sn",
-            "so",
-            "sr",
-            "ss",
-            "st",
-            "sv",
-            "sx",
-            "sy",
-            "sz",
-            "tc",
-            "td",
-            "tf",
-            "tg",
-            "th",
-            "tj",
-            "tk",
-            "tl",
-            "tm",
-            "tn",
-            "to",
-            "tr",
-            "tt",
-            "tv",
-            "tw",
-            "tz",
-            "ua",
-            "ug",
-            "um",
-            "us",
-            "uy",
-            "uz",
-            "va",
-            "vc",
-            "ve",
-            "vg",
-            "vi",
-            "vn",
-            "vu",
-            "wf",
-            "ws",
-            "xk",
-            "ye",
-            "yt",
-            "za",
-            "zm",
-            "zw",
-            "uk",
-        ]
-        self.show_warnings = show_warnings
+    def __init__(self):
+        self.url = r'^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$'
+        self.email = r'^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        self.phone = r'^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$'
 
-    def email(self, email):
-        if email is None:
-            raise "No input given."
-        # Ensure there's exactly one '@'
-        if email.count("@") != 1:
+    def this_email(self, email_address: str) -> bool:
+        if len(email_address) < 1 or len(email_address) > 320:
             return False
-        # Convert to lowercase and check for @ and .
-        for item in self.common_domains:
-            if not email.lower().endswith(item):
-                return False
-
-        name, domain_tld = email.split("@")
-
-        # Check for length constraints
-        if len(name) > 64 or len(domain_tld) > 255:
+        if ' ' in email_address:
             return False
+        pattern = re.compile(self.email)
+        return bool(pattern.search(email_address))
 
-        # Splitting domain and TLD
-        domain, tld = domain_tld.split(".")
+    def this_url(self, url_string: str) -> bool:
+        if ' ' in url_string:
+            return False
+        pattern = re.compile(self.url)
+        return bool(pattern.search(url_string))
 
-        # Checking for common domains and variants
-        if domain in self.common_domains or f"{domain}.{tld}" in self.common_domains:
-            return True
+    def this_phone_number(self, phone_number: int | str) -> bool:
+        pattern = re.compile(self.phone)
+        return bool(pattern.match(str(phone_number)))
 
-        # Special handling for .co
-        if tld == "co":
-            if len(domain) > 64:
-                return False
-            return True
+    class CreditCard:
+        @staticmethod
+        def __luhn_algorithm(card_number: int) -> bool:
+            """
+            Validates a card number using the Luhn algorithm.
 
-        # Unique domain check with warning for unrecognized domains
-        if tld not in self.domain_variants or domain not in self.common_domains.remove(".com"):
-            if self.show_warnings:
-                print(f"Unrecognized domain '{domain}.{tld}'.")
-        return False
+            Args:
+                card_number (int): The card number to validate.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
+            """
+            num_list = [int(digit) for digit in str(card_number)]
+            num_list.reverse()
+            total = 0
+            for i, num in enumerate(num_list):
+                doubled = num * 2
+                if doubled > 9:
+                    doubled -= 9
+                total += doubled
+            return total % 10 == 0
+
+        @classmethod
+        def american_express(cls, card_number: int) -> bool:
+            """
+            Validates American Express card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and (
+                    str(card_number).startswith(('34', '37')) and 15 <= len(str(card_number)) <= 16)
+
+        @classmethod
+        def china_unionpay(cls, card_number: int) -> bool:
+            """
+            Validates China UnionPay card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and (str(card_number).startswith(
+                ('62', '64', '65', '66', '67', '68', '69', '92', '93', '94', '95', '96', '97', '98',
+                 '99')) and 16 <= len(
+                str(card_number)))
+
+        @classmethod
+        def dankort(cls, card_number: int) -> bool:
+            """
+            Validates Dankort card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and str(card_number).startswith('49') and 16 <= len(
+                str(card_number))
+
+        @classmethod
+        def diners_club(cls, card_number: int) -> bool:
+            """
+            Validates Diners Club International card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and (
+                    str(card_number).startswith(('36', '38')) and 14 <= len(str(card_number)) <= 19)
+
+        @classmethod
+        def discover(cls, card_number: int) -> bool:
+            """
+            Validates Discover card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and (
+                    str(card_number).startswith(('6011', '6221', '6222', '6223', '623',
+                                                 '624', '625', '626', '627', '628', '641',
+                                                 '642', '643', '644', '645', '646', '647',
+                                                 '648', '649', '65', '66', '67', '68',
+                                                 '69', '71', '72', '73', '74', '75', '76',
+                                                 '77', '78', '79')) and 16 <= len(str(card_number)))
+
+        @classmethod
+        def jcb(cls, card_number: int) -> bool:
+            """
+            Validates JCB card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and str(card_number).startswith('35') and 16 <= len(
+                str(card_number))
+
+        @classmethod
+        def maestro(cls, card_number: int) -> bool:
+            """
+            Validates Maestro card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and (
+                    str(card_number).startswith(('50', '51', '52', '53', '54', '55', '56',
+                                                 '57', '58', '60', '61', '62', '63', '64',
+                                                 '65', '66', '67', '68', '69', '70', '71',
+                                                 '72', '73', '74', '75', '76', '77', '78',
+                                                 '79')) and 12 <= len(str(card_number)) <= 19)
+
+        @classmethod
+        def mastercard(cls, card_number: int) -> bool:
+            """
+            Validates Mastercard card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and str(card_number).startswith(
+                ('51', '52', '53', '54', '55', '56', '57', '58', '59')) and 16 <= len(str(card_number))
+
+        @classmethod
+        def visa(cls, card_number: int) -> bool:
+            """
+            Validates Visa card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and str(card_number).startswith('4') and 13 <= len(
+                str(card_number)) <= 16
+
+        @classmethod
+        def visa_electron(cls, card_number: int) -> bool:
+            """
+            Validates Visa Electron card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and str(card_number).startswith(
+                ('40', '41', '42', '43', '44', '45', '46', '47', '48', '49')) and 16 <= len(str(card_number))
+
+        @classmethod
+        def v_pay(cls, card_number: int) -> bool:
+            """
+            Validates V Pay card numbers.
+            """
+            return cls.__luhn_algorithm(card_number) and str(str(card_number)).startswith('28') and 16 <= len(
+                str(str(card_number)))
+
+        @classmethod
+        def any(cls, card_number: int) -> bool:
+            """
+            Validates any card number just by passing it to the Luhn algorithm.
+            """
+            return cls.__luhn_algorithm(card_number)
 
 
 class Convert:
@@ -857,168 +872,114 @@ class Convert:
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
         self.show_warnings = show_warnings
 
-    def dec_to_roman(self, Number):
-        if Number is None:
-            raise "No input given."
-        try:
-            Number = int(Number)
-            if Number <= 1:
-                raise "Input must be greater or equal to 1."
-            if Number > 10000 and self.show_warnings:
-                print(
-                    "Input is too large. This may result in inaccurate results."
-                )
-
-            result = ""
-            for numerical, roman in sorted(self.mapping.items(), reverse=True):
-                while Number >= numerical:
-                    result += roman
-                    Number -= numerical
-            return result
-        except KeyError as ke:
-            raise ("Invalid numeral: " + str(ke))
-        except Exception as e:
-            raise (str(e))
-
-    def roman_to_dec(self, Roman):
-        if not isinstance(Roman, str):
-            raise "Input must be a string."
-        elif not Roman.isupper():
-            raise "Input must be uppercase."
-        elif Roman is None:
-            raise "Input cannot be None."
-        try:
-            i = 0
-            num = 0
-            Roman = Roman.upper()
-            while i < len(Roman):
-                if i + 1 < len(Roman) and Roman[i: i + 2] in self.roman_to_numerical:
-                    num += self.roman_to_numerical[Roman[i: i + 2]]
-                    i += 2
-                else:
-                    num += self.roman_to_numerical[Roman[i]]
-                    i += 1
-            return num
-        except KeyError as ke:
-            raise f"Invalid Roman numeral: {ke}"
-        except Exception as e:
-            raise (str(e))
-
-    def dec_to_ascii(self, Number):
-        if Number is None:
-            raise "No input given."
-        elif not Number.isdigit():
-            try:
-                Number = str(Number)
-            except Exception:
-                raise "Invalid input. Please enter a number."
-
-        # Initialize an empty list to store each line of the ASCII art
-        ascii_art_lines = []
-
-        for i in range(7):  # Loop through each row
-            line = ""
-            for j in range(
-                    len(Number)
-            ):  # Loop through each character (digit) in the number
-                current_num = int(Number[j])
-                digit = self.digits[current_num]
-                line += digit[i] + "  "  # Append the current digit's row to the line
-            ascii_art_lines.append(line)  # Add the completed line to the list
-
-        # Join all lines with newline characters to form the final ASCII art string
-        ascii_art = "\n".join(ascii_art_lines)
-
-        return ascii_art
-
     @staticmethod
-    def __check_input_type(value, expected_type):
+    def __check_input_type(value, expected_type) -> bool:
         if not isinstance(value, expected_type):
-            raise f"Expected {expected_type.__name__}, got {type(value).__name__}"
+            raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
         return True
 
-    def bin_to_hex(self, Binary_Number):
+    def dec_to_roman(self, Number: int) -> str:
+        if Number is None:
+            raise Exception("No input given.")
+        if Number <= 1:
+            raise Exception("Input must be greater or equal to 1.")
+        if Number > 10000 and self.show_warnings:
+            print(
+                "Input is too large. This may result in inaccurate results."
+            )
+
+        result = ""
+        for numerical, roman in sorted(self.mapping.items(), reverse=True):
+            while Number >= numerical:
+                result += roman
+                Number -= numerical
+        return result
+
+    def roman_to_dec(self, Roman) -> int:
+        if not isinstance(Roman, str):
+            raise Exception("Input must be a string.")
+        elif not Roman.isupper():
+            raise Exception("Input must be uppercase.")
+        elif Roman is None:
+            raise Exception("Input cannot be None.")
+        i = 0
+        num = 0
+        Roman = Roman.upper()
+        while i < len(Roman):
+            if i + 1 < len(Roman) and Roman[i: i + 2] in self.roman_to_numerical:
+                num += self.roman_to_numerical[Roman[i: i + 2]]
+                i += 2
+            else:
+                num += self.roman_to_numerical[Roman[i]]
+                i += 1
+        return num
+
+    def dec_to_ascii(self, Number: int | str) -> str:
+        Number = str(Number)
+        if Number is None:
+            raise Exception("No input given.")
+        ascii_art_lines = []
+        for i in range(7):
+            line = ""
+            for j in range(len(Number)):
+                current_num = int(Number[j])
+                digit = self.digits[current_num]
+                line += digit[i] + "  "
+            ascii_art_lines.append(line)
+        ascii_art = "\n".join(ascii_art_lines)
+        return ascii_art
+
+    def bin_to_hex(self, Binary_Number: int) -> str:
         if Binary_Number is None:
-            raise "Conversion failed: No binary number provided"
+            raise Exception("Conversion failed: No binary number provided")
+        Binary_Number = str(Binary_Number)
+        self.__check_input_type(Binary_Number, str)
+        Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]
+        return Hexadecimal_Number.upper()
+
+    def bin_to_dec(self, Binary_Number: int) -> int:
+        if Binary_Number is None:
+            raise Exception("Conversion failed: No binary number provided")
         Binary_Number = str(Binary_Number)
         if not self.__check_input_type(Binary_Number, str):
             return False
-        try:
-            Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]  # Remove the '0x' prefix
-            return Hexadecimal_Number.upper()
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+        return int(Binary_Number, 2)
 
-    def bin_to_dec(self, Binary_Number):
-        if Binary_Number is None:
-            raise "Conversion failed: No binary number provided"
-        Binary_Number = str(Binary_Number)
-        if not self.__check_input_type(Binary_Number, str):
-            return False
-        try:
-            return int(Binary_Number, 2)
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
-
-    def dec_to_hex(self, Decimal_Number):
-        Decimal_Number = int(Decimal_Number)
+    def dec_to_hex(self, Decimal_Number: int) -> str:
         if Decimal_Number is None:
-            raise "Conversion failed: No decimal number provided"
-        if not self.__check_input_type(Decimal_Number, (int, str)):
-            return False
-        try:
-            Hexadecimal_Number = hex(Decimal_Number)[2:]  # Remove the '0x' prefix
-            return Hexadecimal_Number.upper()
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+            raise Exception("Conversion failed: No decimal number provided")
+        self.__check_input_type(Decimal_Number, (int, str))
+        Hexadecimal_Number = hex(Decimal_Number)[2:]
+        return Hexadecimal_Number.upper()
 
-    def dec_to_bin(self, Decimal_Number):
-        Decimal_Number = int(Decimal_Number)
+    def dec_to_bin(self, Decimal_Number: int) -> int:
         if Decimal_Number is None:
-            raise "Conversion failed: No decimal number provided"
-        if not self.__check_input_type(Decimal_Number, (int, str)):
-            return False
-        try:
-            Binary_Number = bin(Decimal_Number)[2:]  # Remove the '0b' prefix
-            return Binary_Number
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
+            raise Exception("Conversion failed: No decimal number provided")
+        self.__check_input_type(Decimal_Number, (int, str))
+        Binary_Number = bin(Decimal_Number)[2:]
+        return int(Binary_Number)
 
-    def hex_to_bin(self, Hexadecimal_Number):
+    def hex_to_bin(self, Hexadecimal_Number: str) -> int:
         if Hexadecimal_Number is None:
-            raise "Conversion failed: No hexadecimal number provided"
+            raise Exception("Conversion failed: No hexadecimal number provided")
+        self.__check_input_type(Hexadecimal_Number, str)
+        Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]
+        return int(Binary_Number)
+
+    def hex_to_dec(self, Hexadecimal_Number: str) -> int:
+        if Hexadecimal_Number is None:
+            raise Exception("Conversion failed: No hexadecimal number provided")
         if not self.__check_input_type(Hexadecimal_Number, str):
             return False
-        try:
-            Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]  # Remove the '0b' prefix
-            return Binary_Number
-        except ValueError as e:
-            raise f"Conversion number system conversion failed: {e}"
+        return int(Hexadecimal_Number, 16)
 
-    def hex_to_dec(self, Hexadecimal_Number):
-        if Hexadecimal_Number is None:
-            raise "Conversion failed: No hexadecimal number provided"
-        if not self.__check_input_type(Hexadecimal_Number, str):
-            return False
-        try:
-            return int(Hexadecimal_Number, 16)
-        except ValueError as e:
-            raise f"Conversion failed: {e}"
-
-    def memory(self, number, input_unit, output_unit):
-        # Ensure the inputs are valid
+    def memory(self, number: int, input_unit: str, output_unit: str) -> str:
         if number is None or input_unit is None or output_unit is None:
-            raise "Invalid input. Number, input_unit, and output_unit must all be provided."
+            raise Exception("Invalid input. Number, input_unit, and output_unit must all be provided.")
         if not isinstance(number, int) or input_unit not in self.memory_dict or output_unit not in self.memory_dict:
-            raise "Invalid input. Number must be an integer, and both units must exist in memory_dict."
-
-        # Step 1 & 2: Convert the number to bits
+            raise Exception(f"Invalid input. Number must be an integer, and both units must be one of the following units: \n    {str(self.memory_dict.keys()).removeprefix('dict_keys([').removesuffix('])')}.")
         input_factor = self.memory_dict[input_unit]
         number_in_bits = number * input_factor
-
-        # Step 3 & 4: Convert back to the desired unit
         output_factor = self.memory_dict[output_unit]
         final_number = number_in_bits / output_factor
-
-        # Step 5: Return the final converted value as a string
         return f"{final_number:.2f} {output_unit}"
