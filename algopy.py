@@ -16,6 +16,8 @@ K = integers length of the largest number in the list.
 - **O(n)**:
   - [Find.value_index]
   - [Validate.email]
+  - [Validate.url]
+  - [Validate.phone_number]
   - [Convert.dec_to_roman]
   - [Convert.roman_to_dec]
   - [Find.total_vowels]
@@ -73,6 +75,9 @@ K = integers length of the largest number in the list.
   - [Convert.dec_to_bin]
   - [Convert.memory]
   - [Sort.using_bogo_sort]
+  - [Validate.email]
+  - [Validate.url]
+  - [Validate.phone_number]
 
 
 - O(n):
@@ -83,7 +88,6 @@ K = integers length of the largest number in the list.
   - [Log.error]
   - [Log.critical]
   - [Sort.using_merge_sort]
-  - [Validate.email]
 
 - **O(n + k)**:
   - [Sort.using_radix_sort]
@@ -96,19 +100,20 @@ K = integers length of the largest number in the list.
 
 ------------------------------------------------------------------------------------------------------------------------
 """
-
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
-from datetime import datetime
+
 import heapq
-import random
 import os
+import random
+import re
+from datetime import datetime
 import colorlog
 
 
 # TODO redoc everything
 
 
-class LOG:
+class Log:
     def __init__(self, filename="Server.log", use_colorlog=True, DEBUG=False, debug_color="cyan", info_color="green",
                  warning_color="yellow", error_color="red", critical_color="red",
                  colorlog_fmt_parameters="%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s"):
@@ -331,7 +336,7 @@ class Find:
         ]
         return final_list
 
-    def __vowel_y(self, string=None, only_lowercase=False):
+    def __vowel_y(self, string: str, only_lowercase=False):
         if string is None:
             raise Exception("No input given.")
         if self.__value_index(self.special_y_words, string):
@@ -362,7 +367,7 @@ class Find:
                 return True
         return False
 
-    def largest(self, List=None):
+    def largest_in_array(self, List: list[int | float]):
         if List is None:
             raise Exception("No input given.")
         largeList = self.__sort(List)
@@ -370,7 +375,7 @@ class Find:
             raise Exception("No input given.")
         return largeList[-1] if largeList else None
 
-    def smallest(self, List=None):
+    def smallest_in_array(self, List: list[int | float]):
         if List is None:
             raise Exception("No input given.")
         smallList = self.__sort(List)
@@ -378,14 +383,14 @@ class Find:
             raise Exception("No input given.")
         return smallList[0] if smallList else None
 
-    def total_vowels(self, Word=None):
+    def total_vowels_in_string(self, Word: str):
         if Word is None:
             raise Exception("No input given.")
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
 
-    def every_vowel(self, Word=None):
+    def every_vowel_in_string(self, Word: str):
         if Word is None:
             raise Exception("No input given.")
         result = ""
@@ -395,10 +400,10 @@ class Find:
         return result.rstrip("\n")
 
     @staticmethod
-    def value_index(array=None, value_to_find=None):
-        if array is None or value_to_find is None:
+    def value_index_in_array(List: list, value_to_find):
+        if List is None or value_to_find is None:
             raise Exception("No input given.")
-        for index, value in enumerate(array):
+        for index, value in enumerate(List):
             if value == value_to_find:
                 return index
         return False
@@ -548,289 +553,32 @@ class Sort:
 
 
 class Validate:
-    def __init__(self, show_warnings=False):
-        self.common_domains = [
-            "google.com",
-            "gmail.com",
-            "outlook.com",
-            "yahoo.com",
-        ]
-        self.domain_variants = [
-            ".com",
-            ".net",
-            ".org",
-            ".io",
-            ".me",
-            "ad",
-            "ae",
-            "af",
-            "ag",
-            "ai",
-            "al",
-            "am",
-            "an",
-            "ao",
-            "aq",
-            "ar",
-            "as",
-            "at",
-            "au",
-            "aw",
-            "ax",
-            "az",
-            "ba",
-            "bb",
-            "bd",
-            "be",
-            "bf",
-            "bg",
-            "bh",
-            "bi",
-            "bj",
-            "bm",
-            "bn",
-            "bo",
-            "br",
-            "bs",
-            "bt",
-            "bw",
-            "by",
-            "bz",
-            "ca",
-            "cd",
-            "cf",
-            "cg",
-            "ch",
-            "ci",
-            "ck",
-            "cl",
-            "cm",
-            "cn",
-            "co",
-            "cr",
-            "cu",
-            "cv",
-            "cw",
-            "cx",
-            "cy",
-            "cz",
-            "de",
-            "dj",
-            "dk",
-            "dm",
-            "do",
-            "dz",
-            "ec",
-            "ee",
-            "eg",
-            "eh",
-            "er",
-            "es",
-            "et",
-            "fi",
-            "fj",
-            "fk",
-            "fm",
-            "fo",
-            "fr",
-            "ga",
-            "gb",
-            "gd",
-            "ge",
-            "gf",
-            "gg",
-            "gh",
-            "gi",
-            "gl",
-            "gm",
-            "gn",
-            "gp",
-            "gr",
-            "gt",
-            "gu",
-            "gw",
-            "gy",
-            "hk",
-            "hm",
-            "hn",
-            "hr",
-            "ht",
-            "hu",
-            "id",
-            "ie",
-            "il",
-            "im",
-            "in",
-            "io",
-            "iq",
-            "ir",
-            "is",
-            "it",
-            "je",
-            "jm",
-            "jo",
-            "jp",
-            "ke",
-            "kg",
-            "kh",
-            "ki",
-            "km",
-            "kn",
-            "kp",
-            "kr",
-            "kw",
-            "ky",
-            "kz",
-            "la",
-            "lb",
-            "lc",
-            "li",
-            "lk",
-            "lr",
-            "ls",
-            "lt",
-            "lu",
-            "lv",
-            "ly",
-            "ma",
-            "mc",
-            "md",
-            "me",
-            "mg",
-            "mh",
-            "mk",
-            "ml",
-            "mm",
-            "mn",
-            "mo",
-            "mp",
-            "mq",
-            "mr",
-            "ms",
-            "mt",
-            "mu",
-            "mv",
-            "mw",
-            "mx",
-            "my",
-            "mz",
-            "na",
-            "nc",
-            "ne",
-            "nf",
-            "ng",
-            "ni",
-            "nl",
-            "no",
-            "np",
-            "nr",
-            "nu",
-            "nz",
-            "om",
-            "pa",
-            "pe",
-            "pf",
-            "pg",
-            "ph",
-            "pk",
-            "pl",
-            "pm",
-            "pn",
-            "pr",
-            "ps",
-            "pt",
-            "pw",
-            "py",
-            "qa",
-            "re",
-            "ro",
-            "rs",
-            "ru",
-            "rw",
-            "sa",
-            "sb",
-            "sc",
-            "sd",
-            "se",
-            "sg",
-            "sh",
-            "si",
-            "sj",
-            "sk",
-            "sl",
-            "sm",
-            "sn",
-            "so",
-            "sr",
-            "ss",
-            "st",
-            "sv",
-            "sx",
-            "sy",
-            "sz",
-            "tc",
-            "td",
-            "tf",
-            "tg",
-            "th",
-            "tj",
-            "tk",
-            "tl",
-            "tm",
-            "tn",
-            "to",
-            "tr",
-            "tt",
-            "tv",
-            "tw",
-            "tz",
-            "ua",
-            "ug",
-            "um",
-            "us",
-            "uy",
-            "uz",
-            "va",
-            "vc",
-            "ve",
-            "vg",
-            "vi",
-            "vn",
-            "vu",
-            "wf",
-            "ws",
-            "xk",
-            "ye",
-            "yt",
-            "za",
-            "zm",
-            "zw",
-            "uk",
-        ]
-        self.show_warnings = show_warnings
+    def __init__(self, need_http=False):
+        self.url = r''
+        self.email = r'^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        self.phone = r'^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$'
+        self.need = need_http
 
-    def email(self, email):
-        if email is None:
-            raise Exception("No input given.")
-        if email.count("@") != 1:
+    def this_email(self, email_address):
+        if len(email_address) < 1 or len(email_address) > 320:
             return False
-        for item in self.common_domains:
-            if not email.lower().endswith(item):
-                return False
-        name, domain_tld = email.split("@")
-        if len(name) > 64 or len(domain_tld) > 255:
+
+        if ' ' in email_address:
             return False
-        domain, tld = domain_tld.split(".")
-        if domain in self.common_domains or f"{domain}.{tld}" in self.common_domains:
-            return True
-        if tld == "co":
-            if len(domain) > 64:
-                return False
-            return True
-        if tld not in self.domain_variants or domain not in self.common_domains.remove(".com"):
-            if self.show_warnings:
-                print(f"Unrecognized domain '{domain}.{tld}'.")
-        return False
+
+        if not re.match(self.email, email_address):
+            return False
+
+        return True
+
+
+
+    def this_phone_number(self, phone_number):
+        pattern = re.compile(self.phone)
+        return bool(pattern.match(phone_number))
+
+
+# TODO Credit Card Number Validation
 
 
 class Convert:
@@ -1044,3 +792,8 @@ class Convert:
         output_factor = self.memory_dict[output_unit]
         final_number = number_in_bits / output_factor
         return f"{final_number:.2f} {output_unit}"
+
+
+V = Validate(need_http=True)
+print(V.this_url("www.google.com"))
+print(V.this_url("http://www.yo.com"))  # ERROR
