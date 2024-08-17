@@ -553,11 +553,10 @@ class Sort:
 
 
 class Validate:
-    def __init__(self, need_http=False):
-        self.url = r''
+    def __init__(self):
+        self.url = r'^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$'
         self.email = r'^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         self.phone = r'^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$'
-        self.need = need_http
 
     def this_email(self, email_address):
         if len(email_address) < 1 or len(email_address) > 320:
@@ -571,7 +570,15 @@ class Validate:
 
         return True
 
+    def this_url(self, url_string):
+        if ' ' in url_string:
+            return False
 
+        # Compile the regular expression pattern once to improve performance
+        compiled_pattern = re.compile(self.url)
+
+        # Check if the input string matches the compiled pattern
+        return bool(compiled_pattern.search(url_string))
 
     def this_phone_number(self, phone_number):
         pattern = re.compile(self.phone)
@@ -792,8 +799,3 @@ class Convert:
         output_factor = self.memory_dict[output_unit]
         final_number = number_in_bits / output_factor
         return f"{final_number:.2f} {output_unit}"
-
-
-V = Validate(need_http=True)
-print(V.this_url("www.google.com"))
-print(V.this_url("http://www.yo.com"))  # ERROR
