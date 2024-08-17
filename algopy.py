@@ -4,6 +4,7 @@
 N = number of elements to process.
 M = difference between the largest number and smallest number in the list.
 K = integers length of the largest number in the list.
+H = height of the tree.
 
 ### Time Complexity
 - **O(1)**:
@@ -18,6 +19,7 @@ K = integers length of the largest number in the list.
   - [Validate.email]
   - [Validate.url]
   - [Validate.phone_number]
+  - [Validate.CreditCard()]
   - [Convert.dec_to_roman]
   - [Convert.roman_to_dec]
   - [Find.total_vowels]
@@ -26,6 +28,9 @@ K = integers length of the largest number in the list.
   - [Convert.bin_to_hex]
   - [Convert.hex_to_bin]
   - [Convert.hex_to_dec]
+  - [Sort.LinkedList().append]
+  - [Sort.LinkedList().return_elements]
+  - [Sort.TreeNode().sort]
 
 - **O(n + m)**:
   - [Sort.using_counting_sort]
@@ -40,6 +45,7 @@ K = integers length of the largest number in the list.
   - [Sort.using_quicksort]
   - [Sort.using_merge_sort]
   - [Sort.using_heap_sort]
+  - [Sort.LinkedList().using_merge]
 
 - **O(n * k)**:
   - [Convert.dec_to_ascii]
@@ -49,6 +55,8 @@ K = integers length of the largest number in the list.
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
+  - [Sort.LinkedList().using_insertion]
+  - [Sort.LinkedList().using_bubble]
 
 - **O((n+1)! / 2) OR Unbounded(infinite)**:
   - [Sort.using_bogo_sort]
@@ -78,7 +86,10 @@ K = integers length of the largest number in the list.
   - [Validate.email]
   - [Validate.url]
   - [Validate.phone_number]
-
+  - [Validate.CreditCard()]
+  - [Sort.LinkedList().using_insertion]
+  - [Sort.LinkedList().using_bubble]
+  - [Sort.LinkedList().append]
 
 - O(n):
   - [Find.largest]
@@ -88,6 +99,11 @@ K = integers length of the largest number in the list.
   - [Log.error]
   - [Log.critical]
   - [Sort.using_merge_sort]
+  - [Sort.LinkedList().using_merge]
+  - [Sort.LinkedList().return_elements]
+
+- O(h):
+  - [Sort.TreeNode().sort]
 
 - **O(n + k)**:
   - [Sort.using_radix_sort]
@@ -108,9 +124,6 @@ import random
 import re
 from datetime import datetime
 import colorlog
-
-
-# TODO redoc everything
 
 
 class Log:
@@ -324,7 +337,7 @@ class Find:
         ]
 
     @staticmethod
-    def __sort(List):
+    def __sort(List: list) -> list[int | float]:
         if List is None:
             raise Exception("No input given.")
 
@@ -336,7 +349,7 @@ class Find:
         ]
         return final_list
 
-    def __vowel_y(self, string: str, only_lowercase=False):
+    def __vowel_y(self, string: str, only_lowercase=False) -> str:
         if string is None:
             raise Exception("No input given.")
         if self.__value_index(self.special_y_words, string):
@@ -352,7 +365,7 @@ class Find:
         return vowels
 
     @staticmethod
-    def __count_character(Word, Vowel):
+    def __count_character(Word: str, Vowel: str) -> str:
         count = 0
         for i in range(len(Word)):
             if Word[i] == Vowel:
@@ -361,13 +374,13 @@ class Find:
         return f"{Vowel} {count}"
 
     @staticmethod
-    def __value_index(array, Word):
+    def __value_index(array: list, Word: str) -> bool:
         for index, value in enumerate(array):
             if value == Word:
                 return True
         return False
 
-    def largest_in_array(self, List: list[int | float]):
+    def largest_in_array(self, List: list[int | float]) -> int | float:
         if List is None:
             raise Exception("No input given.")
         largeList = self.__sort(List)
@@ -375,7 +388,7 @@ class Find:
             raise Exception("No input given.")
         return largeList[-1] if largeList else None
 
-    def smallest_in_array(self, List: list[int | float]):
+    def smallest_in_array(self, List: list[int | float]) -> int | float:
         if List is None:
             raise Exception("No input given.")
         smallList = self.__sort(List)
@@ -383,14 +396,14 @@ class Find:
             raise Exception("No input given.")
         return smallList[0] if smallList else None
 
-    def total_vowels_in_string(self, Word: str):
+    def total_vowels_in_string(self, Word: str) -> int:
         if Word is None:
             raise Exception("No input given.")
         vowels = self.__vowel_y(Word)
         vowel_count = sum(1 for char in Word if char in vowels)
         return vowel_count
 
-    def every_vowel_in_string(self, Word: str):
+    def every_vowel_in_string(self, Word: str) -> str:
         if Word is None:
             raise Exception("No input given.")
         result = ""
@@ -400,7 +413,7 @@ class Find:
         return result.rstrip("\n")
 
     @staticmethod
-    def value_index_in_array(List: list, value_to_find):
+    def value_index_in_array(List: list, value_to_find: any) -> int | bool:
         if List is None or value_to_find is None:
             raise Exception("No input given.")
         for index, value in enumerate(List):
@@ -411,36 +424,15 @@ class Find:
 
 class Sort:
     @staticmethod
-    def __isinteger(Array):
+    def __isinteger(Array: list[int | float]) -> bool:
         return all(isinstance(item, int) for item in Array)
 
-    def using_quick_sort(self, Array):
-        if Array is None:
-            raise Exception("No input given.")
-        if not self.__isinteger(Array):
-            raise Exception("Input is not an integer array.")
-        if len(Array) <= 1:
-            return Array
-        pivot = Array[len(Array) // 2]
-        left = [x for x in Array if x < pivot]
-        middle = [x for x in Array if x == pivot]
-        right = [x for x in Array if x > pivot]
-        return self.using_quick_sort(left) + middle + self.using_quick_sort(right)
-
-    def using_merge_sort(self, Array):
-        if Array is None:
-            raise Exception("No input given.")
-        if not self.__isinteger(Array):
-            raise Exception("Input is not an integer array.")
-        if len(Array) <= 1:
-            return Array
-        mid = len(Array) // 2
-        left = Array[:mid]
-        right = Array[mid:]
-        return Sort.__merge(self.using_merge_sort(left), self.using_merge_sort(right))
+    @staticmethod
+    def __is_sorted(Array: list[int | float]) -> bool:
+        return all(Array[i] <= Array[i + 1] for i in range(len(Array) - 1))
 
     @staticmethod
-    def __merge(left, right):
+    def __merge(left: list[int | float], right: list[int | float]) -> list[int | float]:
         result = []
         i = j = 0
         while i < len(left) and j < len(right):
@@ -454,7 +446,32 @@ class Sort:
         result.extend(right[j:])
         return result
 
-    def using_selection_sort(self, Array):
+    def using_quick_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        if len(Array) <= 1:
+            return Array
+        pivot = Array[len(Array) // 2]
+        left = [x for x in Array if x < pivot]
+        middle = [x for x in Array if x == pivot]
+        right = [x for x in Array if x > pivot]
+        return self.using_quick_sort(left) + middle + self.using_quick_sort(right)
+
+    def using_merge_sort(self, Array: list[int | float]) -> list[int | float]:
+        if Array is None:
+            raise Exception("No input given.")
+        if not self.__isinteger(Array):
+            raise Exception("Input is not an integer array.")
+        if len(Array) <= 1:
+            return Array
+        mid = len(Array) // 2
+        left = Array[:mid]
+        right = Array[mid:]
+        return Sort.__merge(self.using_merge_sort(left), self.using_merge_sort(right))
+
+    def using_selection_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -467,7 +484,7 @@ class Sort:
             Array[i], Array[min_index] = Array[min_index], Array[i]
         return Array
 
-    def using_bubble_sort(self, Array):
+    def using_bubble_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -479,7 +496,7 @@ class Sort:
                     Array[j], Array[j + 1] = Array[j + 1], Array[j]
         return Array
 
-    def using_insertion_sort(self, Array):
+    def using_insertion_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -493,7 +510,7 @@ class Sort:
             Array[j + 1] = key
         return Array
 
-    def using_heap_sort(self, Array):
+    def using_heap_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -501,7 +518,7 @@ class Sort:
         heapq.heapify(Array)
         return [heapq.heappop(Array) for _ in range(len(Array))]
 
-    def using_radix_sort(self, Array):
+    def using_radix_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -518,7 +535,7 @@ class Sort:
                 Array.extend(digit_list)
         return Array
 
-    def using_counting_sort(self, Array):
+    def using_counting_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -537,7 +554,7 @@ class Sort:
             count[num - min_value] -= 1
         return output
 
-    def using_bogo_sort(self, Array):
+    def using_bogo_sort(self, Array: list[int | float]) -> list[int | float]:
         if Array is None:
             raise Exception("No input given.")
         if not self.__isinteger(Array):
@@ -547,9 +564,123 @@ class Sort:
             random.shuffle(Array)
         return Array
 
-    @staticmethod
-    def __is_sorted(Array):
-        return all(Array[i] <= Array[i + 1] for i in range(len(Array) - 1))
+    class LinkedList:
+        def __init__(self, Data=None):
+            self.head = None
+            self.data = Data
+            self.next = None
+
+        def __merge(self, start, mid, end):
+            if start is None:
+                return end
+            if end is None:
+                return start
+
+            if start.data <= end.data:
+                start.next = self.__merge(start.next, mid, end)
+            else:
+                end.next = self.__merge(start, mid, end)
+                start, end = end, start
+
+            return start
+
+        def append(self, data: int | float) -> None:
+            if not self.head:
+                self.head = Sort().LinkedList(data)
+            else:
+                current = self.head
+                while current.next:
+                    current = current.next
+                current.next = Sort().LinkedList(data)
+
+        def return_elements(self) -> list[int | float]:
+            elements = []
+            current_node = self.head
+            while current_node:
+                elements.append(current_node.data)
+                current_node = current_node.next
+            return elements
+
+        def using_insertion(self) -> None:
+            if self.head is None:
+                return
+
+            current = self.head
+            index = None
+
+            while current is not None:
+                next_node = current.next
+                prev = current
+
+                while index is None and prev is not None:
+                    if prev.data >= current.data:
+                        index = prev
+                    prev = prev.next
+
+                if index is None:
+                    index = self.head
+                    while index.next != current:
+                        index = index.next
+
+                prev.next = current.next
+                current.next = index.next
+                index.next = current
+
+                current = next_node
+
+        def using_bubble(self) -> None:
+            if self.head is None:
+                return
+
+            swapped = True
+            while swapped:
+                swapped = False
+                current = self.head
+                while current.next is not None:
+                    if current.data > current.next.data:
+                        current.data, current.next.data = current.next.data, current.data
+                        swapped = True
+                    current = current.next
+
+        def using_merge(self) -> None:
+            if self.head is None:
+                return
+
+            if self.head.next is None:
+                return
+
+            prev = self.head
+            runner = self.head.next
+
+            while runner is not None and runner.next is not None:
+                if prev.data <= runner.data <= prev.next.data:
+                    runner = runner.next.next
+                elif runner.data < prev.data:
+                    self.__merge(prev, prev.next, runner)
+                    return
+                elif runner.data > prev.next.data:
+                    runner = runner.next
+                else:
+                    self.__merge(prev, prev.next, runner)
+                    return
+
+            self.__merge(self.head, self.head.next, runner)
+
+    class TreeNode:
+        def __init__(self, val=0, left=None, right=None):
+            self.val = val
+            self.left = left
+            self.right = right
+
+        def sort(self, root) -> list[int | float]:
+            if root is None:
+                return []
+
+            left_values = self.sort(root.left)
+            values = [root.val]
+            right_values = self.sort(root.right)
+
+            return left_values + values + right_values
 
 
 class Validate:
@@ -558,31 +689,23 @@ class Validate:
         self.email = r'^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         self.phone = r'^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$'
 
-    def this_email(self, email_address):
+    def this_email(self, email_address: str) -> bool:
         if len(email_address) < 1 or len(email_address) > 320:
             return False
-
         if ' ' in email_address:
             return False
+        pattern = re.compile(self.email)
+        return bool(pattern.search(email_address))
 
-        if not re.match(self.email, email_address):
-            return False
-
-        return True
-
-    def this_url(self, url_string):
+    def this_url(self, url_string: str) -> bool:
         if ' ' in url_string:
             return False
+        pattern = re.compile(self.url)
+        return bool(pattern.search(url_string))
 
-        # Compile the regular expression pattern once to improve performance
-        compiled_pattern = re.compile(self.url)
-
-        # Check if the input string matches the compiled pattern
-        return bool(compiled_pattern.search(url_string))
-
-    def this_phone_number(self, phone_number):
+    def this_phone_number(self, phone_number: int | str) -> bool:
         pattern = re.compile(self.phone)
-        return bool(pattern.match(phone_number))
+        return bool(pattern.match(str(phone_number)))
 
     class CreditCard:
         @staticmethod
@@ -713,9 +836,6 @@ class Validate:
             return cls.__luhn_algorithm(card_number)
 
 
-# TODO Credit Card Number Validation
-
-
 class Convert:
     def __init__(self, show_warnings=False):
         self.mapping = {
@@ -806,10 +926,15 @@ class Convert:
         self.digits = [Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine]
         self.show_warnings = show_warnings
 
-    def dec_to_roman(self, Number):
+    @staticmethod
+    def __check_input_type(value, expected_type) -> bool:
+        if not isinstance(value, expected_type):
+            raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
+        return True
+
+    def dec_to_roman(self, Number: int) -> str:
         if Number is None:
             raise Exception("No input given.")
-        Number = int(Number)
         if Number <= 1:
             raise Exception("Input must be greater or equal to 1.")
         if Number > 10000 and self.show_warnings:
@@ -824,7 +949,7 @@ class Convert:
                 Number -= numerical
         return result
 
-    def roman_to_dec(self, Roman):
+    def roman_to_dec(self, Roman) -> int:
         if not isinstance(Roman, str):
             raise Exception("Input must be a string.")
         elif not Roman.isupper():
@@ -843,17 +968,14 @@ class Convert:
                 i += 1
         return num
 
-    def dec_to_ascii(self, Number):
+    def dec_to_ascii(self, Number: int | str) -> str:
+        Number = str(Number)
         if Number is None:
             raise Exception("No input given.")
-        elif not Number.isdigit():
-            raise Exception("Invalid input. Please enter a number.")
         ascii_art_lines = []
         for i in range(7):
             line = ""
-            for j in range(
-                    len(Number)
-            ):
+            for j in range(len(Number)):
                 current_num = int(Number[j])
                 digit = self.digits[current_num]
                 line += digit[i] + "  "
@@ -861,22 +983,15 @@ class Convert:
         ascii_art = "\n".join(ascii_art_lines)
         return ascii_art
 
-    @staticmethod
-    def __check_input_type(value, expected_type):
-        if not isinstance(value, expected_type):
-            raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
-        return True
-
-    def bin_to_hex(self, Binary_Number):
+    def bin_to_hex(self, Binary_Number: int) -> str:
         if Binary_Number is None:
             raise Exception("Conversion failed: No binary number provided")
         Binary_Number = str(Binary_Number)
-        if not self.__check_input_type(Binary_Number, str):
-            return False
+        self.__check_input_type(Binary_Number, str)
         Hexadecimal_Number = hex(int(Binary_Number, 2))[2:]
         return Hexadecimal_Number.upper()
 
-    def bin_to_dec(self, Binary_Number):
+    def bin_to_dec(self, Binary_Number: int) -> int:
         if Binary_Number is None:
             raise Exception("Conversion failed: No binary number provided")
         Binary_Number = str(Binary_Number)
@@ -884,44 +999,39 @@ class Convert:
             return False
         return int(Binary_Number, 2)
 
-    def dec_to_hex(self, Decimal_Number):
-        Decimal_Number = int(Decimal_Number)
+    def dec_to_hex(self, Decimal_Number: int) -> str:
         if Decimal_Number is None:
             raise Exception("Conversion failed: No decimal number provided")
-        if not self.__check_input_type(Decimal_Number, (int, str)):
-            return False
+        self.__check_input_type(Decimal_Number, (int, str))
         Hexadecimal_Number = hex(Decimal_Number)[2:]
         return Hexadecimal_Number.upper()
 
-    def dec_to_bin(self, Decimal_Number):
-        Decimal_Number = int(Decimal_Number)
+    def dec_to_bin(self, Decimal_Number: int) -> int:
         if Decimal_Number is None:
             raise Exception("Conversion failed: No decimal number provided")
-        if not self.__check_input_type(Decimal_Number, (int, str)):
-            return False
+        self.__check_input_type(Decimal_Number, (int, str))
         Binary_Number = bin(Decimal_Number)[2:]
-        return Binary_Number
+        return int(Binary_Number)
 
-    def hex_to_bin(self, Hexadecimal_Number):
+    def hex_to_bin(self, Hexadecimal_Number: str) -> int:
         if Hexadecimal_Number is None:
             raise Exception("Conversion failed: No hexadecimal number provided")
-        if not self.__check_input_type(Hexadecimal_Number, str):
-            return False
+        self.__check_input_type(Hexadecimal_Number, str)
         Binary_Number = bin(int(Hexadecimal_Number, 16))[2:]
-        return Binary_Number
+        return int(Binary_Number)
 
-    def hex_to_dec(self, Hexadecimal_Number):
+    def hex_to_dec(self, Hexadecimal_Number: str) -> int:
         if Hexadecimal_Number is None:
             raise Exception("Conversion failed: No hexadecimal number provided")
         if not self.__check_input_type(Hexadecimal_Number, str):
             return False
         return int(Hexadecimal_Number, 16)
 
-    def memory(self, number, input_unit, output_unit):
+    def memory(self, number: int, input_unit: str, output_unit: str) -> str:
         if number is None or input_unit is None or output_unit is None:
             raise Exception("Invalid input. Number, input_unit, and output_unit must all be provided.")
         if not isinstance(number, int) or input_unit not in self.memory_dict or output_unit not in self.memory_dict:
-            raise Exception("Invalid input. Number must be an integer, and both units must exist in memory_dict.")
+            raise Exception(f"Invalid input. Number must be an integer, and both units must be one of the following units: \n    {str(self.memory_dict.keys()).removeprefix('dict_keys([').removesuffix('])')}.")
         input_factor = self.memory_dict[input_unit]
         number_in_bits = number * input_factor
         output_factor = self.memory_dict[output_unit]
