@@ -45,7 +45,6 @@ H = height of the tree.
   - [Sort.using_quicksort]
   - [Sort.using_merge_sort]
   - [Sort.using_heap_sort]
-  - [Sort.LinkedList().using_merge]
 
 - **O(n * k)**:
   - [Convert.dec_to_ascii]
@@ -55,7 +54,6 @@ H = height of the tree.
   - [Sort.using_selection]
   - [Sort.using_bubble]
   - [Sort.using_insertion]
-  - [Sort.LinkedList().using_insertion]
   - [Sort.LinkedList().using_bubble]
 
 - **O((n+1)! / 2) OR Unbounded(infinite)**:
@@ -87,7 +85,6 @@ H = height of the tree.
   - [Validate.url]
   - [Validate.phone_number]
   - [Validate.CreditCard()]
-  - [Sort.LinkedList().using_insertion]
   - [Sort.LinkedList().using_bubble]
   - [Sort.LinkedList().append]
 
@@ -99,7 +96,6 @@ H = height of the tree.
   - [Log.error]
   - [Log.critical]
   - [Sort.using_merge_sort]
-  - [Sort.LinkedList().using_merge]
   - [Sort.LinkedList().return_elements]
 
 - O(h):
@@ -123,6 +119,7 @@ import os
 import random
 import re
 from datetime import datetime
+
 import colorlog
 
 
@@ -601,33 +598,6 @@ class Sort:
                 current_node = current_node.next
             return elements
 
-        def using_insertion(self) -> None:
-            if self.head is None:
-                return
-
-            current = self.head
-            index = None
-
-            while current is not None:
-                next_node = current.next
-                prev = current
-
-                while index is None and prev is not None:
-                    if prev.data >= current.data:
-                        index = prev
-                    prev = prev.next
-
-                if index is None:
-                    index = self.head
-                    while index.next != current:
-                        index = index.next
-
-                prev.next = current.next
-                current.next = index.next
-                index.next = current
-
-                current = next_node
-
         def using_bubble(self) -> None:
             if self.head is None:
                 return
@@ -641,30 +611,6 @@ class Sort:
                         current.data, current.next.data = current.next.data, current.data
                         swapped = True
                     current = current.next
-
-        def using_merge(self) -> None:
-            if self.head is None:
-                return
-
-            if self.head.next is None:
-                return
-
-            prev = self.head
-            runner = self.head.next
-
-            while runner is not None and runner.next is not None:
-                if prev.data <= runner.data <= prev.next.data:
-                    runner = runner.next.next
-                elif runner.data < prev.data:
-                    self.__merge(prev, prev.next, runner)
-                    return
-                elif runner.data > prev.next.data:
-                    runner = runner.next
-                else:
-                    self.__merge(prev, prev.next, runner)
-                    return
-
-            self.__merge(self.head, self.head.next, runner)
 
     class TreeNode:
         def __init__(self, val=0, left=None, right=None):
