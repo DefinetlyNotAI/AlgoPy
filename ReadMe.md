@@ -7,6 +7,7 @@
     <a href="https://github.com/DefinetlyNotAI/AlgoPy/languages"><img src="https://img.shields.io/github/languages/count/DefinetlyNotAI/AlgoPy" alt="GitHub Language Count"></a>
     <a href="https://github.com/DefinetlyNotAI/AlgoPy/actions"><img src="https://img.shields.io/github/check-runs/DefinetlyNotAI/AlgoPy/main" alt="GitHub Branch Check Runs"></a>
     <a href="https://github.com/DefinetlyNotAI/AlgoPy"><img src="https://img.shields.io/github/repo-size/DefinetlyNotAI/AlgoPy" alt="GitHub Repo Size"></a>
+    <a href="https://codeclimate.com/github/DefinetlyNotAI/AlgoPy/maintainability"><img src="https://api.codeclimate.com/v1/badges/a7972706e1244b994e3a/maintainability" /></a>
 </div>
 
 ---
