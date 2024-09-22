@@ -8,7 +8,7 @@
     <a href="https://github.com/DefinetlyNotAI/AlgoPy/languages"><img src="https://img.shields.io/github/languages/count/DefinetlyNotAI/AlgoPy" alt="GitHub Language Count"></a>
     <a href="https://github.com/DefinetlyNotAI/AlgoPy/actions"><img src="https://img.shields.io/github/check-runs/DefinetlyNotAI/AlgoPy/main" alt="GitHub Branch Check Runs"></a>
     <a href="https://github.com/DefinetlyNotAI/AlgoPy"><img src="https://img.shields.io/github/repo-size/DefinetlyNotAI/AlgoPy" alt="GitHub Repo Size"></a>
-    <a href="https://codeclimate.com/github/DefinetlyNotAI/AlgoPy/maintainability"><img src="https://api.codeclimate.com/v1/badges/a7972706e1244b994e3a/maintainability" /></a>
+    <a href="https://codeclimate.com/github/DefinetlyNotAI/AlgoPy/maintainability"><img src="https://api.codeclimate.com/v1/badges/a7972706e1244b994e3a/maintainability"  alt="Maintainability"/></a>
 </div>
 
 ---
@@ -204,6 +204,7 @@ The `Validate` class provides methods for validating URLs, emails, and phone num
 - Validates phone numbers against a standard regex pattern.
 
 ### Usage Example
+
 ```python
 from algopy import Validate  # Assuming the class definition is saved in validate_class_definition.py
 
@@ -213,7 +214,7 @@ validator = Validate()
 email_valid = validator.this_email("example@example.com")
 print(email_valid)
 
-url_valid = validator.this_url("http://example.com")
+url_valid = validator.this_url("https://example.com")
 print(url_valid)
 
 phone_valid = validator.this_phone_number("+971501234567")
