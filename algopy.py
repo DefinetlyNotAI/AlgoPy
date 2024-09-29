@@ -123,18 +123,187 @@ import colorlog
 from datetime import datetime
 
 
+# TODO redo the log class of both logicytics and algopy to make it easier to setup and use, make it less janky
+#  Set up using a dictionary, and then use the dictionary to set up the logger,
+#  and then use the debug logger to log the dictionary )
+
+# TODO add custom log class support! So allow log.crash for example if .crash had its params set
+
+# TODO Redo all Algopy to include the following:
+#     Binary trees
+#       Complete binary tree
+#       Balanced binary tree
+#       Perfect binary tree
+#       Degenerate binary tree
+#       Degenerate or pathological tree
+#       AVL tree
+#       Binary search tree
+#       Red-black tree
+#       B+ tree
+#       Segment tree
+#       Skewed binary tree
+#       Almost complete binary tree
+#    Graphs
+#       Adjacency matrix
+#       Adjacency list
+#       Incidence matrix
+#       Edge list
+#       Graph traversal
+#       Breadth-first search
+#       Depth-first search
+#       Dijkstra's algorithm
+#       Bellman-Ford algorithm
+#       Floyd-Warshall algorithm
+#       Prim's algorithm
+#       Kruskal's algorithm
+#       Topological sort
+#       Strongly connected components
+#       Minimum spanning tree
+#       Shortest path
+#       Travelling salesman problem
+#       Maximum flow
+#       Minimum cut
+#       Eulerian path
+#       Hamiltonian cycle
+#       Graph coloring
+#       Bipartite graph
+#       Planar graph
+#       Graph isomorphism
+#       Graph automorphism
+#    Sorting
+#    Bubble sort
+#    Selection sort
+#    Insertion sort
+#    Merge sort
+#    Quick sort
+#    Heap sort
+#    Radix sort
+#    Counting sort
+#    Bucket sort
+#    Shell sort
+#    Cocktail sort
+#    Comb sort
+#    Gnome sort
+#    Pancake sort
+#    Stooge sort
+#    Bitonic sort
+#    Bogo sort
+#    Cycle sort
+#    Library sort
+#    Patience sort
+#    Smooth sort
+#    Strand sort
+#    Timsort
+#    Block sort
+#    Tournament sort
+#    Spreadsort
+#    Introsort
+#    Unshuffle sort
+#    Sleep sort
+#    Bogosort
+#    Stupid sort
+#    Slowsort
+#    Bogobogosort
+#    Bubblesort with flag
+#    Cocktail shaker sort
+#    Comb sort
+#    Gnome sort
+#    Odd-even sort
+#    Quick sort
+#    Selection sort
+#    Stooge sort
+#    Strand sort
+#    Tree sort
+#    Cycle sort
+#    Library sort
+#    Patience sort
+#    Smooth sort
+#    Timsort
+#    Block sort
+#    Tournament sort
+#    Spreadsort
+#    Introsort
+#    Unshuffle sort
+#    Sleep sort
+#    Bogosort
+#    Stupid sort
+#    Slowsort
+#    Bogobogosort
+#    Bubblesort with flag
+#    Cocktail shaker sort
+#    Comb sort
+#    Gnome sort
+#    Odd-even sort
+#    Quick sort
+#    Selection sort
+#    Stooge sort
+#    Strand sort
+#    Tree sort
+#    Cycle sort
+#    Library sort
+#    Patience sort
+#    Smooth sort
+#    Timsort
+#    Block sort
+#    Tournament sort
+#    Spreadsort
+#    Introsort
+#    Unshuffle sort
+#    Sleep sort
+#    Bogosort
+#    Stupid sort
+#    Slowsort
+#    Bogobogosort
+#    Bubblesort with flag
+#    Cocktail shaker sort
+#    Comb sort
+#    Gnome sort
+#    Odd
+#    Selection Sort
+#    Bubble Sort
+#    Insertion Sort
+#    Merge Sort
+#    Quick Sort
+#    Heap Sort
+#    Counting Sort
+#    Radix Sort
+#    Bucket Sort
+#    Bingo Sort Algorithm
+#    ShellSort
+#    TimSort
+#    Comb Sort
+#    Pigeonhole Sort
+#    Cycle Sort
+#    Cocktail Sort
+#    Strand Sort
+#    Bitonic Sort
+#    Pancake sorting
+#    BogoSort or Permutation Sort
+#    Gnome Sort
+#    Sleep Sort – The King of Laziness
+#    Structure Sorting in C++
+#    Stooge Sort
+#    Tag Sort (To get both sorted and original)
+#    Tree Sort
+#    Odd-Even Sort / Brick Sort
+#    3-way Merge Sort
+#    Dual-Pivot Quicksort
+#    Flashsort
+#    Smoothsort
+
+
 class Log:
     def __init__(
-            self,
-            filename="Server.log",
-            use_colorlog=True,
-            DEBUG=False,
-            debug_color="cyan",
-            info_color="green",
-            warning_color="yellow",
-            error_color="red",
-            critical_color="red",
-            colorlog_fmt_parameters="%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
+        self,
+        filename="Server.log",
+        use_colorlog=True,
+        DEBUG=False,
+        debug_color="cyan",
+        info_color="green",
+        warning_color="yellow",
+        error_color="red",
+        critical_color="red",
+        colorlog_fmt_parameters="%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
     ):
         """
         Initializes a new instance of the LOG class.
@@ -1155,8 +1324,8 @@ class Validate:
             Validates American Express card numbers.
             """
             return cls.__luhn_algorithm(card_number) and (
-                    str(card_number).startswith(("34", "37"))
-                    and 15 <= len(str(card_number)) <= 16
+                str(card_number).startswith(("34", "37"))
+                and 15 <= len(str(card_number)) <= 16
             )
 
         @classmethod
@@ -1165,26 +1334,26 @@ class Validate:
             Validates China UnionPay card numbers.
             """
             return cls.__luhn_algorithm(card_number) and (
-                    str(card_number).startswith(
-                        (
-                            "62",
-                            "64",
-                            "65",
-                            "66",
-                            "67",
-                            "68",
-                            "69",
-                            "92",
-                            "93",
-                            "94",
-                            "95",
-                            "96",
-                            "97",
-                            "98",
-                            "99",
-                        )
+                str(card_number).startswith(
+                    (
+                        "62",
+                        "64",
+                        "65",
+                        "66",
+                        "67",
+                        "68",
+                        "69",
+                        "92",
+                        "93",
+                        "94",
+                        "95",
+                        "96",
+                        "97",
+                        "98",
+                        "99",
                     )
-                    and 16 <= len(str(card_number))
+                )
+                and 16 <= len(str(card_number))
             )
 
         @classmethod
@@ -1193,9 +1362,9 @@ class Validate:
             Validates Dankort card numbers.
             """
             return (
-                    cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith("49")
-                    and 16 <= len(str(card_number))
+                cls.__luhn_algorithm(card_number)
+                and str(card_number).startswith("49")
+                and 16 <= len(str(card_number))
             )
 
         @classmethod
@@ -1204,8 +1373,8 @@ class Validate:
             Validates Diners Club International card numbers.
             """
             return cls.__luhn_algorithm(card_number) and (
-                    str(card_number).startswith(("36", "38"))
-                    and 14 <= len(str(card_number)) <= 19
+                str(card_number).startswith(("36", "38"))
+                and 14 <= len(str(card_number)) <= 19
             )
 
         @classmethod
@@ -1214,44 +1383,44 @@ class Validate:
             Validates Discover card numbers.
             """
             return cls.__luhn_algorithm(card_number) and (
-                    str(card_number).startswith(
-                        (
-                            "6011",
-                            "6221",
-                            "6222",
-                            "6223",
-                            "623",
-                            "624",
-                            "625",
-                            "626",
-                            "627",
-                            "628",
-                            "641",
-                            "642",
-                            "643",
-                            "644",
-                            "645",
-                            "646",
-                            "647",
-                            "648",
-                            "649",
-                            "65",
-                            "66",
-                            "67",
-                            "68",
-                            "69",
-                            "71",
-                            "72",
-                            "73",
-                            "74",
-                            "75",
-                            "76",
-                            "77",
-                            "78",
-                            "79",
-                        )
+                str(card_number).startswith(
+                    (
+                        "6011",
+                        "6221",
+                        "6222",
+                        "6223",
+                        "623",
+                        "624",
+                        "625",
+                        "626",
+                        "627",
+                        "628",
+                        "641",
+                        "642",
+                        "643",
+                        "644",
+                        "645",
+                        "646",
+                        "647",
+                        "648",
+                        "649",
+                        "65",
+                        "66",
+                        "67",
+                        "68",
+                        "69",
+                        "71",
+                        "72",
+                        "73",
+                        "74",
+                        "75",
+                        "76",
+                        "77",
+                        "78",
+                        "79",
                     )
-                    and 16 <= len(str(card_number))
+                )
+                and 16 <= len(str(card_number))
             )
 
         @classmethod
@@ -1260,9 +1429,9 @@ class Validate:
             Validates JCB card numbers.
             """
             return (
-                    cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith("35")
-                    and 16 <= len(str(card_number))
+                cls.__luhn_algorithm(card_number)
+                and str(card_number).startswith("35")
+                and 16 <= len(str(card_number))
             )
 
         @classmethod
@@ -1271,40 +1440,40 @@ class Validate:
             Validates Maestro card numbers.
             """
             return cls.__luhn_algorithm(card_number) and (
-                    str(card_number).startswith(
-                        (
-                            "50",
-                            "51",
-                            "52",
-                            "53",
-                            "54",
-                            "55",
-                            "56",
-                            "57",
-                            "58",
-                            "60",
-                            "61",
-                            "62",
-                            "63",
-                            "64",
-                            "65",
-                            "66",
-                            "67",
-                            "68",
-                            "69",
-                            "70",
-                            "71",
-                            "72",
-                            "73",
-                            "74",
-                            "75",
-                            "76",
-                            "77",
-                            "78",
-                            "79",
-                        )
+                str(card_number).startswith(
+                    (
+                        "50",
+                        "51",
+                        "52",
+                        "53",
+                        "54",
+                        "55",
+                        "56",
+                        "57",
+                        "58",
+                        "60",
+                        "61",
+                        "62",
+                        "63",
+                        "64",
+                        "65",
+                        "66",
+                        "67",
+                        "68",
+                        "69",
+                        "70",
+                        "71",
+                        "72",
+                        "73",
+                        "74",
+                        "75",
+                        "76",
+                        "77",
+                        "78",
+                        "79",
                     )
-                    and 12 <= len(str(card_number)) <= 19
+                )
+                and 12 <= len(str(card_number)) <= 19
             )
 
         @classmethod
@@ -1313,11 +1482,11 @@ class Validate:
             Validates Mastercard card numbers.
             """
             return (
-                    cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith(
-                ("51", "52", "53", "54", "55", "56", "57", "58", "59")
-            )
-                    and 16 <= len(str(card_number))
+                cls.__luhn_algorithm(card_number)
+                and str(card_number).startswith(
+                    ("51", "52", "53", "54", "55", "56", "57", "58", "59")
+                )
+                and 16 <= len(str(card_number))
             )
 
         @classmethod
@@ -1326,9 +1495,9 @@ class Validate:
             Validates Visa card numbers.
             """
             return (
-                    cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith("4")
-                    and 13 <= len(str(card_number)) <= 16
+                cls.__luhn_algorithm(card_number)
+                and str(card_number).startswith("4")
+                and 13 <= len(str(card_number)) <= 16
             )
 
         @classmethod
@@ -1337,11 +1506,11 @@ class Validate:
             Validates Visa Electron card numbers.
             """
             return (
-                    cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith(
-                ("40", "41", "42", "43", "44", "45", "46", "47", "48", "49")
-            )
-                    and 16 <= len(str(card_number))
+                cls.__luhn_algorithm(card_number)
+                and str(card_number).startswith(
+                    ("40", "41", "42", "43", "44", "45", "46", "47", "48", "49")
+                )
+                and 16 <= len(str(card_number))
             )
 
         @classmethod
@@ -1350,9 +1519,9 @@ class Validate:
             Validates V Pay card numbers.
             """
             return (
-                    cls.__luhn_algorithm(card_number)
-                    and str(str(card_number)).startswith("28")
-                    and 16 <= len(str(str(card_number)))
+                cls.__luhn_algorithm(card_number)
+                and str(str(card_number)).startswith("28")
+                and 16 <= len(str(str(card_number)))
             )
 
         @classmethod
@@ -1535,8 +1704,8 @@ class Convert:
         num = 0
         Roman = Roman.upper()
         while i < len(Roman):
-            if i + 1 < len(Roman) and Roman[i: i + 2] in self.roman_to_numerical:
-                num += self.roman_to_numerical[Roman[i: i + 2]]
+            if i + 1 < len(Roman) and Roman[i : i + 2] in self.roman_to_numerical:
+                num += self.roman_to_numerical[Roman[i : i + 2]]
                 i += 2
             else:
                 num += self.roman_to_numerical[Roman[i]]
@@ -1706,9 +1875,9 @@ class Convert:
                 "Invalid input. Number, input_unit, and output_unit must all be provided."
             )
         if (
-                not isinstance(number, int)
-                or input_unit not in self.memory_dict
-                or output_unit not in self.memory_dict
+            not isinstance(number, int)
+            or input_unit not in self.memory_dict
+            or output_unit not in self.memory_dict
         ):
             raise Exception(
                 f"Invalid input. Number must be an integer, and both units must be one of the following units: \n    {str(self.memory_dict.keys()).removeprefix('dict_keys([').removesuffix('])')}."
