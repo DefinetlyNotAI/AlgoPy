@@ -50,38 +50,77 @@ To install: `pip install -r requirements.txt`
 ## Log Class Documentation
 
 ### Overview
-The `Log` class provides a flexible logging system that supports both console logging via `colorlog` and file logging. It is designed to be easily configurable through parameters such as log level, color scheme, and log file name. This class is particularly useful for applications requiring detailed logging for debugging and monitoring purposes.
+The `Log` class provides a flexible logging system that supports both console logging 
+via `colorlog` and file logging. 
+It is designed to be easily configurable through parameters such as log level, 
+color scheme, and log file name. 
+This class is particularly useful for applications requiring detailed logging 
+for debugging and monitoring purposes.
 
 ### Features
 - Supports both console and file logging.
-- Configurable log levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`).
+- Configurable log levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`, `EXCEPTION`).
 - Customizable color schemes for console output.
 - Automatic creation of log file if it does not exist.
 - Timestamped entries for easy tracking of events.
 
 ### Usage Example
+
 ```python
 from algopy import Log  # Assuming the class definition is saved in log_class_definition.py
 
+# You Don't need to set all of these, these are the defaults 
+# You don't have to set config as the whole dictionary you see now,
+# Even `config = {} works`, as it autofill missing values with defaults
+config = {
+    "filename": "YOUR_LOG_NAME.log",
+    "use_colorlog": True,  # Recommend to keep it True, enables console logging
+    "log_level": "YOUR_LEVEL",  # Your log level, can be "DEBUG", "INFO (+Internal)", "WARNING", "ERROR (+Exceptions)", or "CRITICAL" - Default is "INFO"
+    # For possible colors, see below
+    "debug_color": "cyan",
+    "info_color": "green",
+    "warning_color": "yellow",
+    "error_color": "red",
+    "critical_color": "red",
+    "exception_color": "red",
+    "colorlog_fmt_parameters": "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",  # Format of the log message.
+}
+
 # Initialize the Log class with custom settings
-logger = Log(filename="custom_log.log", use_colorlog=True, DEBUG=True, debug_color="cyan", info_color="green")
+log = Log()
 
 # Example usage
-logger.info("This is an informational message.")
-logger.warning("This is a warning message.")
-logger.error("This is an error message.")
-logger.critical("This is a critical message.")
+log.debug("This is a debug message")
+log.info("This is an info message")
+log.warning("This is a warning message")
+log.error("This is an error message")
+log.critical("This is a critical message")
+log.raw("This is a raw message")  # Not recommended, Raw write the message without any formatting, doesn't log on console
+log.string("This is a log message from a string", "warn")  # Log a message from a string with a custom log level*
+log.exception("This is an exception message")
 ```
 
-### Configuration Options
-- `filename`: The name of the log file. Default is `"Server.log"`.
-- `use_colorlog`: Whether to enable colored logging in the console. Default is `True`.
-- `DEBUG`: Enable debug-level logging. Default is `False`.
-- `debug_color`, `info_color`, `warning_color`, `error_color`, `critical_color`: Colors for different log levels in the console. Defaults are `"cyan"` for debug, `"green"` for info, `"yellow"` for warning, and `"red"` for error and critical.
-- `colorlog_fmt_parameters`: Format of the log message. Default includes timestamp, log level, and message.
+_*_ Supports the following (Case-insensitive) log levels: 
+`debug`, `info`, `warning`, `error`, `critical`, `exception`.
+and log levels shortcuts: `warn`, `err`, `crit`.
 
 ### Subclasses and Methods
 The `Log` class does not have direct subclasses but can be extended for specialized logging needs.
+
+### Color Settings
+| Color Names | Bright Color Names |
+|-------------|--------------------|
+| black       | light\_black       |
+| red         | light\_red         |
+| green       | light\_green       |
+| yellow      | light\_yellow      |
+| blue        | light\_blue        |
+| purple      | light\_purple      |
+| cyan        | light\_cyan        |
+| white       | light\_white       |
+
+The `Bright Color Names` aren't standard ANSI codes, 
+and support for these varies wildly across different terminals.
 
 ## Find Class Documentation
 
