@@ -115,6 +115,8 @@ H = height of the tree.
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 
+
+# Separate these files as a actual library
 import heapq
 import random
 import re
@@ -288,6 +290,7 @@ import logging
 #    Smoothsort
 
 
+# DONE
 class Log:
     """
     A logging class that supports colored output using the colorlog library.
@@ -487,246 +490,6 @@ class Log:
         """
         if self.color:
             colorlog.log(self.INTERNAL_LOG_LEVEL, message)
-
-
-class Find:
-    def __init__(self):
-        """
-        Initializes a new instance of the Find class.
-
-        The Find class provides methods for finding words in a text string.
-        Or getting a values index in an array.
-        Or getting the largest and smallest value in an array.
-
-
-        Returns:
-            None
-        """
-        self.special_y_words = [
-            "Cry",
-            "Dry",
-            "Gym",
-            "Hymn",
-            "Lynx",
-            "Myth",
-            "Pry",
-            "Rhythm",
-            "Shy",
-            "Spy",
-            "Spry",
-            "Sync",
-            "Try",
-            "Why",
-            "City",
-            "Party",
-            "Fly",
-            "Shy",
-            "Wary",
-            "Worthwhile",
-            "Type",
-            "Typical",
-            "Thyme",
-            "Cyst",
-            "Symbol",
-            "System",
-            "Lady",
-            "Pretty",
-            "Very",
-            "Deny",
-            "Daddy",
-            "Quickly",
-        ]
-
-    @staticmethod
-    def __sort(List: list) -> list[int | float]:
-        """
-        Sorts a list of mixed data types, filtering out non-numeric values and returning a sorted list of integers and floats.
-
-        Args:
-            List (list): A list containing mixed data types.
-
-        Returns:
-            list[int | float]: A sorted list of integers and floats.
-
-        Raises:
-            Exception: If the input list is None.
-        """
-        if List is None:
-            raise Exception("No input given.")
-
-        converted_list = sorted(
-            float(item) for item in List if isinstance(item, (int, float))
-        )
-        final_list = [
-            int(item) if item.is_integer() else item for item in converted_list
-        ]
-        return final_list
-
-    def __vowel_y(self, string: str, only_lowercase=False) -> str:
-        """
-        Determines the vowels to consider based on the presence of special words containing "y".
-
-        Args:
-            string (str): The input string to check for special words.
-            only_lowercase (bool, optional): Whether to consider only lowercase vowels. Defaults to False.
-
-        Returns:
-            str: A string of vowels to consider, including "y" if a special word is found.
-
-        Raises:
-            Exception: If the input string is None.
-        """
-        if string is None:
-            raise Exception("No input given.")
-        if self.__value_index(self.special_y_words, string):
-            if only_lowercase:
-                vowels = "aeiouy"
-            else:
-                vowels = "aeiouyAEIOUY"
-        else:
-            if only_lowercase:
-                vowels = "aeiou"
-            else:
-                vowels = "aeiouAEIOU"
-        return vowels
-
-    @staticmethod
-    def __count_character(Word: str, Vowel: str) -> str:
-        """
-        Counts the occurrences of a specified vowel in a word.
-
-        Args:
-            Word (str): The input word to count the vowel in.
-            Vowel (str): The vowel to count.
-
-        Returns:
-            str: A string containing the vowel and its count in the word.
-        """
-        count = 0
-        for i in range(len(Word)):
-            if Word[i] == Vowel:
-                count += 1
-
-        return f"{Vowel} {count}"
-
-    @staticmethod
-    def __value_index(array: list, Word: str) -> bool:
-        """
-        Checks if a given word exists in a specified array.
-
-        Args:
-            array (list): The list of values to search in.
-            Word (str): The word to search for.
-
-        Returns:
-            bool: True if the word is found, False otherwise.
-        """
-        for index, value in enumerate(array):
-            if value == Word:
-                return True
-        return False
-
-    def largest_in_array(self, List: list[int | float]) -> int | float:
-        """
-        Finds the largest value in a given list of integers or floats.
-
-        Args:
-            List (list[int | float]): A list of integers or floats to find the largest value in.
-
-        Returns:
-            int | float: The largest value in the list, or None if the list is empty.
-
-        Raises:
-            Exception: If the input list is None.
-        """
-        if List is None:
-            raise Exception("No input given.")
-        largeList = self.__sort(List)
-        if largeList is None:
-            raise Exception("No input given.")
-        return largeList[-1] if largeList else None
-
-    def smallest_in_array(self, List: list[int | float]) -> int | float:
-        """
-        Finds the smallest value in a given list of integers or floats.
-
-        Args:
-            List (list[int | float]): A list of integers or floats to find the smallest value in.
-
-        Returns:
-            int | float: The smallest value in the list, or None if the list is empty.
-
-        Raises:
-            Exception: If the input list is None.
-        """
-        if List is None:
-            raise Exception("No input given.")
-        smallList = self.__sort(List)
-        if smallList is None:
-            raise Exception("No input given.")
-        return smallList[0] if smallList else None
-
-    def total_vowels_in_string(self, Word: str) -> int:
-        """
-        Counts the total number of vowels in a given string.
-
-        Args:
-            Word (str): The input string to count the vowels in.
-
-        Returns:
-            int: The total number of vowels in the string.
-
-        Raises:
-            Exception: If the input string is None.
-        """
-        if Word is None:
-            raise Exception("No input given.")
-        vowels = self.__vowel_y(Word)
-        vowel_count = sum(1 for char in Word if char in vowels)
-        return vowel_count
-
-    def every_vowel_in_string(self, Word: str) -> str:
-        """
-        Checks if every vowel appears in a given string and returns the count of each vowel.
-
-        Args:
-            Word (str): The input string to check for vowels.
-
-        Returns:
-            str: A string containing the count of each vowel in the input string, separated by newline characters.
-
-        Raises:
-            Exception: If the input string is None.
-        """
-        if Word is None:
-            raise Exception("No input given.")
-        result = ""
-        vowels = self.__vowel_y(Word, True)
-        for vowel in vowels:
-            result += self.__count_character(Word, vowel) + "\n"
-        return result.rstrip("\n")
-
-    @staticmethod
-    def value_index_in_array(List: list, value_to_find: any) -> int | bool:
-        """
-        Finds the index of a specified value in a given list.
-
-        Args:
-            List (list): The list to search for the value in.
-            value_to_find (any): The value to search for in the list.
-
-        Returns:
-            int | bool: The index of the value in the list if found, False otherwise.
-
-        Raises:
-            Exception: If either the list or the value to find is None.
-        """
-        if List is None or value_to_find is None:
-            raise Exception("No input given.")
-        for index, value in enumerate(List):
-            if value == value_to_find:
-                return index
-        return False
 
 
 class Sort:
@@ -1225,21 +988,8 @@ class Sort:
 
 
 class Validate:
-    def __init__(self):
-        """
-        Initializes a new instance of the Validate class.
-
-        This class provides methods for validating URLs,
-        email addresses, and phone numbers as well as credit card by specifics.
-
-        Returns:
-            None
-        """
-        self.url = r"^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$"
-        self.email = r"^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        self.phone = r"^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$"
-
-    def this_email(self, email_address: str) -> bool:
+    @staticmethod
+    def this_email(email_address: str) -> bool:
         """
         Validates an email address against a set of predefined rules.
 
@@ -1253,10 +1003,11 @@ class Validate:
             return False
         if " " in email_address:
             return False
-        pattern = re.compile(self.email)
+        pattern = re.compile(r"^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
         return bool(pattern.search(email_address))
 
-    def this_url(self, url_string: str) -> bool:
+    @staticmethod
+    def this_url(url_string: str) -> bool:
         """
         Validates a URL against a set of predefined rules.
 
@@ -1268,10 +1019,11 @@ class Validate:
         """
         if " " in url_string:
             return False
-        pattern = re.compile(self.url)
+        pattern = re.compile(r"^(https?://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")
         return bool(pattern.search(url_string))
 
-    def this_phone_number(self, phone_number: int | str) -> bool:
+    @staticmethod
+    def this_phone_number(phone_number: int | str) -> bool:
         """
         Validates a phone number against a set of predefined rules.
 
@@ -1281,7 +1033,7 @@ class Validate:
         Returns:
             bool: True if the phone number is valid, False otherwise.
         """
-        pattern = re.compile(self.phone)
+        pattern = re.compile(r"^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$")
         return bool(pattern.match(str(phone_number)))
 
     class CreditCard:
@@ -1525,6 +1277,7 @@ class Validate:
             return cls.__luhn_algorithm(card_number)
 
 
+# DONE
 class Convert:
     class Binary:
         @staticmethod
@@ -1533,12 +1286,14 @@ class Convert:
                 raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
             return True
 
+        @classmethod
         def to_hex(self, Binary_Number: int) -> str:
             if Binary_Number is None:
                 raise Exception("No binary number provided")
             self.__check_input_type(str(Binary_Number), str)
             return hex(int(str(Binary_Number), 2))[2:].upper()
 
+        @classmethod
         def to_dec(self, Binary_Number: int) -> int:
             if Binary_Number is None:
                 raise Exception("No binary number provided")
@@ -1587,12 +1342,14 @@ class Convert:
             ascii_art_lines = ["".join(digits[int(digit)][i] + "  " for digit in Number) for i in range(7)]
             return "\n".join(ascii_art_lines)
 
+        @classmethod
         def to_hex(self, Decimal_Number: int) -> str:
             if Decimal_Number is None:
                 raise Exception("No decimal number provided")
             self.__check_input_type(Decimal_Number, (int, str))
             return hex(Decimal_Number)[2:].upper()
 
+        @classmethod
         def to_bin(self, Decimal_Number: int) -> int:
             if Decimal_Number is None:
                 raise Exception("No decimal number provided")
@@ -1606,12 +1363,14 @@ class Convert:
                 raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
             return True
 
+        @classmethod
         def to_bin(self, Hexadecimal_Number: str) -> int:
             if Hexadecimal_Number is None:
                 raise Exception("No hexadecimal number provided")
             self.__check_input_type(Hexadecimal_Number, str)
             return int(bin(int(Hexadecimal_Number, 16))[2:])
 
+        @classmethod
         def to_dec(self, Hexadecimal_Number: str) -> int:
             if Hexadecimal_Number is None:
                 raise Exception("No hexadecimal number provided")
@@ -1704,3 +1463,102 @@ class Convert:
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
         final_number = (number * memory_dict[input_unit]) / memory_dict[output_unit]
         return f"{final_number:.15f}".rstrip('0').rstrip('.') + f" {output_unit}"
+
+
+# DONE
+class Find:
+    class InArray:
+        @staticmethod
+        def __sort(List: list) -> list[int | float]:
+            if List is None:
+                raise Exception("No input given.")
+            converted_list = sorted(float(item) for item in List if isinstance(item, (int, float)))
+            return [int(item) if item.is_integer() else item for item in converted_list]
+
+        @classmethod
+        def largest_number(cls, List: list[int | float]) -> int | float:
+            if List is None:
+                raise Exception("No input given.")
+            sorted_list = cls.__sort(List)
+            return sorted_list[-1] if sorted_list else None
+
+        @classmethod
+        def smallest_number(cls, List: list[int | float]) -> int | float:
+            if List is None:
+                raise Exception("No input given.")
+            sorted_list = cls.__sort(List)
+            return sorted_list[0] if sorted_list else None
+
+        class Objects:
+            @staticmethod
+            def index_all(List: list, value_to_find: any) -> list[int]:
+                if List is None or value_to_find is None:
+                    raise Exception("No input given.")
+                return [index for index, value in enumerate(List) if value == value_to_find]
+
+            @staticmethod
+            def index(List: list, value_to_find: any) -> int | bool:
+                if List is None or value_to_find is None:
+                    raise Exception("No input given.")
+                try:
+                    return List.index(value_to_find)
+                except ValueError:
+                    return False
+
+    class InSentence:
+        @staticmethod
+        def longest_word(text: str) -> str:
+            if text is None:
+                raise Exception("No input given.")
+            words = text.split()
+            return max(words, key=len) if words else ""
+
+        @staticmethod
+        def shortest_word(text: str) -> str:
+            if text is None:
+                raise Exception("No input given.")
+            words = text.split()
+            return min(words, key=len) if words else ""
+
+        class Word:
+            @staticmethod
+            def exists(text: str, word_to_find: str) -> bool:
+                if text is None or word_to_find is None:
+                    raise Exception("No input given.")
+                return word_to_find in text
+
+            @staticmethod
+            def occurrences(text: str, word_to_count: str) -> int:
+                if text is None or word_to_count is None:
+                    raise Exception("No input given.")
+                return text.lower().split().count(word_to_count.lower())
+
+    class InWord:
+        @classmethod
+        def total_vowels(cls, Word: str) -> int:
+            if Word is None:
+                raise Exception("No input given.")
+            vowels = cls.__vowel_y(Word)
+            return sum(1 for char in Word if char in vowels)
+
+        @classmethod
+        def every_vowel(cls, Word: str) -> str:
+            if Word is None:
+                raise Exception("No input given.")
+            vowels = cls.__vowel_y(Word, True)
+            # TODO Turn to json
+            return "\n".join(f"{vowel} {Word.count(vowel)}" for vowel in vowels)
+
+        @staticmethod
+        def __vowel_y(string: str, only_lowercase=False) -> str:
+            if string is None:
+                raise Exception("No input given.")
+            if string in [
+                "Cry", "Dry", "Gym", "Hymn", "Lynx", "Myth", "Pry", "Rhythm", "Shy", "Spy", "Spry", "Sync", "Try",
+                "Why",
+                "City", "Party", "Fly", "Shy", "Wary", "Worthwhile", "Type", "Typical", "Thyme", "Cyst", "Symbol",
+                "System",
+                "Lady", "Pretty", "Very", "Deny", "Daddy", "Quickly",
+            ]:
+                return "aeiouy" if only_lowercase else "aeiouyAEIOUY"
+            return "aeiou" if only_lowercase else "aeiouAEIOU"
