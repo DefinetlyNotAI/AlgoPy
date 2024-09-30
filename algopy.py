@@ -116,7 +116,7 @@ H = height of the tree.
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 
 
-# Separate these files as a actual library
+# Separate these files as an actual library
 import heapq
 import random
 import re
@@ -987,6 +987,7 @@ class Sort:
             return left_values + values + right_values
 
 
+# DONE
 class Validate:
     @staticmethod
     def this_email(email_address: str) -> bool:
@@ -1287,17 +1288,17 @@ class Convert:
             return True
 
         @classmethod
-        def to_hex(self, Binary_Number: int) -> str:
+        def to_hex(cls, Binary_Number: int) -> str:
             if Binary_Number is None:
                 raise Exception("No binary number provided")
-            self.__check_input_type(str(Binary_Number), str)
+            cls.__check_input_type(str(Binary_Number), str)
             return hex(int(str(Binary_Number), 2))[2:].upper()
 
         @classmethod
-        def to_dec(self, Binary_Number: int) -> int:
+        def to_dec(cls, Binary_Number: int) -> int:
             if Binary_Number is None:
                 raise Exception("No binary number provided")
-            self.__check_input_type(str(Binary_Number), str)
+            cls.__check_input_type(str(Binary_Number), str)
             return int(str(Binary_Number), 2)
 
     class Decimal:
@@ -1343,17 +1344,17 @@ class Convert:
             return "\n".join(ascii_art_lines)
 
         @classmethod
-        def to_hex(self, Decimal_Number: int) -> str:
+        def to_hex(cls, Decimal_Number: int) -> str:
             if Decimal_Number is None:
                 raise Exception("No decimal number provided")
-            self.__check_input_type(Decimal_Number, (int, str))
+            cls.__check_input_type(Decimal_Number, (int, str))
             return hex(Decimal_Number)[2:].upper()
 
         @classmethod
-        def to_bin(self, Decimal_Number: int) -> int:
+        def to_bin(cls, Decimal_Number: int) -> int:
             if Decimal_Number is None:
                 raise Exception("No decimal number provided")
-            self.__check_input_type(Decimal_Number, (int, str))
+            cls.__check_input_type(Decimal_Number, (int, str))
             return int(bin(Decimal_Number)[2:])
 
     class Hexadecimal:
@@ -1364,17 +1365,17 @@ class Convert:
             return True
 
         @classmethod
-        def to_bin(self, Hexadecimal_Number: str) -> int:
+        def to_bin(cls, Hexadecimal_Number: str) -> int:
             if Hexadecimal_Number is None:
                 raise Exception("No hexadecimal number provided")
-            self.__check_input_type(Hexadecimal_Number, str)
+            cls.__check_input_type(Hexadecimal_Number, str)
             return int(bin(int(Hexadecimal_Number, 16))[2:])
 
         @classmethod
-        def to_dec(self, Hexadecimal_Number: str) -> int:
+        def to_dec(cls, Hexadecimal_Number: str) -> int:
             if Hexadecimal_Number is None:
                 raise Exception("No hexadecimal number provided")
-            self.__check_input_type(Hexadecimal_Number, str)
+            cls.__check_input_type(Hexadecimal_Number, str)
             return int(Hexadecimal_Number, 16)
 
     class Roman:
