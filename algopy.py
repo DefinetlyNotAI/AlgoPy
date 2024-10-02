@@ -130,18 +130,11 @@ from typing import Type
 
 # TODO Redo all Algopy to include the following:
 #     Binary trees
-#       Complete binary tree
-#       Balanced binary tree
-#       Perfect binary tree
 #       Degenerate binary tree
-#       Degenerate or pathological tree
 #       AVL tree
-#       Binary search tree
 #       Red-black tree
 #       B+ tree
 #       Segment tree
-#       Skewed binary tree
-#       Almost complete binary tree
 #    Graphs
 #       Adjacency matrix
 #       Adjacency list
@@ -949,48 +942,11 @@ class Sort:
     @classmethod
     class BinaryTree:
         def __init__(self, val=0, left=None, right=None):
-            """
-            Initializes a new instance of the BinaryTree class.
-
-            Usage:
-                # Define nodes for the binary tree
-                sort_node = Sort.BinaryTree
-                root = sort_node(5)  # root is the beginning of the binary tree
-                root.left = sort_node(3)
-                root.right = sort_node(7)
-                root.left.left = sort_node(2)
-                root.left.right = sort_node(4)
-                root.right.left = sort_node(6)
-                root.right.right = sort_node(8)
-
-                # Now, let's sort the values in the binary tree using the sort method
-                sorted_values = root.sort(root)  # root is the beginning of the binary tree, you can change this to any branch like root.left to only sort and show the values in the left branch
-                print(sorted_values)
-
-            This method will sort the binary tree in ascending order properly
-
-            Args:
-                val (int | float, optional): The value of the node. Defaults to 0.
-                left (Sort.BinaryTree, optional): The left child node. Defaults to None.
-                right (Sort.BinaryTree, optional): The right child node. Defaults to None.
-
-            Returns:
-                None
-            """
             self.val = val
             self.left = left
             self.right = right
 
         def sort(self, root) -> list[int | float]:
-            """
-            Sorts a binary tree in-order and returns a list of the sorted values.
-
-            Args:
-                root (Sort.BinaryTree): The root node of the binary tree.
-
-            Returns:
-                list[int | float]: A list of the sorted values in the binary tree.
-            """
             if root is None:
                 return []
 
