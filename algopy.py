@@ -125,6 +125,7 @@ import os
 from datetime import datetime
 import colorlog
 import logging
+from typing import Type
 
 
 # TODO Redo all Algopy to include the following:
@@ -303,7 +304,7 @@ class Log:
         :param config: A dictionary containing configuration options.
         """
         config = config or {
-            "filename": "AlgoPy.log",
+            "filename": "../ACCESS/LOGS/Logicytics.log",
             "use_colorlog": True,
             "log_level": "INFO",
             "debug_color": "cyan",
@@ -319,7 +320,7 @@ class Log:
         logging.addLevelName(self.EXCEPTION_LOG_LEVEL, "EXCEPTION")
         logging.addLevelName(self.INTERNAL_LOG_LEVEL, "INTERNAL")
         self.color = config.get("use_colorlog", True)
-        self.filename = config.get("filename", "AlgoPy.log")
+        self.filename = config.get("filename", "../ACCESS/LOGS/Logicytics.log")
         if self.color:
             logger = colorlog.getLogger()
             logger.setLevel(getattr(logging, config["log_level"].upper(), logging.INFO))
@@ -385,7 +386,7 @@ class Log:
             else message[:150] + "..."
         ) + "|"
 
-    def raw(self, message: str):
+    def raw(self, message):
         """
         Logs a raw message directly to the log file.
 
@@ -396,8 +397,9 @@ class Log:
             self.__internal(
                 f"Raw message called from a non-function - This is not recommended"
             )
-        with open(self.filename, "a") as f:
-            f.write(f"{message}\n")
+        if message != "None" and message is not None:
+            with open(self.filename, "a") as f:
+                f.write(f"{str(message)}\n")
 
     def newline(self):
         """
@@ -406,90 +408,102 @@ class Log:
         with open(self.filename, "a") as f:
             f.write("|" + "-" * 19 + "|" + "-" * 13 + "|" + "-" * 154 + "|" + "\n")
 
-    def info(self, message: str):
+    def info(self, message):
         """
         Logs an info message.
 
         :param message: The info message to be logged.
         """
-        if self.color:
-            colorlog.info(message)
-        self.raw(f"[{self.__timestamp()}] > INFO:     | {self.__pad_message(message)}")
+        if self.color and message != "None" and message is not None:
+            colorlog.info(str(message))
+        self.raw(
+            f"[{self.__timestamp()}] > INFO:     | {self.__pad_message(str(message))}"
+        )
 
-    def warning(self, message: str):
+    def warning(self, message):
         """
         Logs a warning message.
 
         :param message: The warning message to be logged.
         """
-        if self.color:
-            colorlog.warning(message)
-        self.raw(f"[{self.__timestamp()}] > WARNING:  | {self.__pad_message(message)}")
+        if self.color and message != "None" and message is not None:
+            colorlog.warning(str(message))
+        self.raw(
+            f"[{self.__timestamp()}] > WARNING:  | {self.__pad_message(str(message))}"
+        )
 
-    def error(self, message: str):
+    def error(self, message):
         """
         Logs an error message.
 
         :param message: The error message to be logged.
         """
-        if self.color:
-            colorlog.error(message)
-        self.raw(f"[{self.__timestamp()}] > ERROR:    | {self.__pad_message(message)}")
+        if self.color and message != "None" and message is not None:
+            colorlog.error(str(message))
+        self.raw(
+            f"[{self.__timestamp()}] > ERROR:    | {self.__pad_message(str(message))}"
+        )
 
-    def critical(self, message: str):
+    def critical(self, message):
         """
         Logs a critical message.
 
         :param message: The critical message to be logged.
         """
-        if self.color:
-            colorlog.critical(message)
-        self.raw(f"[{self.__timestamp()}] > CRITICAL: | {self.__pad_message(message)}")
+        if self.color and message != "None" and message is not None:
+            colorlog.critical(str(message))
+        self.raw(
+            f"[{self.__timestamp()}] > CRITICAL: | {self.__pad_message(str(message))}"
+        )
 
-    def debug(self, message: str):
+    @staticmethod
+    def debug(message):
         """
-        Logs a debug message. If the message is "*-*", it logs a separator line.
+        Logs a debug message.
 
         :param message: The debug message to be logged.
         """
-        if message == "*-*":
-            self.raw("|" + "-" * 19 + "|" + "-" * 13 + "|" + "-" * 152 + "|")
-        else:
-            colorlog.debug(message)
+        if message != "None" and message is not None:
+            colorlog.debug(str(message))
 
-    def string(self, message: str, Type: str):
+    def string(self, message, type: str):
         """
-        Logs a message with a specified type. Supported types are 'err', 'warn', and 'crit'.
+        Logs a message with a specified type. Supported types are 'debug', 'info', 'warning', 'error', 'critical'
+        as well as the aliases 'err', 'warn', and 'crit'.
 
         :param message: The message to be logged.
-        :param Type: The type of the log message.
+        :param type: The type of the log message.
         """
-        type_map = {"err": "error", "warn": "warning", "crit": "critical"}
-        Type = type_map.get(Type.lower(), Type)
-        try:
-            getattr(self, Type.lower())(message)
-        except AttributeError as AE:
-            self.__internal(f"A wrong Log Type was called: {Type} not found. -> {AE}")
-            getattr(self, "Debug".lower())(message)
+        if self.color and message != "None" and message is not None:
+            type_map = {"err": "error", "warn": "warning", "crit": "critical"}
+            type = type_map.get(type.lower(), type)
+            try:
+                getattr(self, type.lower())(str(message))
+            except AttributeError as AE:
+                self.__internal(f"A wrong Log Type was called: {type} not found. -> {AE}")
+                getattr(self, "Debug".lower())(str(message))
 
-    def exception(self, message: str):
+    def exception(self, message, exception_type: Type = Exception):
         """
         Logs an exception message.
 
         :param message: The exception message to be logged.
+        :param exception_type: The type of exception to raise.
         """
-        if self.color:
-            colorlog.log(self.EXCEPTION_LOG_LEVEL, message)
-        self.raw(f"[{self.__timestamp()}] > EXCEPTION:| {self.__pad_message(message)}")
+        if self.color and message != "None" and message is not None:
+            self.raw(
+                f"[{self.__timestamp()}] > EXCEPTION:| {self.__pad_message(f'{message} -> Exception provoked: {str(exception_type)}')}"
+            )
+        raise exception_type(message)
 
-    def __internal(self, message: str):
+    def __internal(self, message):
         """
         Logs an internal message.
 
         :param message: The internal message to be logged.
         """
-        if self.color:
-            colorlog.log(self.INTERNAL_LOG_LEVEL, message)
+        if self.color and message != "None" and message is not None:
+            colorlog.log(self.INTERNAL_LOG_LEVEL, str(message))
 
 
 class Sort:
