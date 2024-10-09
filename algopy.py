@@ -1,120 +1,3 @@
-"""
-------------------------------------------------------------------------------------------------------------------------
-
-N = number of elements to process.
-M = difference between the largest number and smallest number in the list.
-K = integers length of the largest number in the list.
-H = height of the tree.
-
-### Time Complexity
-- **O(1)**:
-  - [Log.info]
-  - [Log.warning]
-  - [Log.error]
-  - [Log.critical]
-  - [Convert.memory]
-
-- **O(n)**:
-  - [Find.value_index]
-  - [Validate.email]
-  - [Validate.url]
-  - [Validate.phone_number]
-  - [Validate.CreditCard()]
-  - [Convert.dec_to_roman]
-  - [Convert.roman_to_dec]
-  - [Find.total_vowels]
-  - [Find.every_vowel]
-  - [Convert.bin_to_dec]
-  - [Convert.bin_to_hex]
-  - [Convert.hex_to_bin]
-  - [Convert.hex_to_dec]
-  - [Sort.LinkedList().append]
-  - [Sort.LinkedList().return_elements]
-  - [Sort.TreeNode().sort]
-
-- **O(n + m)**:
-  - [Sort.using_counting_sort]
-
-- **O(log n)**:
-  - [Convert.dec_to_hex]
-  - [Convert.dec_to_bin]
-
-- **O(n log n)**:
-  - [Find.largest]
-  - [Find.smallest]
-  - [Sort.using_quicksort]
-  - [Sort.using_merge_sort]
-  - [Sort.using_heap_sort]
-
-- **O(n * k)**:
-  - [Convert.dec_to_ascii]
-  - [Sort.using_radix_sort]
-
-- **O(n^2)**:
-  - [Sort.using_selection]
-  - [Sort.using_bubble]
-  - [Sort.using_insertion]
-  - [Sort.LinkedList().using_bubble]
-
-- **O((n+1)! / 2) OR Unbounded(infinite)**:
-  - [Sort.using_bogo_sort]
-
-------------------------------------------------------------------------------------------------------------------------
-
-### Space Complexity
-- O(1):
-  - [Find.value_index]
-  - [Find.total_vowels]
-  - [Find.every_vowel]
-  - [Sort.using_selection]
-  - [Sort.using_bubble]
-  - [Sort.using_insertion]
-  - [Sort.using_heap_sort]
-  - [Convert.dec_to_ascii]
-  - [Convert.dec_to_roman]
-  - [Convert.roman_to_dec]
-  - [Convert.bin_to_dec]
-  - [Convert.bin_to_hex]
-  - [Convert.hex_to_bin]
-  - [Convert.hex_to_dec]
-  - [Convert.dec_to_hex]
-  - [Convert.dec_to_bin]
-  - [Convert.memory]
-  - [Sort.using_bogo_sort]
-  - [Validate.email]
-  - [Validate.url]
-  - [Validate.phone_number]
-  - [Validate.CreditCard()]
-  - [Sort.LinkedList().using_bubble]
-  - [Sort.LinkedList().append]
-
-- O(n):
-  - [Find.largest]
-  - [Find.smallest]
-  - [Log.info]
-  - [Log.warning]
-  - [Log.error]
-  - [Log.critical]
-  - [Sort.using_merge_sort]
-  - [Sort.LinkedList().return_elements]
-
-- O(h):
-  - [Sort.TreeNode().sort]
-
-- **O(n + k)**:
-  - [Sort.using_radix_sort]
-
-- **O(n + m)**:
-  - [Sort.using_counting_sort]
-
-- O(log n):
-  - [Sort.using_quicksort]
-
-------------------------------------------------------------------------------------------------------------------------
-"""
-
-# Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
-
 # TODO Create a repo that uses this credit card validator to create a credit card printer
 
 # TODO Separate these files as an actual library
@@ -130,24 +13,11 @@ from typing import Type
 
 # TODO Create algopy faker.js alt
 
-# TODO Remove prints
-
 # TODO Redo all Algopy to include the following:
 #    Block sort
 #    Tournament sort
-#    Spreadsort
-#    Introsort
-#    Unshuffle sort
-#    Sleep sort
-#    Bogosort
-#    Stupid sort
-#    Slowsort
-#    Bogobogosort
-#    Bubblesort with flag
-#    Cocktail shaker sort
 #    Comb sort
 #    Gnome sort
-#    Odd-even sort
 #    Quick sort
 #    Selection sort
 #    Stooge sort
@@ -157,34 +27,9 @@ from typing import Type
 #    Library sort
 #    Patience sort
 #    Smooth sort
-#    Timsort
-#    Block sort
-#    Tournament sort
-#    Spreadsort
-#    Introsort
-#    Unshuffle sort
-#    Sleep sort
-#    Bogosort
-#    Stupid sort
-#    Slowsort
-#    Bogobogosort
-#    Bubblesort with flag
-#    Cocktail shaker sort
-#    Comb sort
-#    Gnome sort
-#    Odd
-#    Selection Sort
-#    Bubble Sort
-#    Insertion Sort
-#    Merge Sort
-#    Quick Sort
-#    Heap Sort
-#    Counting Sort
-#    Radix Sort
 #    Bucket Sort
 #    Bingo Sort Algorithm
 #    ShellSort
-#    TimSort
 #    Comb Sort
 #    Pigeonhole Sort
 #    Cycle Sort
@@ -192,18 +37,12 @@ from typing import Type
 #    Strand Sort
 #    Bitonic Sort
 #    Pancake sorting
-#    BogoSort or Permutation Sort
-#    Gnome Sort
-#    Sleep Sort – The King of Laziness
-#    Structure Sorting in C++
 #    Stooge Sort
 #    Tag Sort (To get both sorted and original)
-#    Tree Sort
-#    Odd-Even Sort / Brick Sort
+#    Brick Sort
 #    3-way Merge Sort
 #    Dual-Pivot Quicksort
-#    Flashsort
-#    Smoothsort
+#    Flash_sort
 
 
 # DONE
