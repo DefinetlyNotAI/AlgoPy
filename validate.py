@@ -67,19 +67,10 @@ class Validate:
             pass
 
         @staticmethod
-        def __luhn_algorithm(card_number: int) -> bool:
-            """
-            Validates a card number using the Luhn algorithm.
-
-            Args:
-                card_number (int): The card number to validate.
-
-            Returns:
-                bool: True if the card number is valid, False otherwise.
-            """
-            if len(str(card_number)) < 13 or len(str(card_number)) > 19:
+        def __luhn_algorithm(card_number: str) -> bool:
+            if len(card_number) < 13 or len(card_number) > 19:
                 return False
-            num_list = [int(digit) for digit in str(card_number)]
+            num_list = [int(digit) for digit in card_number]
             num_list.reverse()
             total = 0
             for i, num in enumerate(num_list):
@@ -90,7 +81,7 @@ class Validate:
             return total % 10 == 0
 
         @classmethod
-        def american_express(cls, card_number: int) -> bool:
+        def american_express(cls, card_number: str) -> bool:
             """
             Validates American Express card numbers.
             """
@@ -100,7 +91,7 @@ class Validate:
             )
 
         @classmethod
-        def china_unionpay(cls, card_number: int) -> bool:
+        def china_unionpay(cls, card_number: str) -> bool:
             """
             Validates China UnionPay card numbers.
             """
@@ -128,7 +119,7 @@ class Validate:
             )
 
         @classmethod
-        def dankort(cls, card_number: int) -> bool:
+        def dankort(cls, card_number: str) -> bool:
             """
             Validates Dankort card numbers.
             """
@@ -139,7 +130,7 @@ class Validate:
             )
 
         @classmethod
-        def diners_club(cls, card_number: int) -> bool:
+        def diners_club(cls, card_number: str) -> bool:
             """
             Validates Diners Club International card numbers.
             """
@@ -149,7 +140,7 @@ class Validate:
             )
 
         @classmethod
-        def discover(cls, card_number: int) -> bool:
+        def discover(cls, card_number: str) -> bool:
             """
             Validates Discover card numbers.
             """
@@ -195,7 +186,7 @@ class Validate:
             )
 
         @classmethod
-        def jcb(cls, card_number: int) -> bool:
+        def jcb(cls, card_number: str) -> bool:
             """
             Validates JCB card numbers.
             """
@@ -206,7 +197,7 @@ class Validate:
             )
 
         @classmethod
-        def maestro(cls, card_number: int) -> bool:
+        def maestro(cls, card_number: str) -> bool:
             """
             Validates Maestro card numbers.
             """
@@ -248,7 +239,7 @@ class Validate:
             )
 
         @classmethod
-        def mastercard(cls, card_number: int) -> bool:
+        def mastercard(cls, card_number: str) -> bool:
             """
             Validates Mastercard card numbers.
             """
@@ -259,7 +250,7 @@ class Validate:
             )
 
         @classmethod
-        def visa(cls, card_number: int) -> bool:
+        def visa(cls, card_number: str) -> bool:
             """
             Validates Visa card numbers.
             """
@@ -270,7 +261,7 @@ class Validate:
             )
 
         @classmethod
-        def visa_electron(cls, card_number: int) -> bool:
+        def visa_electron(cls, card_number: str) -> bool:
             """
             Validates Visa Electron card numbers.
             """
@@ -281,7 +272,7 @@ class Validate:
             )
 
         @classmethod
-        def v_pay(cls, card_number: int) -> bool:
+        def v_pay(cls, card_number: str) -> bool:
             """
             Validates V Pay card numbers.
             """
@@ -292,7 +283,7 @@ class Validate:
             )
 
         @classmethod
-        def any(cls, card_number: int) -> bool:
+        def any(cls, card_number: str) -> bool:
             """
             Validates any card number just by passing it to the Luhn algorithm.
             """

@@ -5,6 +5,7 @@ import inspect
 import os
 from datetime import datetime
 
+
 class Log:
     """
     A logging class that supports colored output using the colorlog library.

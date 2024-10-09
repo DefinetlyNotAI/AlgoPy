@@ -820,6 +820,27 @@ class Sort:
                 move += 1
         return arr
 
+    class Tournament:
+        def __init__(self, data):
+            self.data = data
+            self.sorted_data = self.tournament_sort(data)
+
+        @staticmethod
+        def tournament_sort(data):
+            if not data:
+                return []
+
+            while len(data) > 1:
+                next_round = []
+                for i in range(0, len(data), 2):
+                    if i+1 < len(data):
+                        next_round.append(max(data[i], data[i+1]))
+                    else:
+                        next_round.append(data[i])
+                data = next_round
+
+            return data
+
     class BinaryTree:
         class _Node:
             def __init__(self, value):
