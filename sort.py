@@ -1,3 +1,7 @@
+import bisect
+import random
+
+
 class BinaryTree:
     class _Node:
         def __init__(self, value):
@@ -500,3 +504,441 @@ class BinaryTree:
                 left //= 2
                 right //= 2
             return sum_query
+
+
+class Sort:
+    pass
+
+
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
+
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+    return arr
+
+
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        left_half = arr[:mid]
+        right_half = arr[mid:]
+
+        merge_sort(left_half)
+        merge_sort(right_half)
+
+        i = j = k = 0
+
+        while i < len(left_half) and j < len(right_half):
+            if left_half[i] < right_half[j]:
+                arr[k] = left_half[i]
+                i += 1
+            else:
+                arr[k] = right_half[j]
+                j += 1
+            k += 1
+
+        while i < len(left_half):
+            arr[k] = left_half[i]
+            i += 1
+            k += 1
+
+        while j < len(right_half):
+            arr[k] = right_half[j]
+            j += 1
+            k += 1
+    return arr
+
+
+def quick_sort(arr):
+    def partition(low, high):
+        pivot = arr[high]
+        i = low - 1
+        for j in range(low, high):
+            if arr[j] <= pivot:
+                i += 1
+                arr[i], arr[j] = arr[j], arr[i]
+        arr[i + 1], arr[high] = arr[high], arr[i + 1]
+        return i + 1
+
+    def quick_sort_recursive(low, high):
+        if low < high:
+            pi = partition(low, high)
+            quick_sort_recursive(low, pi - 1)
+            quick_sort_recursive(pi + 1, high)
+
+    quick_sort_recursive(0, len(arr) - 1)
+    return arr
+
+
+def heap_sort(arr):
+    def heapify(n, i):
+        largest = i
+        l = 2 * i + 1
+        r = 2 * i + 2
+
+        if l < n and arr[i] < arr[l]:
+            largest = l
+
+        if r < n and arr[largest] < arr[r]:
+            largest = r
+
+        if largest != i:
+            arr[i], arr[largest] = arr[largest], arr[i]
+            heapify(n, largest)
+
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(n, i)
+
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(i, 0)
+    return arr
+
+
+def radix_sort(arr):
+    def counting_sort(exp):
+        n = len(arr)
+        output = [0] * n
+        count = [0] * 10
+
+        for i in range(n):
+            index = arr[i] // exp
+            count[index % 10] += 1
+
+        for i in range(1, 10):
+            count[i] += count[i - 1]
+
+        i = n - 1
+        while i >= 0:
+            index = arr[i] // exp
+            output[count[index % 10] - 1] = arr[i]
+            count[index % 10] -= 1
+            i -= 1
+
+        for i in range(n):
+            arr[i] = output[i]
+
+    max1 = max(arr)
+    exp = 1
+    while max1 // exp > 0:
+        counting_sort(exp)
+        exp *= 10
+    return arr
+
+
+def counting_sort(arr):
+    max_val = max(arr)
+    m = max_val + 1
+    count = [0] * m
+
+    for a in arr:
+        count[a] += 1
+
+    i = 0
+    for a in range(m):
+        for _ in range(count[a]):
+            arr[i] = a
+            i += 1
+    return arr
+
+
+def bucket_sort(arr):
+    if len(arr) == 0:
+        return arr
+
+    bucket_count = len(arr)
+    max_val = max(arr)
+    min_val = min(arr)
+
+    buckets = [[] for _ in range(bucket_count)]
+
+    for i in range(len(arr)):
+        idx = int(bucket_count * (arr[i] - min_val) / (max_val - min_val + 1))
+        buckets[idx].append(arr[i])
+
+    for i in range(bucket_count):
+        buckets[i] = insertion_sort(buckets[i])
+
+    result = []
+    for i in range(bucket_count):
+        result.extend(buckets[i])
+
+    return result
+
+
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2
+
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+        gap //= 2
+    return arr
+
+
+def cocktail_sort(arr):
+    n = len(arr)
+    swapped = True
+    start = 0
+    end = n - 1
+    while swapped:
+        swapped = False
+        for i in range(start, end):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swapped = True
+        if not swapped:
+            break
+        swapped = False
+        end -= 1
+        for i in range(end - 1, start - 1, -1):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swapped = True
+        start += 1
+    return arr
+
+
+def comb_sort(arr):
+    def get_next_gap(gap):
+        gap = (gap * 10) // 13
+        if gap < 1:
+            return 1
+        return gap
+
+    n = len(arr)
+    gap = n
+    swapped = True
+
+    while gap != 1 or swapped:
+        gap = get_next_gap(gap)
+        swapped = False
+
+        for i in range(0, n - gap):
+            if arr[i] > arr[i + gap]:
+                arr[i], arr[i + gap] = arr[i + gap], arr[i]
+                swapped = True
+    return arr
+
+
+def gnome_sort(arr):
+    n = len(arr)
+    index = 0
+
+    while index < n:
+        if index == 0 or arr[index] >= arr[index - 1]:
+            index += 1
+        else:
+            arr[index], arr[index - 1] = arr[index - 1], arr[index]
+            index -= 1
+    return arr
+
+
+def pancake_sort(arr):
+    def flip(arr, i):
+        start = 0
+        while start < i:
+            arr[start], arr[i] = arr[i], arr[start]
+            start += 1
+            i -= 1
+
+    def find_max(arr, n):
+        mi = 0
+        for i in range(0, n):
+            if arr[i] > arr[mi]:
+                mi = i
+        return mi
+
+    n = len(arr)
+    for curr_size in range(n, 1, -1):
+        mi = find_max(arr, curr_size)
+        if mi != curr_size - 1:
+            flip(arr, mi)
+            flip(arr, curr_size - 1)
+    return arr
+
+
+def stooge_sort(arr, l=0, h=None):
+    if h is None:
+        h = len(arr) - 1
+
+    if l >= h:
+        return
+
+    if arr[l] > arr[h]:
+        arr[l], arr[h] = arr[h], arr[l]
+
+    if h - l + 1 > 2:
+        t = (h - l + 1) // 3
+        stooge_sort(arr, l, h - t)
+        stooge_sort(arr, l + t, h)
+        stooge_sort(arr, l, h - t)
+    return arr
+
+
+def bitonic_sort(arr, up=True):
+    def bitonic_merge(arr, low, cnt, up):
+        if cnt > 1:
+            k = cnt // 2
+            for i in range(low, low + k):
+                if (up and arr[i] > arr[i + k]) or (not up and arr[i] < arr[i + k]):
+                    arr[i], arr[i + k] = arr[i + k], arr[i]
+            bitonic_merge(arr, low, k, up)
+            bitonic_merge(arr, low + k, k, up)
+
+    def bitonic_sort_recursive(arr, low, cnt, up):
+        if cnt > 1:
+            k = cnt // 2
+            bitonic_sort_recursive(arr, low, k, True)
+            bitonic_sort_recursive(arr, low + k, k, False)
+            bitonic_merge(arr, low, cnt, up)
+
+    bitonic_sort_recursive(arr, 0, len(arr), up)
+    return arr
+
+
+def is_sorted(arr):
+    return all(arr[i] <= arr[i + 1] for i in range(len(arr) - 1))
+
+
+def bogo_sort(arr):
+    while not is_sorted(arr):
+        random.shuffle(arr)
+    return arr
+
+
+def cycle_sort(arr):
+    writes = 0
+
+    for cycleStart in range(0, len(arr) - 1):
+        item = arr[cycleStart]
+
+        pos = cycleStart
+        for i in range(cycleStart + 1, len(arr)):
+            if arr[i] < item:
+                pos += 1
+
+        if pos == cycleStart:
+            continue
+
+        while item == arr[pos]:
+            pos += 1
+        arr[pos], item = item, arr[pos]
+        writes += 1
+
+        while pos != cycleStart:
+            pos = cycleStart
+            for i in range(cycleStart + 1, len(arr)):
+                if arr[i] < item:
+                    pos += 1
+
+            while item == arr[pos]:
+                pos += 1
+            arr[pos], item = item, arr[pos]
+            writes += 1
+    return arr
+
+
+def library_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    sorted_arr = [None] * (2 * len(arr))
+    sorted_arr[0] = arr[0]
+    length = 1
+
+    for i in range(1, len(arr)):
+        pos = min(length, i + 1)
+        while pos > 0 and (sorted_arr[pos - 1] is None or sorted_arr[pos - 1] > arr[i]):
+            pos -= 1
+        for j in range(length, pos, -1):
+            sorted_arr[j] = sorted_arr[j - 1]
+        sorted_arr[pos] = arr[i]
+        length += 1
+
+    return [x for x in sorted_arr if x is not None]
+
+
+def patience_sort(arr):
+    piles = []
+    for x in arr:
+        new_pile = [x]
+        i = bisect.bisect_left(piles, new_pile)
+        if i != len(piles):
+            piles[i].append(x)
+        else:
+            piles.append(new_pile)
+
+    result = []
+    while piles:
+        smallest_pile = min(piles, key=lambda p: p[-1])
+        result.append(smallest_pile.pop())
+        if not smallest_pile:
+            piles.remove(smallest_pile)
+    return result[::-1]
+
+
+def strand_sort(arr):
+    def merge(left, right):
+        result = []
+        while len(left) > 0 and len(right) > 0:
+            if left[0] <= right[0]:
+                result.append(left.pop(0))
+            else:
+                result.append(right.pop(0))
+        result += left
+        result += right
+        return result
+
+    if len(arr) == 0:
+        return arr
+
+    result = []
+
+    while len(arr) != 0:
+        i = 0
+        sublist = [arr.pop(0)]
+        while i < len(arr):
+            if arr[i] > sublist[-1]:
+                sublist.append(arr.pop(i))
+            else:
+                i += 1
+
+        result = merge(result, sublist)
+    return result
+
+
+def timsort(arr):
+    return sorted(arr)
+
