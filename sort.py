@@ -1,11 +1,6 @@
-# TODO Turn everything to classmethod
-# TODO Remove all prints etc
-# TODO Each method should return the result and specify its type
-
-
-class BinaryTreeOfType:
+class BinaryTree:
     class _Node:
-        def __init__(self, value: object):
+        def __init__(self, value):
             self.value = value
             self.left = None
             self.right = None
@@ -35,8 +30,8 @@ class BinaryTreeOfType:
         @classmethod
         def insert(cls, root, key):
             if not root:
-                return BinaryTreeOfType._AVLNode(key)
-            elif key < root.key:
+                return BinaryTree._AVLNode(key)
+            if key < root.key:
                 root.left = cls.insert(root.left, key)
             else:
                 root.right = cls.insert(root.right, key)
@@ -44,18 +39,14 @@ class BinaryTreeOfType:
             root.height = 1 + max(cls.Get.height(root.left), cls.Get.height(root.right))
             balance = cls.Get.balance(root)
 
-            # Left, Left
-            if balance > 1 and key < root.left.key:
-                return cls.__right_rotate(root)
-            # Right, Right
-            if balance < -1 and key > root.right.key:
-                return cls.__left_rotate(root)
-            # Left Right
-            if balance > 1 and key > root.left.key:
+            if balance > 1:
+                if key < root.left.key:
+                    return cls.__right_rotate(root)
                 root.left = cls.__left_rotate(root.left)
                 return cls.__right_rotate(root)
-            # Right Left
-            if balance < -1 and key < root.right.key:
+            if balance < -1:
+                if key > root.right.key:
+                    return cls.__left_rotate(root)
                 root.right = cls.__right_rotate(root.right)
                 return cls.__left_rotate(root)
 
@@ -71,84 +62,75 @@ class BinaryTreeOfType:
             elif key > root.key:
                 root.right = cls.delete(root.right, key)
             else:
-                if root.left is None:
+                if not root.left:
                     return root.right
-                elif root.right is None:
+                if not root.right:
                     return root.left
 
                 temp = cls.__min_value_node(root.right)
                 root.key = temp.key
                 root.right = cls.delete(root.right, temp.key)
 
-            if root is None:
-                return root
-
             root.height = 1 + max(cls.Get.height(root.left), cls.Get.height(root.right))
             balance = cls.Get.balance(root)
 
-            # Left, Left
-            if balance > 1 and cls.Get.balance(root.left) >= 0:
-                return cls.__right_rotate(root)
-            # Left, Right
-            if balance > 1 and cls.Get.balance(root.left) < 0:
+            if balance > 1:
+                if cls.Get.balance(root.left) >= 0:
+                    return cls.__right_rotate(root)
                 root.left = cls.__left_rotate(root.left)
                 return cls.__right_rotate(root)
-            # Right, Right
-            if balance < -1 and cls.Get.balance(root.right) <= 0:
-                return cls.__left_rotate(root)
-            # Right, Left
-            if balance < -1 and cls.Get.balance(root.right) > 0:
+            if balance < -1:
+                if cls.Get.balance(root.right) <= 0:
+                    return cls.__left_rotate(root)
                 root.right = cls.__right_rotate(root.right)
                 return cls.__left_rotate(root)
 
             return root
 
         @classmethod
-        def __left_rotate(cls, z):
-            y = z.right
-            T2 = y.left
-            y.left = z
-            z.right = T2
+        def __rotate(cls, z, direction):
+            y = getattr(z, direction)
+            setattr(z, direction, getattr(y, 'left' if direction == 'right' else 'right'))
+            setattr(y, 'left' if direction == 'right' else 'right', z)
             z.height = 1 + max(cls.Get.height(z.left), cls.Get.height(z.right))
             y.height = 1 + max(cls.Get.height(y.left), cls.Get.height(y.right))
             return y
+
+        @classmethod
+        def __left_rotate(cls, z):
+            return cls.__rotate(z, 'right')
 
         @classmethod
         def __right_rotate(cls, z):
-            y = z.left
-            T3 = y.right
-            y.right = z
-            z.left = T3
-            z.height = 1 + max(cls.Get.height(z.left), cls.Get.height(z.right))
-            y.height = 1 + max(cls.Get.height(y.left), cls.Get.height(y.right))
-            return y
+            return cls.__rotate(z, 'left')
 
         @classmethod
         def pre_order(cls, root):
-            if not root:
-                return
-            print("{0} ".format(root.key), end="")
-            cls.pre_order(root.left)
-            cls.pre_order(root.right)
+            result = []
+            cls._pre_order_helper(root, result)
+            return " ".join(result)
+
+        @classmethod
+        def _pre_order_helper(cls, root, result):
+            if root:
+                result.append(str(root.key))
+                cls._pre_order_helper(root.left, result)
+                cls._pre_order_helper(root.right, result)
 
         @classmethod
         def __min_value_node(cls, root):
-            if root is None or root.left is None:
-                return root
-            return cls.__min_value_node(root.left)
+            while root.left:
+                root = root.left
+            return root
 
         class Get:
             @staticmethod
             def height(root):
-                if not root:
-                    return 0
-                return root.height
+                return root.height if root else 0
 
             @classmethod
             def balance(cls, root):
-                if not root:
-                    return 0
-                return cls.height(root.left) - cls.height(root.right)
+                return cls.height(root.left) - cls.height(root.right) if root else 0
 
     class Complete:
         @classmethod
@@ -157,21 +139,21 @@ class BinaryTreeOfType:
 
         @classmethod
         def insert(cls, value):
-            if cls.root is None:
-                cls.root = BinaryTreeOfType._Node(value)
+            if not cls.root:
+                cls.root = BinaryTree._Node(value)
             else:
                 cls.__insert_recursive(cls.root, value)
 
         @classmethod
         def __insert_recursive(cls, node, value):
             if value < node.value:
-                if node.left is None:
-                    node.left = BinaryTreeOfType._Node(value)
+                if not node.left:
+                    node.left = BinaryTree._Node(value)
                 else:
                     cls.__insert_recursive(node.left, value)
             else:
-                if node.right is None:
-                    node.right = BinaryTreeOfType._Node(value)
+                if not node.right:
+                    node.right = BinaryTree._Node(value)
                 else:
                     cls.__insert_recursive(node.right, value)
 
@@ -181,16 +163,16 @@ class BinaryTreeOfType:
 
         @classmethod
         def __delete_recursive(cls, node, value):
-            if node is None:
+            if not node:
                 return node
             if value < node.value:
                 node.left = cls.__delete_recursive(node.left, value)
             elif value > node.value:
                 node.right = cls.__delete_recursive(node.right, value)
             else:
-                if node.left is None:
+                if not node.left:
                     return node.right
-                elif node.right is None:
+                if not node.right:
                     return node.left
                 temp = cls.__min_value_node(node.right)
                 node.value = temp.value
@@ -199,10 +181,9 @@ class BinaryTreeOfType:
 
         @staticmethod
         def __min_value_node(node):
-            current = node
-            while current.left is not None:
-                current = current.left
-            return current
+            while node.left:
+                node = node.left
+            return node
 
         @classmethod
         def traverse(cls):
@@ -224,18 +205,18 @@ class BinaryTreeOfType:
 
         @classmethod
         def insert(cls, key):
-            if cls.root is None:
-                cls.root = BinaryTreeOfType._Node(key)
+            if not cls.root:
+                cls.root = BinaryTree._Node(key)
             else:
                 current = cls.root
-                while current.right is not None:
+                while current.right:
                     current = current.right
-                current.right = BinaryTreeOfType._Node(key)
+                current.right = BinaryTree._Node(key)
 
         @classmethod
         def search(cls, key):
             current = cls.root
-            while current is not None:
+            while current:
                 if current.key == key:
                     return True
                 current = current.right
@@ -243,13 +224,13 @@ class BinaryTreeOfType:
 
         @classmethod
         def delete(cls, key):
-            if cls.root is None:
+            if not cls.root:
                 return
             if cls.root.key == key:
                 cls.root = cls.root.right
                 return
             current = cls.root
-            while current.right is not None:
+            while current.right:
                 if current.right.key == key:
                     current.right = current.right.right
                     return
@@ -257,11 +238,13 @@ class BinaryTreeOfType:
 
         @classmethod
         def traverse(cls):
+            result = []
             current = cls.root
-            while current is not None:
-                print(current.key, end=" -> ")
+            while current:
+                result.append(str(current.key))
                 current = current.right
-            print("None")
+            result.append("None")
+            return " -> ".join(result)
 
     class Perfect:
         @classmethod
@@ -278,15 +261,14 @@ class BinaryTreeOfType:
             if index < len(cls.nodes):
                 cls.__create(2 * index + 1)
                 # noinspection PyTypeChecker
-                cls.nodes[index] = BinaryTreeOfType._Node(index)
+                cls.nodes[index] = BinaryTree._Node(index)
                 cls.__create(2 * index + 2)
 
         @classmethod
-        def return_tree(cls) -> str:
+        def return_tree(cls):
             levels = []
             cls.__print_tree(0, 0, levels)
-            tree_str = cls.__format_tree(levels)
-            return tree_str
+            return cls.__format_tree(levels)
 
         @staticmethod
         def __format_tree(levels):
@@ -300,7 +282,7 @@ class BinaryTreeOfType:
             return tree_str.replace("None", " ")
 
         @classmethod
-        def return_list(cls) -> list[int | None]:
+        def return_list(cls):
             return [node.value if node else None for node in cls.nodes]
 
         @classmethod
@@ -315,12 +297,12 @@ class BinaryTreeOfType:
     class RedBlackTree:
         @classmethod
         def __init__(cls):
-            cls.NIL = BinaryTreeOfType._RBNode(data=None, color="black")  # Sentinel node for leaves
+            cls.NIL = BinaryTree._RBNode(data=None, color="black")
             cls.root = cls.NIL
 
         @classmethod
         def insert(cls, key):
-            new_node = BinaryTreeOfType._RBNode(key)
+            new_node = BinaryTree._RBNode(key)
             new_node.left = cls.NIL
             new_node.right = cls.NIL
             parent = None
@@ -334,7 +316,7 @@ class BinaryTreeOfType:
                     current = current.right
 
             new_node.parent = parent
-            if parent is None:
+            if not parent:
                 cls.root = new_node
             elif new_node.data < parent.data:
                 parent.left = new_node
@@ -378,36 +360,29 @@ class BinaryTreeOfType:
             cls.root.color = "black"
 
         @classmethod
-        def left_rotate(cls, x):
-            y = x.right
-            x.right = y.left
-            if y.left != cls.NIL:
-                y.left.parent = x
-            y.parent = x.parent
-            if x.parent is None:
-                cls.root = y
-            elif x == x.parent.left:
-                x.parent.left = y
+        def rotate(cls, node, direction):
+            opposite = 'left' if direction == 'right' else 'right'
+            child = getattr(node, direction)
+            setattr(node, direction, getattr(child, opposite))
+            if getattr(child, opposite) != cls.NIL:
+                getattr(child, opposite).parent = node
+            child.parent = node.parent
+            if not node.parent:
+                cls.root = child
+            elif node == getattr(node.parent, opposite):
+                setattr(node.parent, opposite, child)
             else:
-                x.parent.right = y
-            y.left = x
-            x.parent = y
+                setattr(node.parent, direction, child)
+            setattr(child, opposite, node)
+            node.parent = child
+
+        @classmethod
+        def left_rotate(cls, x):
+            cls.rotate(x, 'right')
 
         @classmethod
         def right_rotate(cls, y):
-            x = y.left
-            y.left = x.right
-            if x.right != cls.NIL:
-                x.right.parent = y
-            x.parent = y.parent
-            if y.parent is None:
-                cls.root = x
-            elif y == y.parent.right:
-                y.parent.right = x
-            else:
-                y.parent.left = x
-            x.right = y
-            y.parent = x
+            cls.rotate(y, 'left')
 
         @classmethod
         def __repr__(cls):
@@ -421,14 +396,14 @@ class BinaryTreeOfType:
     class BPlusTree:
         @classmethod
         def __init__(cls, t=3):
-            cls.root = BinaryTreeOfType._BPlusTreeNode(is_leaf=True)
+            cls.root = BinaryTree._BPlusTreeNode(is_leaf=True)
             cls.t = t
 
         @classmethod
         def insert(cls, key):
             root = cls.root
             if len(root.keys) == (2 * cls.t) - 1:
-                temp = BinaryTreeOfType._BPlusTreeNode()
+                temp = BinaryTree._BPlusTreeNode()
                 cls.root = temp
                 temp.children.append(root)
                 cls.split_child(temp, 0)
@@ -456,7 +431,7 @@ class BinaryTreeOfType:
         def split_child(cls, node, i):
             t = cls.t
             y = node.children[i]
-            z = BinaryTreeOfType._BPlusTreeNode(is_leaf=y.is_leaf)
+            z = BinaryTree._BPlusTreeNode(is_leaf=y.is_leaf)
             node.children.insert(i + 1, z)
             node.keys.insert(i, y.keys[t - 1])
             z.keys = y.keys[t:(2 * t) - 1]
@@ -467,7 +442,7 @@ class BinaryTreeOfType:
 
         @classmethod
         def search(cls, key, node=None):
-            if node is None:
+            if not node:
                 node = cls.root
             i = 0
             while i < len(node.keys) and key > node.keys[i]:
@@ -476,17 +451,17 @@ class BinaryTreeOfType:
                 return True
             if node.is_leaf:
                 return False
-            else:
-                return cls.search(key, node.children[i])
+            return cls.search(key, node.children[i])
 
         @classmethod
         def traverse(cls, node=None, level=0):
-            if node is None:
+            if not node:
                 node = cls.root
-            print("Level", level, ":", " ".join(str(key) for key in node.keys))
+            result = [f"Level {level}: " + " ".join(str(key) for key in node.keys)]
             if not node.is_leaf:
                 for child in node.children:
-                    cls.traverse(child, level + 1)
+                    result.extend(cls.traverse(child, level + 1))
+            return result
 
     class SegmentTree:
         @classmethod
@@ -497,26 +472,21 @@ class BinaryTreeOfType:
 
         @classmethod
         def __build(cls, data):
-            # Insert leaf nodes in tree
             for i in range(cls.n):
                 cls.tree[cls.n + i] = data[i]
-            # Build the tree by calculating parents
             for i in range(cls.n - 1, 0, -1):
                 cls.tree[i] = cls.tree[i * 2] + cls.tree[i * 2 + 1]
 
         @classmethod
         def update(cls, pos, value):
-            # Update leaf node
             pos += cls.n
             cls.tree[pos] = value
-            # Update internal nodes
             while pos > 1:
                 pos //= 2
                 cls.tree[pos] = cls.tree[2 * pos] + cls.tree[2 * pos + 1]
 
         @classmethod
         def query(cls, left, right):
-            # Range sum query
             left += cls.n
             right += cls.n
             sum_query = 0
