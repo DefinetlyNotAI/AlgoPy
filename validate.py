@@ -22,20 +22,14 @@ class Validate:
         return bool(pattern.search(email_address))
 
     @staticmethod
-    def this_url(url_string: str) -> bool:
-        """
-        Validates a URL against a set of predefined rules.
-
-        Args:
-            url_string (str): The URL to be validated.
-
-        Returns:
-            bool: True if the URL is valid, False otherwise.
-        """
-        if " " in url_string:
+    def this_url(url_string: str, use_https: bool = True) -> bool:
+        if not url_string or " " in url_string:
             return False
-        pattern = re.compile(r"^(https?://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")
-        return bool(pattern.search(url_string))
+        https = bool((re.compile(r"^(https://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")).search(url_string))
+        http = bool((re.compile(r"^(http://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")).search(url_string))
+        if use_https:
+            return https
+        return https or http
 
     @staticmethod
     def this_phone_number(phone_number: int | str) -> bool:
@@ -46,6 +40,7 @@ class Validate:
     def this_date(date: str) -> bool:
         date = date.replace("/", "-")
         date = date.replace("\\", "-")
+        date = date.replace(" ", "-")
         try:
             datetime.strptime(date, "%Y-%m-%d")
             return True
@@ -74,10 +69,13 @@ class Validate:
             num_list.reverse()
             total = 0
             for i, num in enumerate(num_list):
-                doubled = num * 2
-                if doubled > 9:
-                    doubled -= 9
-                total += doubled
+                if i % 2 == 1:
+                    doubled = num * 2
+                    if doubled > 9:
+                        doubled -= 9
+                    total += doubled
+                else:
+                    total += num
             return total % 10 == 0
 
         @classmethod

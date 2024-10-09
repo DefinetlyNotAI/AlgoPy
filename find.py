@@ -73,14 +73,6 @@ class Find:
             vowels = cls.__vowel_y(Word)
             return sum(1 for char in Word if char in vowels)
 
-        @classmethod
-        def every_vowel(cls, Word: str) -> str:
-            if Word is None:
-                raise Exception("No input given.")
-            vowels = cls.__vowel_y(Word, True)
-            # TODO Turn to json
-            return "\n".join(f"{vowel} {Word.count(vowel)}" for vowel in vowels)
-
         @staticmethod
         def __vowel_y(string: str, only_lowercase=False) -> str:
             if string is None:

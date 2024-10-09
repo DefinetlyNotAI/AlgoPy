@@ -216,6 +216,9 @@ class Sort:
 
     @staticmethod
     def radix_sort(arr: list) -> list:
+        if not arr:
+            return arr
+
         def counting_sort(exp):
             n = len(arr)
             output = [0] * n
@@ -247,6 +250,8 @@ class Sort:
 
     @staticmethod
     def counting_sort(arr: list) -> list:
+        if not arr:
+            return arr
         max_val = max(arr)
         m = max_val + 1
         count = [0] * m
@@ -384,12 +389,12 @@ class Sort:
         return arr
 
     @classmethod
-    def stooge_sort(cls, arr: list, left: int = 0, right: int = None) -> list | None:
+    def stooge_sort(cls, arr: list, left: int = 0, right: int = None) -> list:
         if right is None:
             right = len(arr) - 1
 
         if left >= right:
-            return
+            return arr
 
         if arr[left] > arr[right]:
             arr[left], arr[right] = arr[right], arr[left]
@@ -399,28 +404,7 @@ class Sort:
             cls.stooge_sort(arr, left, right - t)
             cls.stooge_sort(arr, left + t, right)
             cls.stooge_sort(arr, left, right - t)
-        return arr
-
-    @staticmethod
-    def bitonic_sort(arr: list, up=True) -> list:
-        def bitonic_merge(arr, low, cnt, up):
-            if cnt > 1:
-                k = cnt // 2
-                for i in range(low, low + k):
-                    if (up and arr[i] > arr[i + k]) or (not up and arr[i] < arr[i + k]):
-                        arr[i], arr[i + k] = arr[i + k], arr[i]
-                bitonic_merge(arr, low, k, up)
-                bitonic_merge(arr, low + k, k, up)
-
-        def bitonic_sort_recursive(arr, low, cnt, up):
-            if cnt > 1:
-                k = cnt // 2
-                bitonic_sort_recursive(arr, low, k, True)
-                bitonic_sort_recursive(arr, low + k, k, False)
-                bitonic_merge(arr, low, cnt, up)
-
-        bitonic_sort_recursive(arr, 0, len(arr), up)
-        return arr
+        return arr if arr else None
 
     @staticmethod
     def cycle_sort(arr: list) -> list:
@@ -473,25 +457,6 @@ class Sort:
             length += 1
 
         return [x for x in sorted_arr if x is not None]
-
-    @staticmethod
-    def patience_sort(arr: list) -> list:
-        piles = []
-        for x in arr:
-            new_pile = [x]
-            i = bisect.bisect_left(piles, new_pile)
-            if i != len(piles):
-                piles[i].append(x)
-            else:
-                piles.append(new_pile)
-
-        result = []
-        while piles:
-            smallest_pile = min(piles, key=lambda p: p[-1])
-            result.append(smallest_pile.pop())
-            if not smallest_pile:
-                piles.remove(smallest_pile)
-        return result[::-1]
 
     @staticmethod
     def strand_sort(arr: list) -> list:
@@ -567,30 +532,6 @@ class Sort:
         return sorted_arr
 
     @staticmethod
-    def spread_sort(arr: list) -> list:
-        def _spread_sort(arr, start, end):
-            if end - start < 2:
-                return arr[start:end]
-            mid = start + (end - start) // 2
-            _spread_sort(arr, start, mid)
-            _spread_sort(arr, mid, end)
-            return _spread_merge(arr, start, mid, end)
-
-        def _spread_merge(arr, start, mid, end):
-            left = arr[start:mid]
-            right = arr[mid:end]
-            i = j = 0
-            for k in range(start, end):
-                if i < len(left) and (j >= len(right) or left[i] <= right[j]):
-                    arr[k] = left[i]
-                    i += 1
-                else:
-                    arr[k] = right[j]
-                    j += 1
-
-        return _spread_sort(arr, 0, len(arr))
-
-    @staticmethod
     def intro_sort(arr: list) -> list:
         def _intro_sort(arr, start, end, max_depth):
             if end - start <= 1:
@@ -626,6 +567,8 @@ class Sort:
             for i in range(start, end):
                 arr[i] = heappop(heap)
 
+        if len(arr) == 0 or not arr:
+            return arr
         max_depth = int(math.log2(len(arr))) * 2
         _intro_sort(arr, 0, len(arr), max_depth)
         return arr
@@ -709,48 +652,6 @@ class Sort:
         return arr
 
     @staticmethod
-    def smooth_sort(arr: list) -> list:
-        def sift(lo, hi):
-            while hi - lo > 1:
-                if arr[hi - 1] > arr[hi]:
-                    hi -= 1
-                if arr[hi] <= arr[lo]:
-                    break
-                arr[lo], arr[hi] = arr[hi], arr[lo]
-                lo = hi
-                hi = 2 * lo + 1
-
-        def trinkle(lo, hi):
-            while lo < hi:
-                if arr[hi] <= arr[lo]:
-                    break
-                arr[lo], arr[hi] = arr[hi], arr[lo]
-                lo = hi
-                hi = 2 * lo + 1
-            sift(lo, hi)
-
-        def semi_trinkle(lo, hi):
-            if lo < hi:
-                arr[lo], arr[hi] = arr[hi], arr[lo]
-                trinkle(lo, hi)
-
-        def smooth_sort(arr: list) -> list:
-            lo, hi = 0, 1
-            while hi < len(arr):
-                if hi - lo == 1:
-                    sift(lo, hi)
-                else:
-                    trinkle(lo, hi)
-                    semi_trinkle(lo, hi)
-                hi += 1
-            while lo < len(arr):
-                sift(lo, len(arr) - 1)
-                lo += 1
-            return arr
-
-        return smooth_sort(arr)
-
-    @staticmethod
     def bingo_sort(arr: list) -> list:
         n = len(arr)
         while n > 0:
@@ -764,6 +665,8 @@ class Sort:
 
     @staticmethod
     def pigeonhole_sort(arr: list) -> list:
+        if not arr:
+            return arr
         min_val = min(arr)
         max_val = max(arr)
         size = max_val - min_val + 1
@@ -788,38 +691,6 @@ class Sort:
         original_arr = [x[0] for x in tagged_arr]
         return sorted_arr, original_arr
 
-    @staticmethod
-    def flash_sort(arr: list) -> list:
-        n = len(arr)
-        if n == 0:
-            return arr
-        m = int(0.45 * n)
-        min_val = min(arr)
-        max_val = max(arr)
-        if min_val == max_val:
-            return arr
-        line = [0] * m
-        for num in arr:
-            line[int((m - 1) * (num - min_val) / (max_val - min_val))] += 1
-        for i in range(1, m):
-            line[i] += line[i - 1]
-        move = 0
-        j = 0
-        k = m - 1
-        while move < n - 1:
-            while j > line[k] - 1:
-                j += 1
-                k = int((m - 1) * (arr[j] - min_val) / (max_val - min_val))
-            flash = arr[j]
-            while j != line[k]:
-                k = int((m - 1) * (flash - min_val) / (max_val - min_val))
-                hold = arr[line[k] - 1]
-                arr[line[k] - 1] = flash
-                flash = hold
-                line[k] -= 1
-                move += 1
-        return arr
-
     class Tournament:
         def __init__(self, data):
             self.data = data
@@ -833,8 +704,8 @@ class Sort:
             while len(data) > 1:
                 next_round = []
                 for i in range(0, len(data), 2):
-                    if i+1 < len(data):
-                        next_round.append(max(data[i], data[i+1]))
+                    if i + 1 < len(data):
+                        next_round.append(max(data[i], data[i + 1]))
                     else:
                         next_round.append(data[i])
                 data = next_round
@@ -847,6 +718,7 @@ class Sort:
                 self.value = value
                 self.left = None
                 self.right = None
+                self.key = value
 
         class _AVLNode:
             def __init__(self, key):
@@ -974,72 +846,6 @@ class Sort:
                 @classmethod
                 def balance(cls, root):
                     return cls.height(root.left) - cls.height(root.right) if root else 0
-
-        class Complete:
-            @classmethod
-            def __init__(cls):
-                cls.root = None
-
-            @classmethod
-            def insert(cls, value):
-                if not cls.root:
-                    cls.root = Sort.BinaryTree._Node(value)
-                else:
-                    cls.__insert_recursive(cls.root, value)
-
-            @classmethod
-            def __insert_recursive(cls, node, value):
-                if value < node.value:
-                    if not node.left:
-                        node.left = Sort.BinaryTree._Node(value)
-                    else:
-                        cls.__insert_recursive(node.left, value)
-                else:
-                    if not node.right:
-                        node.right = Sort.BinaryTree._Node(value)
-                    else:
-                        cls.__insert_recursive(node.right, value)
-
-            @classmethod
-            def delete(cls, value):
-                cls.root = cls.__delete_recursive(cls.root, value)
-
-            @classmethod
-            def __delete_recursive(cls, node, value):
-                if not node:
-                    return node
-                if value < node.value:
-                    node.left = cls.__delete_recursive(node.left, value)
-                elif value > node.value:
-                    node.right = cls.__delete_recursive(node.right, value)
-                else:
-                    if not node.left:
-                        return node.right
-                    if not node.right:
-                        return node.left
-                    temp = cls.__min_value_node(node.right)
-                    node.value = temp.value
-                    node.right = cls.__delete_recursive(node.right, temp.value)
-                return node
-
-            @staticmethod
-            def __min_value_node(node):
-                while node.left:
-                    node = node.left
-                return node
-
-            @classmethod
-            def traverse(cls):
-                result = []
-                cls.__inorder_traversal_recursive(cls.root, result)
-                return result
-
-            @classmethod
-            def __inorder_traversal_recursive(cls, node, result):
-                if node:
-                    cls.__inorder_traversal_recursive(node.left, result)
-                    result.append(node.value)
-                    cls.__inorder_traversal_recursive(node.right, result)
 
         class Degenerate:
             @classmethod
