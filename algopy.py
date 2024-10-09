@@ -13,38 +13,6 @@ from typing import Type
 
 # TODO Create algopy faker.js alt
 
-# TODO Redo all Algopy to include the following:
-#    Block sort
-#    Tournament sort
-#    Comb sort
-#    Gnome sort
-#    Quick sort
-#    Selection sort
-#    Stooge sort
-#    Strand sort
-#    Tree sort
-#    Cycle sort
-#    Library sort
-#    Patience sort
-#    Smooth sort
-#    Bucket Sort
-#    Bingo Sort Algorithm
-#    ShellSort
-#    Comb Sort
-#    Pigeonhole Sort
-#    Cycle Sort
-#    Cocktail Sort
-#    Strand Sort
-#    Bitonic Sort
-#    Pancake sorting
-#    Stooge Sort
-#    Tag Sort (To get both sorted and original)
-#    Brick Sort
-#    3-way Merge Sort
-#    Dual-Pivot Quicksort
-#    Flash_sort
-
-
 # DONE
 class Log:
     """
