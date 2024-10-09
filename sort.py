@@ -509,6 +509,32 @@ class BinaryTree:
                 right //= 2
             return sum_query
 
+    class Default:
+        def insert(self, root, key):
+            if root is None:
+                return BinaryTree._Node(key)
+            if key < root.value:
+                root.left = self.insert(root.left, key)
+            else:
+                root.right = self.insert(root.right, key)
+            return root
+
+        def inorder_traversal(self, root, sorted_list):
+            if root:
+                self.inorder_traversal(root.left, sorted_list)
+                sorted_list.append(root.value)
+                self.inorder_traversal(root.right, sorted_list)
+
+        def tree_sort(self, arr):
+            if not arr:
+                return arr
+            root = BinaryTree._Node(arr[0])
+            for value in arr[1:]:
+                self.insert(root, value)
+            sorted_list = []
+            self.inorder_traversal(root, sorted_list)
+            return sorted_list
+
 
 class Sort:
     pass
@@ -1122,7 +1148,37 @@ def bogo_bogo_sort(arr):
     def bogosort(arr):
         while not is_sorted(arr):
             random.shuffle(arr)
+
     for i in range(len(arr)):
         if not is_sorted(arr[:i + 1]):
             bogosort(arr[:i + 1])
+    return arr
+
+
+def bubble_sort_with_flag(arr):
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr
+
+
+def odd_even_sort(arr):
+    n = len(arr)
+    sorted_arr = False
+    while not sorted_arr:
+        sorted_arr = True
+        for i in range(1, n - 1, 2):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                sorted_arr = False
+        for i in range(0, n - 1, 2):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                sorted_arr = False
     return arr
