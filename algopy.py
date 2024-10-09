@@ -115,6 +115,7 @@ H = height of the tree.
 
 # Fun Fact: Interstellar + Undertale + Deltarune + Stardew + Terraria + Minecraft = Life
 
+# TODO Create a repo that uses this credit card validator to create a credit card printer
 
 # TODO Separate these files as an actual library
 
@@ -458,17 +459,22 @@ class Validate:
 
     @staticmethod
     def this_phone_number(phone_number: int | str) -> bool:
-        """
-        Validates a phone number against a set of predefined rules.
-
-        Args:
-            phone_number (int | str): The phone number to be validated.
-
-        Returns:
-            bool: True if the phone number is valid, False otherwise.
-        """
-        pattern = re.compile(r"^\+?[0-9]{1,3}?[ -]?[0-9]{1,3}?[ -]?[0-9]{1,4}$")
+        pattern = re.compile(r"^(\(\d{3}\)[\s-]?)?\d{3}[\s-]?\d{4}[\s-]?\d{3}$")
         return bool(pattern.match(str(phone_number)))
+
+    @staticmethod
+    def this_date(date: str) -> bool:
+        date = date.replace("/", "-")
+        date = date.replace("\\", "-")
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+            return True
+        except ValueError:
+            try:
+                datetime.strptime(date, "%d-%m-%Y")
+                return True
+            except ValueError:
+                return False
 
     class CreditCard:
         def __init__(self):
@@ -491,6 +497,8 @@ class Validate:
             Returns:
                 bool: True if the card number is valid, False otherwise.
             """
+            if len(str(card_number)) < 13 or len(str(card_number)) > 19:
+                return False
             num_list = [int(digit) for digit in str(card_number)]
             num_list.reverse()
             total = 0
