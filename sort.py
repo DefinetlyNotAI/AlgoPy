@@ -1,5 +1,9 @@
 import bisect
 import random
+import math
+from heapq import heappush, heappop
+import threading
+import time
 
 
 class BinaryTree:
@@ -597,14 +601,14 @@ def quick_sort(arr):
 def heap_sort(arr):
     def heapify(n, i):
         largest = i
-        l = 2 * i + 1
-        r = 2 * i + 2
+        left = 2 * i + 1
+        right = 2 * i + 2
 
-        if l < n and arr[i] < arr[l]:
-            largest = l
+        if left < n and arr[i] < arr[left]:
+            largest = left
 
-        if r < n and arr[largest] < arr[r]:
-            largest = r
+        if right < n and arr[largest] < arr[right]:
+            largest = right
 
         if largest != i:
             arr[i], arr[largest] = arr[largest], arr[i]
@@ -789,21 +793,21 @@ def pancake_sort(arr):
     return arr
 
 
-def stooge_sort(arr, l=0, h=None):
-    if h is None:
-        h = len(arr) - 1
+def stooge_sort(arr, left=0, right=None):
+    if right is None:
+        right = len(arr) - 1
 
-    if l >= h:
+    if left >= right:
         return
 
-    if arr[l] > arr[h]:
-        arr[l], arr[h] = arr[h], arr[l]
+    if arr[left] > arr[right]:
+        arr[left], arr[right] = arr[right], arr[left]
 
-    if h - l + 1 > 2:
-        t = (h - l + 1) // 3
-        stooge_sort(arr, l, h - t)
-        stooge_sort(arr, l + t, h)
-        stooge_sort(arr, l, h - t)
+    if right - left + 1 > 2:
+        t = (right - left + 1) // 3
+        stooge_sort(arr, left, right - t)
+        stooge_sort(arr, left + t, right)
+        stooge_sort(arr, left, right - t)
     return arr
 
 
@@ -942,3 +946,183 @@ def strand_sort(arr):
 def timsort(arr):
     return sorted(arr)
 
+
+def block_sort(arr):
+    if len(arr) == 0:
+        return arr
+    num_blocks = int(len(arr) ** 0.5)
+    blocks = [[] for _ in range(num_blocks)]
+
+    for x in arr:
+        blocks[int(x * num_blocks / (max(arr) + 1))].append(x)
+
+    for i in range(num_blocks):
+        blocks[i].sort()
+
+    sorted_arr = []
+    for block in blocks:
+        sorted_arr.extend(block)
+
+    return sorted_arr
+
+
+def tournament_sort(arr):
+    def play_tournament(arr):
+        if len(arr) == 1:
+            return arr[0], []
+        mid = len(arr) // 2
+        left_winner, left_remaining = play_tournament(arr[:mid])
+        right_winner, right_remaining = play_tournament(arr[mid:])
+        if left_winner < right_winner:
+            return left_winner, right_remaining + [right_winner] + left_remaining
+        else:
+            return right_winner, left_remaining + [left_winner] + right_remaining
+
+    sorted_arr = []
+    remaining = arr
+    while remaining:
+        winner, remaining = play_tournament(remaining)
+        sorted_arr.append(winner)
+    return sorted_arr
+
+
+def spread_sort(arr):
+    def _spread_sort(arr, start, end):
+        if end - start < 2:
+            return arr[start:end]
+        mid = start + (end - start) // 2
+        _spread_sort(arr, start, mid)
+        _spread_sort(arr, mid, end)
+        return _spread_merge(arr, start, mid, end)
+
+    def _spread_merge(arr, start, mid, end):
+        left = arr[start:mid]
+        right = arr[mid:end]
+        i = j = 0
+        for k in range(start, end):
+            if i < len(left) and (j >= len(right) or left[i] <= right[j]):
+                arr[k] = left[i]
+                i += 1
+            else:
+                arr[k] = right[j]
+                j += 1
+
+    return _spread_sort(arr, 0, len(arr))
+
+
+def intro_sort(arr):
+    def _intro_sort(arr, start, end, max_depth):
+        if end - start <= 1:
+            return
+        elif max_depth == 0:
+            heapsort(arr, start, end)
+        else:
+            pivot = partition(arr, start, end)
+            _intro_sort(arr, start, pivot, max_depth - 1)
+            _intro_sort(arr, pivot + 1, end, max_depth - 1)
+
+    def partition(arr, start, end):
+        pivot = arr[start]
+        left = start + 1
+        right = end - 1
+        done = False
+        while not done:
+            while left <= right and arr[left] <= pivot:
+                left += 1
+            while arr[right] >= pivot and right >= left:
+                right -= 1
+            if right < left:
+                done = True
+            else:
+                arr[left], arr[right] = arr[right], arr[left]
+        arr[start], arr[right] = arr[right], arr[start]
+        return right
+
+    def heapsort(arr, start, end):
+        heap = []
+        for i in range(start, end):
+            heappush(heap, arr[i])
+        for i in range(start, end):
+            arr[i] = heappop(heap)
+
+    max_depth = int(math.log2(len(arr))) * 2
+    _intro_sort(arr, 0, len(arr), max_depth)
+    return arr
+
+
+def un_shuffle_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    evens = arr[::2]
+    odds = arr[1::2]
+
+    sorted_evens = un_shuffle_sort(evens)
+    sorted_odds = un_shuffle_sort(odds)
+
+    result = []
+    while sorted_evens or sorted_odds:
+        if sorted_evens and (not sorted_odds or sorted_evens[0] <= sorted_odds[0]):
+            result.append(sorted_evens.pop(0))
+        else:
+            result.append(sorted_odds.pop(0))
+
+    return result
+
+
+def sleep_sort(arr):
+    result = []
+
+    def sleep_and_append(x):
+        time.sleep(x)
+        result.append(x)
+
+    threads = [threading.Thread(target=sleep_and_append, args=(x,)) for x in arr]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    return result
+
+
+def bogosort(arr):
+    while not is_sorted(arr):
+        random.shuffle(arr)
+    return arr
+
+
+def stupid_sort(arr):
+    i = 0
+    while i < len(arr):
+        if i == 0 or arr[i] >= arr[i - 1]:
+            i += 1
+        else:
+            arr[i], arr[i - 1] = arr[i - 1], arr[i]
+            i -= 1
+    return arr
+
+
+def slow_sort(arr):
+    def _slow_sort(arr, i, j):
+        if i >= j:
+            return
+        m = (i + j) // 2
+        _slow_sort(arr, i, m)
+        _slow_sort(arr, m + 1, j)
+        if arr[m] > arr[j]:
+            arr[m], arr[j] = arr[j], arr[m]
+        _slow_sort(arr, i, j - 1)
+
+    _slow_sort(arr, 0, len(arr) - 1)
+    return arr
+
+
+def bogo_bogo_sort(arr):
+    def bogosort(arr):
+        while not is_sorted(arr):
+            random.shuffle(arr)
+    for i in range(len(arr)):
+        if not is_sorted(arr[:i + 1]):
+            bogosort(arr[:i + 1])
+    return arr

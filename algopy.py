@@ -171,31 +171,6 @@ from typing import Type
 #    Cocktail shaker sort
 #    Comb sort
 #    Gnome sort
-#    Odd-even sort
-#    Quick sort
-#    Selection sort
-#    Stooge sort
-#    Strand sort
-#    Tree sort
-#    Cycle sort
-#    Library sort
-#    Patience sort
-#    Smooth sort
-#    Timsort
-#    Block sort
-#    Tournament sort
-#    Spreadsort
-#    Introsort
-#    Unshuffle sort
-#    Sleep sort
-#    Bogosort
-#    Stupid sort
-#    Slowsort
-#    Bogobogosort
-#    Bubblesort with flag
-#    Cocktail shaker sort
-#    Comb sort
-#    Gnome sort
 #    Odd
 #    Selection Sort
 #    Bubble Sort
