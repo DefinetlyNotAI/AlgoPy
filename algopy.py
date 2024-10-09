@@ -127,14 +127,9 @@ import colorlog
 import logging
 from typing import Type
 
+# TODO Create algopy faker.js alt
 
-# TODO Redo all Algopy to include the following:
-#     Binary trees
-#       Degenerate binary tree
-#       AVL tree
-#       Red-black tree
-#       B+ tree
-#       Segment tree
+# TODO Redo all Algopy to include the following: Remove prints
 #    Graphs
 #       Adjacency matrix
 #       Adjacency list
