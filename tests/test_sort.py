@@ -442,3 +442,73 @@ class TestBinaryTree(unittest.TestCase):
         arr = [10, 20, 5, 6, 12, 30, 7, 17]
         sorted_arr = tree.tree_sort(arr)
         self.assertEqual(sorted_arr, [5, 6, 7, 10, 12, 17, 20, 30])
+
+
+class TestSortingString(unittest.TestCase):
+    def test_alphabetically_sorts_correctly(self):
+        arr = ["banana", "apple", "cherry"]
+        sorted_arr = Sort.String.alphabetically(arr)
+        self.assertEqual(sorted_arr, ["apple", "banana", "cherry"])
+
+    def test_alphabetically_sorts_reverse_correctly(self):
+        arr = ["banana", "apple", "cherry"]
+        sorted_arr = Sort.String.alphabetically(arr, reverse=True)
+        self.assertEqual(sorted_arr, ["cherry", "banana", "apple"])
+
+    def test_alphabetically_handles_empty_list(self):
+        arr = []
+        sorted_arr = Sort.String.alphabetically(arr)
+        self.assertEqual(sorted_arr, [])
+
+    def test_split_alphabetically_sorts_correctly(self):
+        arr = ["banana", "apple", "cherry"]
+        sorted_arr = Sort.String.Split.alphabetically(arr)
+        self.assertEqual(sorted_arr, ([], ["apple", "banana", "cherry"]))
+
+    def test_split_alphabetically_sorts_correctly_int(self):
+        arr = ["banana", "apple", 2, "cherry", 1]
+        sorted_arr = Sort.String.Split.alphabetically(arr)
+        self.assertEqual(sorted_arr, ([1, 2], ["apple", "banana", "cherry"]))
+
+    def test_split_alphabetically_sorts_reverse_correctly(self):
+        arr = ["banana", "apple", "cherry"]
+        sorted_arr = Sort.String.Split.alphabetically(arr, reverse=True)
+        self.assertEqual(sorted_arr, ([], ["cherry", "banana", "apple"]))
+
+    def test_split_alphabetically_handles_empty_list(self):
+        arr = []
+        sorted_arr = Sort.String.Split.alphabetically(arr)
+        self.assertEqual(sorted_arr, ([], []))
+
+    def test_split_alphabetically_handles_none(self):
+        sorted_arr = Sort.String.Split.alphabetically(None)
+        self.assertEqual(sorted_arr, ([], []))
+
+    def test_split_default_sorts_correctly(self):
+        arr = ["banana", "apple", "cherry"]
+        sorted_arr = Sort.String.Split.default(arr)
+        self.assertEqual(sorted_arr, ([], sorted_arr[1]))
+
+    def test_split_default_sorts_correctly_int(self):
+        arr = ["banana", "apple", "cherry", 2, 1]
+        sorted_arr = Sort.String.Split.default(arr)
+        self.assertEqual(sorted_arr, ([1, 2], sorted_arr[1]))
+
+    def test_split_default_sorts_reverse_correctly(self):
+        arr = ["banana", "apple", "cherry"]
+        sorted_arr = Sort.String.Split.default(arr, reverse=True)
+        self.assertEqual(sorted_arr, ([], sorted_arr[1]))
+
+    def test_split_default_sorts_reverse_correctly_int(self):
+        arr = ["banana", "apple", "cherry", 2, 1]
+        sorted_arr = Sort.String.Split.default(arr, reverse=True)
+        self.assertEqual(sorted_arr, ([1, 2], sorted_arr[1]))
+
+    def test_split_default_handles_empty_list(self):
+        arr = []
+        sorted_arr = Sort.String.Split.default(arr)
+        self.assertEqual(sorted_arr, ([], []))
+
+    def test_split_default_handles_none(self):
+        sorted_arr = Sort.String.Split.default(None)
+        self.assertEqual(sorted_arr, ([], []))

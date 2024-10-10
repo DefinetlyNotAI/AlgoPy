@@ -1,4 +1,3 @@
-import bisect
 import random
 import math
 from heapq import heappush, heappop
@@ -6,10 +5,38 @@ import threading
 import time
 
 
+# TODO Add option to use bubble sort on Sort.String.Split
 class Sort:
+    class String:
+        class Split:
+            @staticmethod
+            def default(arr: list, reverse: bool = False) -> tuple[list[int], list[str]]:
+                if not arr:
+                    return [], []
+                str_list = [x for x in arr if isinstance(x, str)]
+                if reverse:
+                    str_list = str_list.reverse()
+                int_list = [x for x in arr if isinstance(x, int)]
+                return (Sort.QuickSort.default(int_list) if int_list else []), str_list
+
+            @classmethod
+            def alphabetically(cls, arr: list, reverse: bool = False) -> tuple[list[int], list[str]]:
+                if not arr:
+                    return [], []
+                int_list, str_list = cls.default(arr)
+                return (int_list if int_list else []), Sort.String.alphabetically(str_list, reverse)
+
+        @staticmethod
+        def alphabetically(arr: list, reverse: bool = False) -> list[str]:
+            if not arr:
+                return []
+            if reverse:
+                return sorted([str(item) for item in arr], reverse=True)
+            return sorted([str(item) for item in arr])
+
     class BubbleSort:
         @staticmethod
-        def default(arr: list) -> list:
+        def default(arr: list[int]) -> list[int]:
             n = len(arr)
             for i in range(n):
                 for j in range(0, n - i - 1):
@@ -18,7 +45,7 @@ class Sort:
             return arr
 
         @staticmethod
-        def with_flag(arr: list) -> list:
+        def with_flag(arr: list[int]) -> list[int]:
             n = len(arr)
             for i in range(n):
                 swapped = False
@@ -32,7 +59,7 @@ class Sort:
 
     class QuickSort:
         @classmethod
-        def dual_pivot(cls, arr: list, low: int, high: int) -> list:
+        def dual_pivot(cls, arr: list[int], low: int, high: int) -> list[int]:
             def partition(arr, low, high):
                 if arr[low] > arr[high]:
                     arr[low], arr[high] = arr[high], arr[low]
@@ -67,7 +94,7 @@ class Sort:
             return arr
 
         @staticmethod
-        def default(arr: list) -> list:
+        def default(arr: list[int]) -> list[int]:
             def partition(low, high):
                 pivot = arr[high]
                 i = low - 1
@@ -89,7 +116,7 @@ class Sort:
 
     class MergeSort:
         @classmethod
-        def way3(cls, arr: list) -> list:
+        def way3(cls, arr: list[int]) -> list[int]:
             def _3way(left, middle, right):
                 result = []
                 while left or middle or right:
@@ -113,7 +140,7 @@ class Sort:
             return _3way(left, middle, right)
 
         @classmethod
-        def default(cls, arr: list) -> list:
+        def default(cls, arr: list[int]) -> list[int]:
             if len(arr) > 1:
                 mid = len(arr) // 2
                 left_half = arr[:mid]
@@ -146,18 +173,18 @@ class Sort:
 
     class BogoSort:
         @staticmethod
-        def __is_sorted(arr: list) -> bool:
+        def __is_sorted(arr: list[int]) -> bool:
             return all(arr[i] <= arr[i + 1] for i in range(len(arr) - 1))
 
         @classmethod
-        def default(cls, arr: list) -> list:
+        def default(cls, arr: list[int]) -> list[int]:
             while not cls.__is_sorted(arr):
                 random.shuffle(arr)
             return arr
 
         @classmethod
-        def duo(cls, arr: list) -> list:
-            def bogosort(arr: list):
+        def duo(cls, arr: list[int]) -> list[int]:
+            def bogosort(arr: list[int]):
                 while not cls.__is_sorted(arr):
                     random.shuffle(arr)
 
@@ -167,7 +194,7 @@ class Sort:
             return arr
 
     @staticmethod
-    def selection_sort(arr: list) -> list:
+    def selection_sort(arr: list[int]) -> list[int]:
         n = len(arr)
         for i in range(n):
             min_idx = i
@@ -178,7 +205,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def insertion_sort(arr: list) -> list:
+    def insertion_sort(arr: list[int]) -> list[int]:
         for i in range(1, len(arr)):
             key = arr[i]
             j = i - 1
@@ -189,7 +216,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def heap_sort(arr: list) -> list:
+    def heap_sort(arr: list[int]) -> list[int]:
         def heapify(n, i):
             largest = i
             left = 2 * i + 1
@@ -215,7 +242,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def radix_sort(arr: list) -> list:
+    def radix_sort(arr: list[int]) -> list[int]:
         if not arr:
             return arr
 
@@ -249,7 +276,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def counting_sort(arr: list) -> list:
+    def counting_sort(arr: list[int]) -> list[int]:
         if not arr:
             return arr
         max_val = max(arr)
@@ -267,7 +294,7 @@ class Sort:
         return arr
 
     @classmethod
-    def bucket_sort(cls, arr: list) -> list:
+    def bucket_sort(cls, arr: list[int]) -> list[int]:
         if len(arr) == 0:
             return arr
 
@@ -291,7 +318,7 @@ class Sort:
         return result
 
     @staticmethod
-    def shell_sort(arr: list) -> list:
+    def shell_sort(arr: list[int]) -> list[int]:
         n = len(arr)
         gap = n // 2
 
@@ -307,7 +334,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def cocktail_sort(arr: list) -> list:
+    def cocktail_sort(arr: list[int]) -> list[int]:
         n = len(arr)
         swapped = True
         start = 0
@@ -330,7 +357,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def comb_sort(arr: list) -> list:
+    def comb_sort(arr: list[int]) -> list[int]:
         def get_next_gap(gap):
             gap = (gap * 10) // 13
             if gap < 1:
@@ -352,7 +379,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def gnome_sort(arr: list) -> list:
+    def gnome_sort(arr: list[int]) -> list[int]:
         n = len(arr)
         index = 0
 
@@ -365,7 +392,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def pancake_sort(arr: list) -> list:
+    def pancake_sort(arr: list[int]) -> list[int]:
         def flip(arr, i):
             start = 0
             while start < i:
@@ -389,7 +416,7 @@ class Sort:
         return arr
 
     @classmethod
-    def stooge_sort(cls, arr: list, left: int = 0, right: int = None) -> list:
+    def stooge_sort(cls, arr: list[int], left: int = 0, right: int = None) -> list[int]:
         if right is None:
             right = len(arr) - 1
 
@@ -407,7 +434,7 @@ class Sort:
         return arr if arr else None
 
     @staticmethod
-    def cycle_sort(arr: list) -> list:
+    def cycle_sort(arr: list[int]) -> list[int]:
         writes = 0
 
         for cycleStart in range(0, len(arr) - 1):
@@ -439,7 +466,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def library_sort(arr: list) -> list:
+    def library_sort(arr: list) -> list[int] | list[None]:
         if len(arr) <= 1:
             return arr
 
@@ -459,7 +486,7 @@ class Sort:
         return [x for x in sorted_arr if x is not None]
 
     @staticmethod
-    def strand_sort(arr: list) -> list:
+    def strand_sort(arr: list[int]) -> list[int]:
         def merge(left, right):
             result = []
             while len(left) > 0 and len(right) > 0:
@@ -489,11 +516,11 @@ class Sort:
         return result
 
     @staticmethod
-    def tim_sort(arr: list) -> list:
+    def tim_sort(arr: list[int]) -> list[int]:
         return sorted(arr)
 
     @staticmethod
-    def block_sort(arr: list) -> list:
+    def block_sort(arr: list[int]) -> list[int]:
         if len(arr) == 0:
             return arr
         num_blocks = int(len(arr) ** 0.5)
@@ -512,7 +539,7 @@ class Sort:
         return sorted_arr
 
     @staticmethod
-    def tournament_sort(arr: list) -> list:
+    def tournament_sort(arr: list[int]) -> list[int]:
         def play_tournament(arr):
             if len(arr) == 1:
                 return arr[0], []
@@ -532,7 +559,7 @@ class Sort:
         return sorted_arr
 
     @staticmethod
-    def intro_sort(arr: list) -> list:
+    def intro_sort(arr: list[int]) -> list[int]:
         def _intro_sort(arr, start, end, max_depth):
             if end - start <= 1:
                 return
@@ -574,7 +601,7 @@ class Sort:
         return arr
 
     @classmethod
-    def un_shuffle_sort(cls, arr: list) -> list:
+    def un_shuffle_sort(cls, arr: list[int]) -> list[int]:
         if len(arr) <= 1:
             return arr
 
@@ -594,7 +621,7 @@ class Sort:
         return result
 
     @staticmethod
-    def sleep_sort(arr: list) -> list:
+    def sleep_sort(arr: list[int]) -> list[int]:
         result = []
 
         def sleep_and_append(x):
@@ -610,7 +637,7 @@ class Sort:
         return result
 
     @staticmethod
-    def stupid_sort(arr: list) -> list:
+    def stupid_sort(arr: list[int]) -> list[int]:
         i = 0
         while i < len(arr):
             if i == 0 or arr[i] >= arr[i - 1]:
@@ -621,7 +648,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def slow_sort(arr: list) -> list:
+    def slow_sort(arr: list[int]) -> list[int]:
         def _slow_sort(arr, i, j):
             if i >= j:
                 return
@@ -636,7 +663,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def odd_even_sort(arr: list) -> list:
+    def odd_even_sort(arr: list[int]) -> list[int]:
         n = len(arr)
         sorted_arr = False
         while not sorted_arr:
@@ -652,7 +679,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def bingo_sort(arr: list) -> list:
+    def bingo_sort(arr: list[int]) -> list[int]:
         n = len(arr)
         while n > 0:
             new_n = 0
@@ -664,7 +691,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def pigeonhole_sort(arr: list) -> list:
+    def pigeonhole_sort(arr: list[int]) -> list[int]:
         if not arr:
             return arr
         min_val = min(arr)
@@ -684,7 +711,7 @@ class Sort:
         return arr
 
     @staticmethod
-    def tag_sort(arr: list) -> tuple[list, list[int]]:
+    def tag_sort(arr: list[int]) -> tuple[list[int], list[int]]:
         tagged_arr = list(enumerate(arr))
         tagged_arr.sort(key=lambda x: x[1])
         sorted_arr = [x[1] for x in tagged_arr]
