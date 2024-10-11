@@ -48,7 +48,7 @@ import algopy.PACKAGE_TO_USE as WHATEVER_NAME_YOU_WANT
 WHATEVER_NAME_YOU_WANT = WHATEVER_NAME_YOU_WANT.CLASS_NAME()
 ```
 
-And all you have to do is read the documentation on the Wiki.
+And all you have to do is read the documentation on the Wiki. (WIP - Version 2.1.1)
 
 ### Prerequisites
 
