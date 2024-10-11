@@ -4,7 +4,7 @@ setup(
     name="algopy",
     version="2.0.0",
     packages=find_packages(),
-    install_requires=["colorlog~=6.8.2" "DateTime~=5.5" "setuptools~=73.0.0"],
+    install_requires=["colorlog~=6.8.2", "DateTime~=5.5", "setuptools~=73.0.0"],
     test_suite="tests",
     author="Shahm Najeeb",
     author_email="Nirt_12023@outlook.com",
