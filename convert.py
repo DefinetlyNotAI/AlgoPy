@@ -2,12 +2,25 @@ class Convert:
     class Binary:
         @staticmethod
         def __check_input_type(value, expected_type) -> bool:
+            """
+            Check if the input value is of the expected type.
+
+            :param value: The value to check.
+            :param expected_type: The expected type of the value.
+            :return: True if the value is of the expected type, otherwise raises an Exception.
+            """
             if not isinstance(value, expected_type):
                 raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
             return True
 
         @classmethod
         def to_hex(cls, Binary_Number: int) -> str:
+            """
+            Convert a binary number to its hexadecimal representation.
+
+            :param Binary_Number: The binary number to convert.
+            :return: The hexadecimal representation of the binary number.
+            """
             if Binary_Number is None:
                 raise Exception("No binary number provided")
             cls.__check_input_type(str(Binary_Number), str)
@@ -15,6 +28,12 @@ class Convert:
 
         @classmethod
         def to_dec(cls, Binary_Number: int) -> int:
+            """
+            Convert a binary number to its decimal representation.
+
+            :param Binary_Number: The binary number to convert.
+            :return: The decimal representation of the binary number.
+            """
             if Binary_Number is None:
                 raise Exception("No binary number provided")
             cls.__check_input_type(str(Binary_Number), str)
@@ -23,12 +42,25 @@ class Convert:
     class Decimal:
         @staticmethod
         def __check_input_type(value, expected_type) -> bool:
+            """
+            Check if the input value is of the expected type.
+
+            :param value: The value to check.
+            :param expected_type: The expected type of the value.
+            :return: True if the value is of the expected type, otherwise raises an Exception.
+            """
             if not isinstance(value, expected_type):
                 raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
             return True
 
         @staticmethod
         def to_roman(Number: int) -> str:
+            """
+            Convert a decimal number to its Roman numeral representation.
+
+            :param Number: The decimal number to convert.
+            :return: The Roman numeral representation of the decimal number.
+            """
             mapping = {
                 1000: "M", 900: "CM", 500: "D", 400: "CD", 100: "C", 90: "XC",
                 50: "L", 40: "XL", 10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"
@@ -44,6 +76,12 @@ class Convert:
 
         @staticmethod
         def to_ascii(Number: int | str) -> str:
+            """
+            Convert a decimal number to its ASCII art representation.
+
+            :param Number: The decimal number to convert.
+            :return: The ASCII art representation of the decimal number.
+            """
             digits = [
                 ["  ***  ", " *   * ", "*     *", "*     *", "*     *", " *   * ", "  ***  "],
                 [" * ", "** ", " * ", " * ", " * ", " * ", "***"],
@@ -64,6 +102,12 @@ class Convert:
 
         @classmethod
         def to_hex(cls, Decimal_Number: int) -> str:
+            """
+            Convert a decimal number to its hexadecimal representation.
+
+            :param Decimal_Number: The decimal number to convert.
+            :return: The hexadecimal representation of the decimal number.
+            """
             if Decimal_Number is None:
                 raise Exception("No decimal number provided")
             cls.__check_input_type(Decimal_Number, (int, str))
@@ -71,6 +115,12 @@ class Convert:
 
         @classmethod
         def to_bin(cls, Decimal_Number: int) -> int:
+            """
+            Convert a decimal number to its binary representation.
+
+            :param Decimal_Number: The decimal number to convert.
+            :return: The binary representation of the decimal number.
+            """
             if Decimal_Number is None:
                 raise Exception("No decimal number provided")
             cls.__check_input_type(Decimal_Number, (int, str))
@@ -79,12 +129,25 @@ class Convert:
     class Hexadecimal:
         @staticmethod
         def __check_input_type(value, expected_type) -> bool:
+            """
+            Check if the input value is of the expected type.
+
+            :param value: The value to check.
+            :param expected_type: The expected type of the value.
+            :return: True if the value is of the expected type, otherwise raises an Exception.
+            """
             if not isinstance(value, expected_type):
                 raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
             return True
 
         @classmethod
         def to_bin(cls, Hexadecimal_Number: str) -> int:
+            """
+            Convert a hexadecimal number to its binary representation.
+
+            :param Hexadecimal_Number: The hexadecimal number to convert.
+            :return: The binary representation of the hexadecimal number.
+            """
             if Hexadecimal_Number is None:
                 raise Exception("No hexadecimal number provided")
             cls.__check_input_type(Hexadecimal_Number, str)
@@ -92,6 +155,12 @@ class Convert:
 
         @classmethod
         def to_dec(cls, Hexadecimal_Number: str) -> int:
+            """
+            Convert a hexadecimal number to its decimal representation.
+
+            :param Hexadecimal_Number: The hexadecimal number to convert.
+            :return: The decimal representation of the hexadecimal number.
+            """
             if Hexadecimal_Number is None:
                 raise Exception("No hexadecimal number provided")
             cls.__check_input_type(Hexadecimal_Number, str)
@@ -100,6 +169,12 @@ class Convert:
     class Roman:
         @staticmethod
         def to_dec(Roman: str) -> int:
+            """
+            Convert a Roman numeral to its decimal representation.
+
+            :param Roman: The Roman numeral to convert.
+            :return: The decimal representation of the Roman numeral.
+            """
             roman_to_numerical = {
                 "I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
                 "IV": 4, "IX": 9, "XL": 40, "XC": 90, "CD": 400, "CM": 900,
@@ -124,12 +199,24 @@ class Convert:
     class Celsius:
         @staticmethod
         def to_fahrenheit(celsius: float | int) -> float:
+            """
+            Convert a temperature from Celsius to Fahrenheit.
+
+            :param celsius: The temperature in Celsius.
+            :return: The temperature in Fahrenheit.
+            """
             if celsius is None:
                 raise Exception("No temperature provided")
             return (celsius * 9 / 5) + 32
 
         @staticmethod
         def to_kelvin(celsius: float | int) -> float:
+            """
+            Convert a temperature from Celsius to Kelvin.
+
+            :param celsius: The temperature in Celsius.
+            :return: The temperature in Kelvin.
+            """
             if celsius is None:
                 raise Exception("No temperature provided")
             return celsius + 273.15
@@ -137,12 +224,24 @@ class Convert:
     class Kelvin:
         @staticmethod
         def to_celsius(kelvin: float | int) -> float:
+            """
+            Convert a temperature from Kelvin to Celsius.
+
+            :param kelvin: The temperature in Kelvin.
+            :return: The temperature in Celsius.
+            """
             if kelvin is None:
                 raise Exception("No temperature provided")
             return kelvin - 273.15
 
         @staticmethod
         def to_fahrenheit(kelvin: float | int) -> float:
+            """
+            Convert a temperature from Kelvin to Fahrenheit.
+
+            :param kelvin: The temperature in Kelvin.
+            :return: The temperature in Fahrenheit.
+            """
             if kelvin is None:
                 raise Exception("No temperature provided")
             return (kelvin - 273.15) * 9 / 5 + 32
@@ -150,18 +249,38 @@ class Convert:
     class Fahrenheit:
         @staticmethod
         def to_kelvin(fahrenheit: float | int) -> float:
+            """
+            Convert a temperature from Fahrenheit to Kelvin.
+
+            :param fahrenheit: The temperature in Fahrenheit.
+            :return: The temperature in Kelvin.
+            """
             if fahrenheit is None:
                 raise Exception("No temperature provided")
             return (fahrenheit - 32) * 5 / 9 + 273.15
 
         @staticmethod
         def to_celsius(fahrenheit: float | int) -> float:
+            """
+            Convert a temperature from Fahrenheit to Celsius.
+
+            :param fahrenheit: The temperature in Fahrenheit.
+            :return: The temperature in Celsius.
+            """
             if fahrenheit is None:
                 raise Exception("No temperature provided")
             return (fahrenheit - 32) * 5 / 9
 
     @staticmethod
     def memory(number: int, input_unit: str, output_unit: str) -> str:
+        """
+        Convert a memory size from one unit to another.
+
+        :param number: The memory size to convert.
+        :param input_unit: The unit of the input memory size.
+        :param output_unit: The unit of the output memory size.
+        :return: The converted memory size in the output unit.
+        """
         memory_dict = {
             "bit": 1, "byte": 8, "kilobyte": 8000, "megabyte": 8 * (1000 ** 2), "gigabyte": 8 * (1000 ** 3),
             "terrabyte": 8 * (1000 ** 4), "petabyte": 8 * (1000 ** 5), "kibibyte": 8192, "mebibyte": 8 * (1024 ** 2),

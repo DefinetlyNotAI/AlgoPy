@@ -23,6 +23,16 @@ class Validate:
 
     @staticmethod
     def this_url(url_string: str, use_https: bool = True) -> bool:
+        """
+        Validates a URL string.
+
+        Args:
+            url_string (str): The URL string to be validated.
+            use_https (bool): Whether to enforce HTTPS. Defaults to True.
+
+        Returns:
+            bool: True if the URL is valid, False otherwise.
+        """
         if not url_string or " " in url_string:
             return False
         https = bool((re.compile(r"^(https://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")).search(url_string))
@@ -33,11 +43,29 @@ class Validate:
 
     @staticmethod
     def this_phone_number(phone_number: int | str) -> bool:
+        """
+        Validates a phone number.
+
+        Args:
+            phone_number (int | str): The phone number to be validated.
+
+        Returns:
+            bool: True if the phone number is valid, False otherwise.
+        """
         pattern = re.compile(r"^(\(\d{3}\)[\s-]?)?\d{3}[\s-]?\d{4}[\s-]?\d{3}$")
         return bool(pattern.match(str(phone_number)))
 
     @staticmethod
     def this_date(date: str) -> bool:
+        """
+        Validates a date string.
+
+        Args:
+            date (str): The date string to be validated.
+
+        Returns:
+            bool: True if the date string is valid, False otherwise.
+        """
         date = date.replace("/", "-")
         date = date.replace("\\", "-")
         date = date.replace(" ", "-")
@@ -63,6 +91,15 @@ class Validate:
 
         @staticmethod
         def __luhn_algorithm(card_number: str) -> bool:
+            """
+            Validates a card number using the Luhn algorithm.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
+            """
             if len(card_number) < 13 or len(card_number) > 19:
                 return False
             num_list = [int(digit) for digit in card_number]
@@ -82,6 +119,12 @@ class Validate:
         def american_express(cls, card_number: str) -> bool:
             """
             Validates American Express card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return cls.__luhn_algorithm(card_number) and (
                     str(card_number).startswith(("34", "37"))
@@ -92,6 +135,12 @@ class Validate:
         def china_unionpay(cls, card_number: str) -> bool:
             """
             Validates China UnionPay card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return cls.__luhn_algorithm(card_number) and (
                     str(card_number).startswith(
@@ -120,6 +169,12 @@ class Validate:
         def dankort(cls, card_number: str) -> bool:
             """
             Validates Dankort card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return (
                     cls.__luhn_algorithm(card_number)
@@ -131,6 +186,12 @@ class Validate:
         def diners_club(cls, card_number: str) -> bool:
             """
             Validates Diners Club International card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return cls.__luhn_algorithm(card_number) and (
                     str(card_number).startswith(("36", "38"))
@@ -141,6 +202,12 @@ class Validate:
         def discover(cls, card_number: str) -> bool:
             """
             Validates Discover card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return cls.__luhn_algorithm(card_number) and (
                     str(card_number).startswith(
@@ -187,6 +254,12 @@ class Validate:
         def jcb(cls, card_number: str) -> bool:
             """
             Validates JCB card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return (
                     cls.__luhn_algorithm(card_number)
@@ -198,6 +271,12 @@ class Validate:
         def maestro(cls, card_number: str) -> bool:
             """
             Validates Maestro card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return cls.__luhn_algorithm(card_number) and (
                     str(card_number).startswith(
@@ -240,6 +319,12 @@ class Validate:
         def mastercard(cls, card_number: str) -> bool:
             """
             Validates Mastercard card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return (
                     cls.__luhn_algorithm(card_number)
@@ -251,6 +336,12 @@ class Validate:
         def visa(cls, card_number: str) -> bool:
             """
             Validates Visa card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return (
                     cls.__luhn_algorithm(card_number)
@@ -262,6 +353,12 @@ class Validate:
         def visa_electron(cls, card_number: str) -> bool:
             """
             Validates Visa Electron card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return (
                     cls.__luhn_algorithm(card_number)
@@ -273,6 +370,12 @@ class Validate:
         def v_pay(cls, card_number: str) -> bool:
             """
             Validates V Pay card numbers.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return (
                     cls.__luhn_algorithm(card_number)
@@ -284,5 +387,11 @@ class Validate:
         def any(cls, card_number: str) -> bool:
             """
             Validates any card number just by passing it to the Luhn algorithm.
+
+            Args:
+                card_number (str): The card number to be validated.
+
+            Returns:
+                bool: True if the card number is valid, False otherwise.
             """
             return cls.__luhn_algorithm(card_number)
