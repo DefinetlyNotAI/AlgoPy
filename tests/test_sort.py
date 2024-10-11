@@ -1,6 +1,6 @@
 import unittest
 
-from sort import Sort
+from algopy.sort import Sort
 
 
 class TestSortingAlgorithms(unittest.TestCase):

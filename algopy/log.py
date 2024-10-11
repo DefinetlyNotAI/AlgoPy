@@ -1,9 +1,10 @@
-import colorlog
-import logging
-from typing import Type
 import inspect
+import logging
 import os
 from datetime import datetime
+from typing import Type
+
+import colorlog
 
 
 class Log:

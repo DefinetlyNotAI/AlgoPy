@@ -1,5 +1,6 @@
 import unittest
-from convert import Convert
+
+from algopy.convert import Convert
 
 
 class TestConvert(unittest.TestCase):

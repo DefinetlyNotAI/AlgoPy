@@ -1,5 +1,6 @@
 import unittest
-from find import Find
+
+from algopy.find import Find
 
 
 class TestFind(unittest.TestCase):

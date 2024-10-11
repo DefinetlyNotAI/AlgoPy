@@ -1,5 +1,6 @@
-from validate import Validate
 import unittest
+
+from algopy.validate import Validate
 
 
 class TestValidate(unittest.TestCase):
