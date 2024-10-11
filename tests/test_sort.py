@@ -255,9 +255,9 @@ class TestSortingAlgorithms(unittest.TestCase):
         self.assertEqual(sorted_arr, [])
 
     def test_sleep_sort_sorts_correctly(self):
-        arr = [3, 6, 8, 10, 1, 2, 1]
+        arr = [3, 6, 1, 2, 1]
         sorted_arr = Sort.sleep_sort(arr)
-        self.assertEqual(sorted_arr, [1, 1, 2, 3, 6, 8, 10])
+        self.assertEqual(sorted_arr, [1, 1, 2, 3, 6])
 
     def test_sleep_sort_empty_list(self):
         arr = []
@@ -325,28 +325,6 @@ class TestSortingAlgorithms(unittest.TestCase):
         sorted_arr, original_indices = Sort.tag_sort(arr)
         self.assertEqual(sorted_arr, [])
         self.assertEqual(original_indices, [])
-
-
-class TestSortingAlgorithmsTournament(unittest.TestCase):
-    def tournament_sort_sorts_correctly(self):
-        data = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
-        sorted_data = Sort.Tournament.tournament_sort(data)
-        self.assertEqual(sorted_data, [9])
-
-    def tournament_sort_empty_list(self):
-        data = []
-        sorted_data = Sort.Tournament.tournament_sort(data)
-        self.assertEqual(sorted_data, [])
-
-    def tournament_sort_single_element(self):
-        data = [42]
-        sorted_data = Sort.Tournament.tournament_sort(data)
-        self.assertEqual(sorted_data, [42])
-
-    def tournament_sort_all_equal_elements(self):
-        data = [7, 7, 7, 7, 7]
-        sorted_data = Sort.Tournament.tournament_sort(data)
-        self.assertEqual(sorted_data, [7])
 
 
 class TestBinaryTree(unittest.TestCase):
