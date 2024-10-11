@@ -39,6 +39,24 @@ You must have `pip` installed to install the required packages.
 
 To install: `pip install -r requirements.txt`
 
+### Recommended Usage
+
+To use **AlgoPy** in your project, you can import the desired package and class as follows:
+
+```python
+import algopy.PACKAGE_TO_USE as WHATEVER_NAME_YOU_WANT
+WHATEVER_NAME_YOU_WANT = WHATEVER_NAME_YOU_WANT.CLASS_NAME()
+```
+
+And all you have to do is read the documentation on the Wiki.
+
+### Prerequisites
+
+Ensure you have Python installed on your system. **AlgoPy** supports Python versions 3.11 and above.
+You must have `pip` installed to install the required packages.
+
+To install: `pip install -r requirements.txt`
+
 ---
 
 ## Contributing
