@@ -9,6 +9,8 @@ setup(
     author="Shahm Najeeb",
     author_email="Nirt_12023@outlook.com",
     description="A library for many different algorithms and other utilities",
+    long_description="Library with many different sorting algorithims, logging mechanisims, conversions, validations and finding - all in one package",
+    long_description_content_type="text/markdown",
     url="https://github.com/DefinetlyNotAI/AlgoPy",
     classifiers=[
         "Programming Language :: Python :: 3",
