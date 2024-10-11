@@ -1,33 +1,28 @@
-import random
 import math
-from heapq import heappush, heappop
+import random
 import threading
 import time
+from heapq import heappush, heappop
 
 
-# TODO Add option to use bubble sort on Sort.String.Split
 class Sort:
     class String:
-        class Split:
-            @staticmethod
-            def default(arr: list, reverse: bool = False) -> tuple[list[int], list[str]]:
-                if not arr:
-                    return [], []
-                str_list = [x for x in arr if isinstance(x, str)]
-                if reverse:
-                    str_list = str_list.reverse()
-                int_list = [x for x in arr if isinstance(x, int)]
-                return (Sort.QuickSort.default(int_list) if int_list else []), str_list
-
-            @classmethod
-            def alphabetically(cls, arr: list, reverse: bool = False) -> tuple[list[int], list[str]]:
-                if not arr:
-                    return [], []
-                int_list, str_list = cls.default(arr)
-                return (int_list if int_list else []), Sort.String.alphabetically(str_list, reverse)
+        @classmethod
+        def and_integer(cls, arr: list[int | str], reverse: bool = False, sort_integers: bool = True,
+                        sort_strings: bool = True) -> tuple[list[int], list[str]]:
+            str_list = [x for x in arr if isinstance(x, str)]
+            int_list = [x for x in arr if isinstance(x, int)]
+            if sort_strings:
+                str_list = cls.alphabetically(str_list)
+            if sort_integers:
+                int_list = Sort.QuickSort.default(int_list)
+            if reverse:
+                int_list.reverse()
+                str_list.reverse()
+            return int_list, str_list
 
         @staticmethod
-        def alphabetically(arr: list, reverse: bool = False) -> list[str]:
+        def alphabetically(arr: list[str], reverse: bool = False) -> list[str]:
             if not arr:
                 return []
             if reverse:
