@@ -18,7 +18,9 @@ class Validate:
             return False
         if " " in email_address:
             return False
-        pattern = re.compile(r"^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+        pattern = re.compile(
+            r"^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        )
         return bool(pattern.search(email_address))
 
     @staticmethod
@@ -35,8 +37,16 @@ class Validate:
         """
         if not url_string or " " in url_string:
             return False
-        https = bool((re.compile(r"^(https://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")).search(url_string))
-        http = bool((re.compile(r"^(http://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")).search(url_string))
+        https = bool(
+            (
+                re.compile(r"^(https://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")
+            ).search(url_string)
+        )
+        http = bool(
+            (
+                re.compile(r"^(http://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$")
+            ).search(url_string)
+        )
         if use_https:
             return https
         return https or http
@@ -328,7 +338,9 @@ class Validate:
             """
             return (
                     cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith(("51", "52", "53", "54", "55", "56", "57", "58", "59"))
+                    and str(card_number).startswith(
+                ("51", "52", "53", "54", "55", "56", "57", "58", "59")
+            )
                     and 16 <= len(str(card_number))
             )
 
@@ -362,7 +374,9 @@ class Validate:
             """
             return (
                     cls.__luhn_algorithm(card_number)
-                    and str(card_number).startswith(("40", "41", "42", "43", "44", "45", "46", "47", "48", "49"))
+                    and str(card_number).startswith(
+                ("40", "41", "42", "43", "44", "45", "46", "47", "48", "49")
+            )
                     and 16 <= len(str(card_number))
             )
 

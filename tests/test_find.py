@@ -75,7 +75,9 @@ class TestFind(unittest.TestCase):
             Find.InSentence.Word.exists(None, "quick")
 
     def test_count_word_occurrences(self):
-        self.assertEqual(Find.InSentence.Word.occurrences("The quick brown fox", "the"), 1)
+        self.assertEqual(
+            Find.InSentence.Word.occurrences("The quick brown fox", "the"), 1
+        )
 
     def test_count_word_occurrences_none_input(self):
         with self.assertRaises(Exception):
@@ -89,5 +91,5 @@ class TestFind(unittest.TestCase):
             Find.InWord.total_vowels(None)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -11,7 +11,9 @@ class Find:
             """
             if List is None:
                 raise Exception("No input given.")
-            converted_list = sorted(float(item) for item in List if isinstance(item, (int, float)))
+            converted_list = sorted(
+                float(item) for item in List if isinstance(item, (int, float))
+            )
             return [int(item) if item.is_integer() else item for item in converted_list]
 
         @classmethod
@@ -55,7 +57,9 @@ class Find:
                 """
                 if List is None or value_to_find is None:
                     raise Exception("No input given.")
-                return [index for index, value in enumerate(List) if value == value_to_find]
+                return [
+                    index for index, value in enumerate(List) if value == value_to_find
+                ]
 
             @staticmethod
             def index(List: list, value_to_find: any) -> int | bool:
@@ -160,11 +164,38 @@ class Find:
             if string is None:
                 raise Exception("No input given.")
             if string in [
-                "Cry", "Dry", "Gym", "Hymn", "Lynx", "Myth", "Pry", "Rhythm", "Shy", "Spy", "Spry", "Sync", "Try",
+                "Cry",
+                "Dry",
+                "Gym",
+                "Hymn",
+                "Lynx",
+                "Myth",
+                "Pry",
+                "Rhythm",
+                "Shy",
+                "Spy",
+                "Spry",
+                "Sync",
+                "Try",
                 "Why",
-                "City", "Party", "Fly", "Shy", "Wary", "Worthwhile", "Type", "Typical", "Thyme", "Cyst", "Symbol",
+                "City",
+                "Party",
+                "Fly",
+                "Shy",
+                "Wary",
+                "Worthwhile",
+                "Type",
+                "Typical",
+                "Thyme",
+                "Cyst",
+                "Symbol",
                 "System",
-                "Lady", "Pretty", "Very", "Deny", "Daddy", "Quickly",
+                "Lady",
+                "Pretty",
+                "Very",
+                "Deny",
+                "Daddy",
+                "Quickly",
             ]:
                 return "aeiouy" if only_lowercase else "aeiouyAEIOUY"
             return "aeiou" if only_lowercase else "aeiouAEIOU"

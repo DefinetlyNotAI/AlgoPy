@@ -5,7 +5,7 @@ from algopy.convert import Convert
 
 class TestConvert(unittest.TestCase):
     def test_binary_to_hex_valid(self):
-        self.assertEqual(Convert.Binary.to_hex(1010), 'A')
+        self.assertEqual(Convert.Binary.to_hex(1010), "A")
 
     def test_binary_to_hex_invalid_type(self):
         with self.assertRaises(Exception):
@@ -19,7 +19,7 @@ class TestConvert(unittest.TestCase):
             Convert.Binary.to_dec(10.1)
 
     def test_decimal_to_roman_valid(self):
-        self.assertEqual(Convert.Decimal.to_roman(1990), 'MCMXC')
+        self.assertEqual(Convert.Decimal.to_roman(1990), "MCMXC")
 
     def test_decimal_to_roman_invalid(self):
         with self.assertRaises(Exception):
@@ -30,7 +30,7 @@ class TestConvert(unittest.TestCase):
             Convert.Decimal.to_ascii(None)
 
     def test_decimal_to_hex_valid(self):
-        self.assertEqual(Convert.Decimal.to_hex(255), 'FF')
+        self.assertEqual(Convert.Decimal.to_hex(255), "FF")
 
     def test_decimal_to_hex_invalid_type(self):
         with self.assertRaises(Exception):
@@ -44,25 +44,25 @@ class TestConvert(unittest.TestCase):
             Convert.Decimal.to_bin(10.1)
 
     def test_hex_to_bin_valid(self):
-        self.assertEqual(Convert.Hexadecimal.to_bin('A'), 1010)
+        self.assertEqual(Convert.Hexadecimal.to_bin("A"), 1010)
 
     def test_hex_to_bin_invalid_type(self):
         with self.assertRaises(Exception):
             Convert.Hexadecimal.to_bin(10)
 
     def test_hex_to_dec_valid(self):
-        self.assertEqual(Convert.Hexadecimal.to_dec('A'), 10)
+        self.assertEqual(Convert.Hexadecimal.to_dec("A"), 10)
 
     def test_hex_to_dec_invalid_type(self):
         with self.assertRaises(Exception):
             Convert.Hexadecimal.to_dec(10)
 
     def test_roman_to_dec_valid(self):
-        self.assertEqual(Convert.Roman.to_dec('MCMXC'), 1990)
+        self.assertEqual(Convert.Roman.to_dec("MCMXC"), 1990)
 
     def test_roman_to_dec_invalid(self):
         with self.assertRaises(Exception):
-            Convert.Roman.to_dec('mcmxc')
+            Convert.Roman.to_dec("mcmxc")
 
     def test_celsius_to_fahrenheit_valid(self):
         self.assertEqual(Convert.Celsius.to_fahrenheit(0), 32.0)
@@ -83,12 +83,12 @@ class TestConvert(unittest.TestCase):
         self.assertEqual(Convert.Fahrenheit.to_celsius(32), 0)
 
     def test_memory_conversion_valid(self):
-        self.assertEqual(Convert.memory(1, 'byte', 'bit'), '8 bit')
+        self.assertEqual(Convert.memory(1, "byte", "bit"), "8 bit")
 
     def test_memory_conversion_invalid(self):
         with self.assertRaises(Exception):
-            Convert.memory(1, 'byte', 'invalid_unit')
+            Convert.memory(1, "byte", "invalid_unit")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -9,8 +9,13 @@ from typing import Optional, List
 class Sort:
     class String:
         @classmethod
-        def and_integer(cls, arr: list[int | str], reverse: bool = False, sort_integers: bool = True,
-                        sort_strings: bool = True) -> tuple[list[int], list[str]]:
+        def and_integer(
+                cls,
+                arr: list[int | str],
+                reverse: bool = False,
+                sort_integers: bool = True,
+                sort_strings: bool = True,
+        ) -> tuple[list[int], list[str]]:
             """
             Splits a list into integers and strings, sorts them separately, and optionally reverses the order.
 
@@ -188,9 +193,11 @@ class Sort:
             def _3way(left, middle, right):
                 result = []
                 while left or middle or right:
-                    min_val = min(left[0] if left else float('inf'),
-                                  middle[0] if middle else float('inf'),
-                                  right[0] if right else float('inf'))
+                    min_val = min(
+                        left[0] if left else float("inf"),
+                        middle[0] if middle else float("inf"),
+                        right[0] if right else float("inf"),
+                    )
                     if left and min_val == left[0]:
                         result.append(left.pop(0))
                     elif middle and min_val == middle[0]:
@@ -203,7 +210,7 @@ class Sort:
                 return arr
             third = len(arr) // 3
             left = cls.way3(arr[:third])
-            middle = cls.way3(arr[third:2 * third])
+            middle = cls.way3(arr[third: 2 * third])
             right = cls.way3(arr[2 * third:])
             return _3way(left, middle, right)
 
@@ -294,8 +301,8 @@ class Sort:
                     random.shuffle(arr)
 
             for i in range(len(arr)):
-                if not cls.__is_sorted(arr[:i + 1]):
-                    bogosort(arr[:i + 1])
+                if not cls.__is_sorted(arr[: i + 1]):
+                    bogosort(arr[: i + 1])
             return arr
 
     @staticmethod
@@ -729,7 +736,9 @@ class Sort:
 
         for i in range(1, len(arr)):
             pos = min(length, i + 1)
-            while pos > 0 and (sorted_arr[pos - 1] is None or sorted_arr[pos - 1] > arr[i]):
+            while pos > 0 and (
+                    sorted_arr[pos - 1] is None or sorted_arr[pos - 1] > arr[i]
+            ):
                 pos -= 1
             for j in range(length, pos, -1):
                 sorted_arr[j] = sorted_arr[j - 1]
@@ -1236,7 +1245,9 @@ class Sort:
                     Sort.BinaryTree._AVLNode: The new root of the AVL tree.
                 """
                 if not isinstance(root, Sort.BinaryTree._AVLNode) and root is not None:
-                    raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                    raise TypeError(
+                        "Root must be an instance of Sort.BinaryTree._AVLNode"
+                    )
                 if not root:
                     return Sort.BinaryTree._AVLNode(key)
                 if key < root.key:
@@ -1244,7 +1255,9 @@ class Sort:
                 else:
                     root.right = cls.insert(root.right, key)
 
-                root.height = 1 + max(cls._Get.height(root.left), cls._Get.height(root.right))
+                root.height = 1 + max(
+                    cls._Get.height(root.left), cls._Get.height(root.right)
+                )
                 balance = cls._Get.balance(root)
 
                 if balance > 1:
@@ -1273,7 +1286,9 @@ class Sort:
                     Sort.BinaryTree._AVLNode: The new root of the AVL tree.
                 """
                 if not isinstance(root, Sort.BinaryTree._AVLNode):
-                    raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                    raise TypeError(
+                        "Root must be an instance of Sort.BinaryTree._AVLNode"
+                    )
                 if not root:
                     return root
                 if key < root.key:
@@ -1290,7 +1305,9 @@ class Sort:
                     root.key = temp.key
                     root.right = cls.delete(root.right, temp.key)
 
-                root.height = 1 + max(cls._Get.height(root.left), cls._Get.height(root.right))
+                root.height = 1 + max(
+                    cls._Get.height(root.left), cls._Get.height(root.right)
+                )
                 balance = cls._Get.balance(root)
 
                 if balance > 1:
@@ -1321,8 +1338,12 @@ class Sort:
                 if not isinstance(z, Sort.BinaryTree._AVLNode):
                     raise TypeError("Z must be an instance of Sort.BinaryTree._AVLNode")
                 y = getattr(z, direction)
-                setattr(z, direction, getattr(y, 'left' if direction == 'right' else 'right'))
-                setattr(y, 'left' if direction == 'right' else 'right', z)
+                setattr(
+                    z,
+                    direction,
+                    getattr(y, "left" if direction == "right" else "right"),
+                )
+                setattr(y, "left" if direction == "right" else "right", z)
                 z.height = 1 + max(cls._Get.height(z.left), cls._Get.height(z.right))
                 y.height = 1 + max(cls._Get.height(y.left), cls._Get.height(y.right))
                 return y
@@ -1340,7 +1361,7 @@ class Sort:
                 """
                 if not isinstance(z, Sort.BinaryTree._AVLNode):
                     raise TypeError("Z must be an instance of Sort.BinaryTree._AVLNode")
-                return cls.__rotate(z, 'right')
+                return cls.__rotate(z, "right")
 
             @classmethod
             def __right_rotate(cls, z):
@@ -1355,7 +1376,7 @@ class Sort:
                 """
                 if not isinstance(z, Sort.BinaryTree._AVLNode):
                     raise TypeError("Z must be an instance of Sort.BinaryTree._AVLNode")
-                return cls.__rotate(z, 'left')
+                return cls.__rotate(z, "left")
 
             @classmethod
             def pre_order(cls, root) -> str:
@@ -1369,7 +1390,9 @@ class Sort:
                     str: The pre-order traversal of the AVL tree.
                 """
                 if not isinstance(root, Sort.BinaryTree._AVLNode):
-                    raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                    raise TypeError(
+                        "Root must be an instance of Sort.BinaryTree._AVLNode"
+                    )
                 result: List[str] = []
                 cls._pre_order_helper(root, result)
                 return " ".join(result)
@@ -1384,7 +1407,9 @@ class Sort:
                     result (List[str]): The list to store the traversal result.
                 """
                 if not isinstance(root, Sort.BinaryTree._AVLNode) and root is not None:
-                    raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                    raise TypeError(
+                        "Root must be an instance of Sort.BinaryTree._AVLNode"
+                    )
                 if root:
                     result.append(str(root.key))
                     cls._pre_order_helper(root.left, result)
@@ -1402,7 +1427,9 @@ class Sort:
                     Sort.BinaryTree._AVLNode: The node with the minimum key.
                 """
                 if not isinstance(root, Sort.BinaryTree._AVLNode):
-                    raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                    raise TypeError(
+                        "Root must be an instance of Sort.BinaryTree._AVLNode"
+                    )
                 while root.left:
                     root = root.left
                 return root
@@ -1419,8 +1446,13 @@ class Sort:
                     Returns:
                         int: The height of the node.
                     """
-                    if not isinstance(root, Sort.BinaryTree._AVLNode) and root is not None:
-                        raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                    if (
+                            not isinstance(root, Sort.BinaryTree._AVLNode)
+                            and root is not None
+                    ):
+                        raise TypeError(
+                            "Root must be an instance of Sort.BinaryTree._AVLNode"
+                        )
                     return root.height if root else 0
 
                 @classmethod
@@ -1435,7 +1467,9 @@ class Sort:
                         int: The balance factor of the node.
                     """
                     if not isinstance(root, Sort.BinaryTree._AVLNode):
-                        raise TypeError("Root must be an instance of Sort.BinaryTree._AVLNode")
+                        raise TypeError(
+                            "Root must be an instance of Sort.BinaryTree._AVLNode"
+                        )
                     return cls.height(root.left) - cls.height(root.right) if root else 0
 
         class Degenerate:
@@ -1534,7 +1568,9 @@ class Sort:
                     height (int): The height of the perfect binary tree.
                 """
                 cls.height: int = height
-                cls.nodes: List[Optional[Sort.BinaryTree._Node]] = [None] * (2 ** height - 1)
+                cls.nodes: List[Optional[Sort.BinaryTree._Node]] = [None] * (
+                        2 ** height - 1
+                )
 
             @classmethod
             def create(cls) -> None:
@@ -1579,14 +1615,22 @@ class Sort:
                 Returns:
                     str: The formatted string representation of the tree.
                 """
-                if not isinstance(levels, list) or not all(isinstance(level, list) for level in levels):
-                    raise TypeError("levels must be an instance of Sort.BinaryTree._Node")
+                if not isinstance(levels, list) or not all(
+                        isinstance(level, list) for level in levels
+                ):
+                    raise TypeError(
+                        "levels must be an instance of Sort.BinaryTree._Node"
+                    )
                 if not levels:
                     return ""
                 tree_str = ""
-                max_width = len(" ".join(str(node.value) if node else "None" for node in levels[-1]))
+                max_width = len(
+                    " ".join(str(node.value) if node else "None" for node in levels[-1])
+                )
                 for level in levels:
-                    level_str = " ".join(str(node.value) if node else "None" for node in level)
+                    level_str = " ".join(
+                        str(node.value) if node else "None" for node in level
+                    )
                     tree_str += level_str.center(max_width) + "\n"
                 return tree_str.replace("None", " ")
 
@@ -1627,7 +1671,9 @@ class Sort:
                 """
                 Initializes the Red-Black Tree with a NIL node.
                 """
-                cls.NIL: Sort.BinaryTree._RBNode = Sort.BinaryTree._RBNode(data=None, color="black")
+                cls.NIL: Sort.BinaryTree._RBNode = Sort.BinaryTree._RBNode(
+                    data=None, color="black"
+                )
                 cls.root: Sort.BinaryTree._RBNode = cls.NIL
 
             @classmethod
@@ -1671,7 +1717,9 @@ class Sort:
                     node (Sort.BinaryTree._RBNode): The node to fix up.
                 """
                 if not isinstance(node, Sort.BinaryTree._RBNode):
-                    raise TypeError("node must be an instance of Sort.BinaryTree._RBNode")
+                    raise TypeError(
+                        "node must be an instance of Sort.BinaryTree._RBNode"
+                    )
                 while node != cls.root and node.parent.color == "red":
                     if node.parent == node.parent.parent.left:
                         uncle = node.parent.parent.right
@@ -1713,8 +1761,10 @@ class Sort:
                     direction (str): The direction to rotate ('left' or 'right').
                 """
                 if not isinstance(node, Sort.BinaryTree._RBNode):
-                    raise TypeError("node must be an instance of Sort.BinaryTree._RBNode")
-                opposite = 'left' if direction == 'right' else 'right'
+                    raise TypeError(
+                        "node must be an instance of Sort.BinaryTree._RBNode"
+                    )
+                opposite = "left" if direction == "right" else "right"
                 child = getattr(node, direction)
                 setattr(node, direction, getattr(child, opposite))
                 if getattr(child, opposite) != cls.NIL:
@@ -1739,7 +1789,7 @@ class Sort:
                 """
                 if not isinstance(x, Sort.BinaryTree._RBNode):
                     raise TypeError("x must be an instance of Sort.BinaryTree._RBNode")
-                cls.rotate(x, 'right')
+                cls.rotate(x, "right")
 
             @classmethod
             def right_rotate(cls, y) -> None:
@@ -1751,7 +1801,7 @@ class Sort:
                 """
                 if not isinstance(y, Sort.BinaryTree._RBNode):
                     raise TypeError("y must be an instance of Sort.BinaryTree._RBNode")
-                cls.rotate(y, 'left')
+                cls.rotate(y, "left")
 
             @classmethod
             def __repr__(cls) -> str:
@@ -1786,7 +1836,9 @@ class Sort:
                 Args:
                     t (int): The minimum degree of the B+ tree. Default is 3.
                 """
-                cls.root: Sort.BinaryTree._BPlusTreeNode = Sort.BinaryTree._BPlusTreeNode(is_leaf=True)
+                cls.root: Sort.BinaryTree._BPlusTreeNode = (
+                    Sort.BinaryTree._BPlusTreeNode(is_leaf=True)
+                )
                 cls.t: int = t
 
             @classmethod
@@ -1817,7 +1869,9 @@ class Sort:
                     key (int): The key to insert.
                 """
                 if not isinstance(node, Sort.BinaryTree._BPlusTreeNode):
-                    raise TypeError("node must be an instance of Sort.BinaryTree._BPlusTreeNode")
+                    raise TypeError(
+                        "node must be an instance of Sort.BinaryTree._BPlusTreeNode"
+                    )
                 if node.is_leaf:
                     node.keys.append(key)
                     node.keys.sort()
@@ -1842,16 +1896,18 @@ class Sort:
                     i (int): The index of the child to split.
                 """
                 if not isinstance(node, Sort.BinaryTree._BPlusTreeNode):
-                    raise TypeError("node must be an instance of Sort.BinaryTree._BPlusTreeNode")
+                    raise TypeError(
+                        "node must be an instance of Sort.BinaryTree._BPlusTreeNode"
+                    )
                 t = cls.t
                 y = node.children[i]
                 z = Sort.BinaryTree._BPlusTreeNode(is_leaf=y.is_leaf)
                 node.children.insert(i + 1, z)
                 node.keys.insert(i, y.keys[t - 1])
-                z.keys = y.keys[t:(2 * t) - 1]
-                y.keys = y.keys[0:t - 1]
+                z.keys = y.keys[t: (2 * t) - 1]
+                y.keys = y.keys[0: t - 1]
                 if not y.is_leaf:
-                    z.children = y.children[t:(2 * t)]
+                    z.children = y.children[t: (2 * t)]
                     y.children = y.children[0:t]
 
             @classmethod
@@ -1866,8 +1922,13 @@ class Sort:
                 Returns:
                     bool: True if the key is found, False otherwise.
                 """
-                if not isinstance(node, Sort.BinaryTree._BPlusTreeNode) and node is not None:
-                    raise TypeError("node must be an instance of Sort.BinaryTree._BPlusTreeNode")
+                if (
+                        not isinstance(node, Sort.BinaryTree._BPlusTreeNode)
+                        and node is not None
+                ):
+                    raise TypeError(
+                        "node must be an instance of Sort.BinaryTree._BPlusTreeNode"
+                    )
                 if not node:
                     node = cls.root
                 i = 0
@@ -1891,8 +1952,13 @@ class Sort:
                 Returns:
                     List[str]: A list of strings representing the keys at each level.
                 """
-                if not isinstance(node, Sort.BinaryTree._BPlusTreeNode) and node is not None:
-                    raise TypeError("node must be an instance of Sort.BinaryTree._BPlusTreeNode")
+                if (
+                        not isinstance(node, Sort.BinaryTree._BPlusTreeNode)
+                        and node is not None
+                ):
+                    raise TypeError(
+                        "node must be an instance of Sort.BinaryTree._BPlusTreeNode"
+                    )
                 if not node:
                     node = cls.root
                 result = [f"Level {level}: " + " ".join(str(key) for key in node.keys)]

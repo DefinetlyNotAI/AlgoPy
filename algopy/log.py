@@ -195,7 +195,9 @@ class Log:
             try:
                 getattr(self, type.lower())(str(message))
             except AttributeError as AE:
-                self.__internal(f"A wrong Log Type was called: {type} not found. -> {AE}")
+                self.__internal(
+                    f"A wrong Log Type was called: {type} not found. -> {AE}"
+                )
                 getattr(self, "Debug".lower())(str(message))
 
     def exception(self, message, exception_type: Type = Exception):

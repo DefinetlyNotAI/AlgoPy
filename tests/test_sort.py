@@ -525,11 +525,15 @@ class TestSortingString(unittest.TestCase):
     # Default No Sort Splits
     def test_split_integers_strings_no_sort(self):
         arr = [3, 2, "banana", "apple", "cherry", 1]
-        sorted_arr = Sort.String.and_integer(arr, sort_integers=False, sort_strings=False)
+        sorted_arr = Sort.String.and_integer(
+            arr, sort_integers=False, sort_strings=False
+        )
         self.assertEqual(sorted_arr, ([3, 2, 1], ["banana", "apple", "cherry"]))
 
     # Reverse No Sort Splits
     def test_split_integers_strings_reverse_no_sort(self):
         arr = [1, 3, "banana", "apple", "cherry", 2]
-        sorted_arr = Sort.String.and_integer(arr, reverse=True, sort_integers=False, sort_strings=False)
+        sorted_arr = Sort.String.and_integer(
+            arr, reverse=True, sort_integers=False, sort_strings=False
+        )
         self.assertEqual(sorted_arr, ([2, 3, 1], ["cherry", "apple", "banana"]))

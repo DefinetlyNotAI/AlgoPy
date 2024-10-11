@@ -10,7 +10,9 @@ class Convert:
             :return: True if the value is of the expected type, otherwise raises an Exception.
             """
             if not isinstance(value, expected_type):
-                raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
+                raise Exception(
+                    f"Expected {expected_type.__name__}, got {type(value).__name__}"
+                )
             return True
 
         @classmethod
@@ -50,7 +52,9 @@ class Convert:
             :return: True if the value is of the expected type, otherwise raises an Exception.
             """
             if not isinstance(value, expected_type):
-                raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
+                raise Exception(
+                    f"Expected {expected_type.__name__}, got {type(value).__name__}"
+                )
             return True
 
         @staticmethod
@@ -62,8 +66,19 @@ class Convert:
             :return: The Roman numeral representation of the decimal number.
             """
             mapping = {
-                1000: "M", 900: "CM", 500: "D", 400: "CD", 100: "C", 90: "XC",
-                50: "L", 40: "XL", 10: "X", 9: "IX", 5: "V", 4: "IV", 1: "I"
+                1000: "M",
+                900: "CM",
+                500: "D",
+                400: "CD",
+                100: "C",
+                90: "XC",
+                50: "L",
+                40: "XL",
+                10: "X",
+                9: "IX",
+                5: "V",
+                4: "IV",
+                1: "I",
             }
             if Number is None or Number < 1:
                 raise Exception("Invalid input.")
@@ -83,7 +98,15 @@ class Convert:
             :return: The ASCII art representation of the decimal number.
             """
             digits = [
-                ["  ***  ", " *   * ", "*     *", "*     *", "*     *", " *   * ", "  ***  "],
+                [
+                    "  ***  ",
+                    " *   * ",
+                    "*     *",
+                    "*     *",
+                    "*     *",
+                    " *   * ",
+                    "  ***  ",
+                ],
                 [" * ", "** ", " * ", " * ", " * ", " * ", "***"],
                 [" *** ", "*   *", "*  * ", "  *  ", " *   ", "*    ", "*****"],
                 [" *** ", "*   *", "    *", "  ** ", "    *", "*   *", " *** "],
@@ -92,12 +115,15 @@ class Convert:
                 [" *** ", "*    ", "*    ", "**** ", "*   *", "*   *", " *** "],
                 ["*****", "    *", "   * ", "  *  ", " *   ", "*    ", "*    "],
                 [" *** ", "*   *", "*   *", " *** ", "*   *", "*   *", " *** "],
-                [" ****", "*   *", "*   *", " ****", "    *", "    *", "    *"]
+                [" ****", "*   *", "*   *", " ****", "    *", "    *", "    *"],
             ]
             Number = str(Number)
             if Number is None:
                 raise Exception("No input given.")
-            ascii_art_lines = ["".join(digits[int(digit)][i] + "  " for digit in Number) for i in range(7)]
+            ascii_art_lines = [
+                "".join(digits[int(digit)][i] + "  " for digit in Number)
+                for i in range(7)
+            ]
             return "\n".join(ascii_art_lines)
 
         @classmethod
@@ -137,7 +163,9 @@ class Convert:
             :return: True if the value is of the expected type, otherwise raises an Exception.
             """
             if not isinstance(value, expected_type):
-                raise Exception(f"Expected {expected_type.__name__}, got {type(value).__name__}")
+                raise Exception(
+                    f"Expected {expected_type.__name__}, got {type(value).__name__}"
+                )
             return True
 
         @classmethod
@@ -176,8 +204,19 @@ class Convert:
             :return: The decimal representation of the Roman numeral.
             """
             roman_to_numerical = {
-                "I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000,
-                "IV": 4, "IX": 9, "XL": 40, "XC": 90, "CD": 400, "CM": 900,
+                "I": 1,
+                "V": 5,
+                "X": 10,
+                "L": 50,
+                "C": 100,
+                "D": 500,
+                "M": 1000,
+                "IV": 4,
+                "IX": 9,
+                "XL": 40,
+                "XC": 90,
+                "CD": 400,
+                "CM": 900,
             }
             if not isinstance(Roman, str):
                 raise Exception("Input must be a string.")
@@ -282,23 +321,68 @@ class Convert:
         :return: The converted memory size in the output unit.
         """
         memory_dict = {
-            "bit": 1, "byte": 8, "kilobyte": 8000, "megabyte": 8 * (1000 ** 2), "gigabyte": 8 * (1000 ** 3),
-            "terrabyte": 8 * (1000 ** 4), "petabyte": 8 * (1000 ** 5), "kibibyte": 8192, "mebibyte": 8 * (1024 ** 2),
-            "gibibyte": 8 * (1024 ** 3), "tebibyte": 8 * (1024 ** 4), "pebibyte": 8 * (1024 ** 5),
-            "kilobit": 1000, "megabit": 1000 ** 2, "gigabit": 1000 ** 3, "terrabit": 1000 ** 4, "petabit": 1000 ** 5,
-            "kibibit": 1024, "mebibit": 1024 ** 2, "gibibit": 1024 ** 3, "tebibit": 1024 ** 4, "pebibit": 1024 ** 5,
-            "KB": 8000, "MB": 8 * (1000 ** 2), "GB": 8 * (1000 ** 3), "TB": 8 * (1000 ** 4), "PB": 8 * (1000 ** 5),
-            "KiB": 8192, "MiB": 8 * (1024 ** 2), "GiB": 8 * (1024 ** 3), "TiB": 8 * (1024 ** 4), "PiB": 8 * (1024 ** 5),
-            "Kb": 1000, "Mb": 1000 ** 2, "Gb": 1000 ** 3, "Tb": 1000 ** 4, "Pb": 1000 ** 5,
-            "Kib": 1024, "Mib": 1024 ** 2, "Gib": 1024 ** 3, "Tib": 1024 ** 4, "Pib": 1024 ** 5
+            "bit": 1,
+            "byte": 8,
+            "kilobyte": 8000,
+            "megabyte": 8 * (1000 ** 2),
+            "gigabyte": 8 * (1000 ** 3),
+            "terrabyte": 8 * (1000 ** 4),
+            "petabyte": 8 * (1000 ** 5),
+            "kibibyte": 8192,
+            "mebibyte": 8 * (1024 ** 2),
+            "gibibyte": 8 * (1024 ** 3),
+            "tebibyte": 8 * (1024 ** 4),
+            "pebibyte": 8 * (1024 ** 5),
+            "kilobit": 1000,
+            "megabit": 1000 ** 2,
+            "gigabit": 1000 ** 3,
+            "terrabit": 1000 ** 4,
+            "petabit": 1000 ** 5,
+            "kibibit": 1024,
+            "mebibit": 1024 ** 2,
+            "gibibit": 1024 ** 3,
+            "tebibit": 1024 ** 4,
+            "pebibit": 1024 ** 5,
+            "KB": 8000,
+            "MB": 8 * (1000 ** 2),
+            "GB": 8 * (1000 ** 3),
+            "TB": 8 * (1000 ** 4),
+            "PB": 8 * (1000 ** 5),
+            "KiB": 8192,
+            "MiB": 8 * (1024 ** 2),
+            "GiB": 8 * (1024 ** 3),
+            "TiB": 8 * (1024 ** 4),
+            "PiB": 8 * (1024 ** 5),
+            "Kb": 1000,
+            "Mb": 1000 ** 2,
+            "Gb": 1000 ** 3,
+            "Tb": 1000 ** 4,
+            "Pb": 1000 ** 5,
+            "Kib": 1024,
+            "Mib": 1024 ** 2,
+            "Gib": 1024 ** 3,
+            "Tib": 1024 ** 4,
+            "Pib": 1024 ** 5,
         }
         if not all([number, input_unit, output_unit]):
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
         if input_unit == output_unit:
             return f"{number} {output_unit}"
-        input_unit = input_unit.lower() if len(input_unit) > 3 and input_unit.lower() != "bit" else input_unit
-        output_unit = output_unit.lower() if len(output_unit) > 3 and output_unit.lower() != "bit" else output_unit
-        if not isinstance(number, int) or input_unit not in memory_dict or output_unit not in memory_dict:
+        input_unit = (
+            input_unit.lower()
+            if len(input_unit) > 3 and input_unit.lower() != "bit"
+            else input_unit
+        )
+        output_unit = (
+            output_unit.lower()
+            if len(output_unit) > 3 and output_unit.lower() != "bit"
+            else output_unit
+        )
+        if (
+                not isinstance(number, int)
+                or input_unit not in memory_dict
+                or output_unit not in memory_dict
+        ):
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
         final_number = (number * memory_dict[input_unit]) / memory_dict[output_unit]
-        return f"{final_number:.15f}".rstrip('0').rstrip('.') + f" {output_unit}"
+        return f"{final_number:.15f}".rstrip("0").rstrip(".") + f" {output_unit}"
