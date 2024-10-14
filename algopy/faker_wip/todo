@@ -1,0 +1,24 @@
+class.methods
+
+# TODO Split the classes
+
+Business Information:
+    Company names
+    Job titles
+    Employee IDs
+
+Internet Information:
+    Usernames
+    Passwords
+    IP addresses
+    URLs
+
+Product Information:
+    Product names
+    Product categories
+    Prices
+
+Miscellaneous:
+    Barcodes
+    UUIDs
+    Random text (lorem ipsum)
