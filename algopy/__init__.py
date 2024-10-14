@@ -2,4 +2,6 @@
 AlgoPy: A library for many different algorithms and other utilities.
 """
 
-from . import find, log, sort, validate, convert, faker
+# TODO initialize the package properly
+
+from . import find, log, sort, validate, convert, fakers
