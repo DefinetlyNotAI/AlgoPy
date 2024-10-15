@@ -1,12 +1,8 @@
 class.methods
 
-# TODO Split the classes
+# TODO Split the classes and make methods class if not static
 
-Internet Information:
-    Usernames
-    Passwords
-    IP addresses
-    URLs
+# TODO Each init should allow extra values to be inputted
 
 Product Information:
     Product names
