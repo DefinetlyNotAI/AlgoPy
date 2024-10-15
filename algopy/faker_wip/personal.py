@@ -57,12 +57,3 @@ class PersonalFaker:
             date = start_date + (end_date - start_date) * random.random()
             dates.append(date.strftime(format) if format else date.strftime("%Y-%m-%d"))
         return dates
-
-
-# Example usage
-Personal = PersonalFaker()
-print(Personal.name(format="{first_name} {last_name}", amount=50))
-print(Personal.address(format="{street_address}, {city}, {country}, {postal_code}", amount=50))
-print(Personal.phone_number(amount=50))
-print(Personal.email(amount=50))
-print(Personal.date(format="%Y-%m-%d", amount=50))

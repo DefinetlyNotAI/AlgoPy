@@ -6,7 +6,7 @@ from typing import LiteralString
 import validate
 
 
-class FinancialFaker:
+class Financial:
     def credit_card(self, amount: int = 1, precise: bool = False) -> list[dict[str, LiteralString | str]]:
         credit_cards = []
         for _ in range(amount):
@@ -36,9 +36,3 @@ class FinancialFaker:
                 "bank_routing_number": bank_routing_number
             })
         return bank_accounts
-
-
-# Example usage
-Financial = FinancialFaker()
-print(Financial.credit_card(precise=False))
-print(Financial.bank_account())
