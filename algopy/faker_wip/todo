@@ -6,8 +6,3 @@ class.methods
 
 # TODO Add more methods - use faker.py for ideas
 
-
-Miscellaneous:
-    Barcodes
-    UUIDs
-    Random text (lorem ipsum)
