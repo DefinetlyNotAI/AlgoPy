@@ -1,13 +1,11 @@
 class.methods
 
-# TODO Split the classes and make methods class if not static
+# TODO Make methods class if not static
 
 # TODO Each init should allow extra values to be inputted
 
-Product Information:
-    Product names
-    Product categories
-    Prices
+# TODO Add more methods - use faker.py for ideas
+
 
 Miscellaneous:
     Barcodes
