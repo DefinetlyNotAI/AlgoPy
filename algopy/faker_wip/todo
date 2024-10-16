@@ -1,8 +1,0 @@
-class.methods
-
-# TODO Make methods class if not static
-
-# TODO Each init should allow extra values to be inputted
-
-# TODO Add more methods - use faker.py for ideas
-
