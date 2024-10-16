@@ -1,6 +1,5 @@
 # AlgoPy
 
-
 <div align="center">
     <a href="https://github.com/DefinetlyNotAI/AlgoPy/issues"><img src="https://img.shields.io/github/issues/DefinetlyNotAI/AlgoPy" alt="GitHub Issues"></a>
     <a href="https://github.com/DefinetlyNotAI/AlgoPy/tags"><img src="https://img.shields.io/github/v/tag/DefinetlyNotAI/AlgoPy" alt="GitHub Tag"></a>
