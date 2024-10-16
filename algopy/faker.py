@@ -3,9 +3,6 @@ import random
 import string
 import uuid
 from datetime import datetime, timedelta
-from typing import LiteralString
-
-from algopy import validate
 
 
 class FakeData:
@@ -29,7 +26,7 @@ class FakeData:
                 cls.words.extend(extra_words)
 
         @staticmethod
-        def generate_barcode(amount: int = 1, length: int = 12) -> list[LiteralString | str]:
+        def generate_barcode(amount: int = 1, length: int = 12) -> list[str]:
             return [''.join(random.choices(string.digits, k=length)) for _ in range(amount)]
 
         @staticmethod
@@ -48,19 +45,37 @@ class FakeData:
             return [str(uuid_func()) for _ in range(amount)]
 
         @classmethod
-        def generate_random_text(cls, amount: int = 1, length: int = 100) -> list[LiteralString | str]:
+        def generate_random_text(cls, amount: int = 1, length: int = 100) -> list[str]:
+            if not hasattr(cls, 'words'):
+                cls.__init__()
             return [' '.join(random.choices(cls.words, k=length)) for _ in range(amount)]
 
     class Financial:
+        @staticmethod
+        def __luhn_checksum(card_number: str) -> int:
+            def digits_of(n):
+                return [int(d) for d in str(n)]
+
+            digits = digits_of(card_number)
+            odd_digits = digits[-1::-2]
+            even_digits = digits[-2::-2]
+            checksum = sum(odd_digits)
+            for d in even_digits:
+                checksum += sum(digits_of(d * 2))
+            return checksum % 10
+
         @classmethod
-        def credit_card(cls, amount: int = 1, precise: bool = False) -> list[dict[str, LiteralString | str]]:
+        def __generate_luhn_compliant_number(cls, length: int) -> str:
+            number = ''.join(random.choices(string.digits, k=length - 1))
+            checksum = cls.__luhn_checksum(number + '0')
+            check_digit = (10 - checksum) % 10
+            return number + str(check_digit)
+
+        @classmethod
+        def credit_card(cls, amount: int = 1) -> list[dict[str, str]]:
             credit_cards = []
             for _ in range(amount):
-                credit_card_number = ''.join(random.choices(string.digits, k=15))
-                credit_card_number += str(
-                    (10 - sum(int(digit) for digit in credit_card_number) % 10) % 10)  # Luhn check digit
-                if precise and not validate.Validate.CreditCard.any(credit_card_number):
-                    return cls.credit_card(amount, precise=True)
+                credit_card_number = cls.__generate_luhn_compliant_number(16)
                 cvv = ''.join(random.choices(string.digits, k=3))
                 expiration_date = f"{random.randint(1, 12):02d}/{random.randint(22, 30):02d}"
                 credit_cards.append({
@@ -71,7 +86,7 @@ class FakeData:
             return credit_cards
 
         @staticmethod
-        def bank_account(amount: int = 1) -> list[dict[str, LiteralString | str]]:
+        def bank_account(amount: int = 1) -> list[dict[str, str]]:
             bank_accounts = []
             for _ in range(amount):
                 bank_account_number = ''.join(random.choices(string.digits, k=12))
@@ -112,14 +127,16 @@ class FakeData:
                 cls.domains.extend(extra_domains)
 
         @classmethod
-        def name(cls, format: str = None, amount: int = 1) -> list[LiteralString | str]:
+        def name(cls, format: str = None, amount: int = 1) -> list[str]:
             return [format.replace("{first_name}", random.choice(cls.first_names)).replace("{last_name}", random.choice(
                 cls.last_names)) if format else f"{random.choice(cls.first_names)} {random.choice(cls.last_names)}" for
                     _
                     in range(amount)]
 
         @classmethod
-        def address(cls, format: str = None, amount: int = 1) -> list[LiteralString | str]:
+        def address(cls, format: str = None, amount: int = 1) -> list[str]:
+            if not hasattr(cls, 'street_names'):
+                cls.__init__()
             addresses = []
             for _ in range(amount):
                 address = {
@@ -138,13 +155,15 @@ class FakeData:
             return addresses
 
         @staticmethod
-        def phone_number(format: str = None, amount: int = 1) -> list[LiteralString | str]:
+        def phone_number(format: str = None, amount: int = 1) -> list[str]:
             return [format.replace("{phone_number}",
                                    f"{random.randint(100, 999)}-{random.randint(100, 999)}-{random.randint(1000, 9999)}") if format else f"{random.randint(100, 999)}-{random.randint(100, 999)}-{random.randint(1000, 9999)}"
                     for _ in range(amount)]
 
         @classmethod
-        def email(cls, format: str = None, amount: int = 1) -> list[LiteralString | str]:
+        def email(cls, format: str = None, amount: int = 1) -> list[str]:
+            if not hasattr(cls, 'first_names') or not hasattr(cls, 'last_names') or not hasattr(cls, 'domains'):
+                cls.__init__()
             return [format.replace("{email}",
                                    f"{random.choice(cls.first_names).lower()}.{random.choice(cls.last_names).lower()}@{random.choice(cls.domains)}") if format else f"{random.choice(cls.first_names).lower()}.{random.choice(cls.last_names).lower()}@{random.choice(cls.domains)}"
                     for _ in range(amount)]
@@ -171,6 +190,8 @@ class FakeData:
 
         @classmethod
         def company_name(cls, amount: int = 1) -> list[str]:
+            if not hasattr(cls, 'company_names'):
+                cls.__init__()
             return [str(random.choice(cls.company_names)) for _ in range(amount)]
 
         @classmethod
@@ -179,7 +200,7 @@ class FakeData:
 
         @staticmethod
         def employee_id(amount: int = 1, characters_to_use: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") -> list[str]:
-            return [''.join(str(random.choices(characters_to_use, k=8))) for _ in range(amount)]
+            return [''.join(random.choices(characters_to_use, k=8)) for _ in range(amount)]
 
     class Product:
         @classmethod
@@ -193,10 +214,14 @@ class FakeData:
 
         @classmethod
         def generate_product_name(cls, amount: int = 1) -> list[str]:
+            if not hasattr(cls, 'product_names'):
+                cls.__init__()
             return [str(random.choice(cls.product_names)) for _ in range(amount)]
 
         @classmethod
         def generate_product_category(cls, amount: int = 1) -> list[str]:
+            if not hasattr(cls, 'product_categories'):
+                cls.__init__()
             return [str(random.choice(cls.product_categories)) for _ in range(amount)]
 
         @staticmethod
@@ -207,20 +232,20 @@ class FakeData:
         @classmethod
         def __init__(cls, extra_domains: list = None):
             cls.domains = ["example.com", "test.com", "sample.org", "demo.net"]
-            if list:
+            if extra_domains:
                 cls.domains.extend(extra_domains)
 
         @staticmethod
         def generate_username(amount: int = 1, size: int = 8,
                               charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> \
                 list[str]:
-            return [''.join(str(random.choices(charset, k=size))) for _ in range(amount)]
+            return [''.join(random.choices(charset, k=size)) for _ in range(amount)]
 
         @staticmethod
         def generate_password(amount: int = 1, size: int = 12,
                               charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> \
                 list[str]:
-            return [''.join(str(random.choices(charset, k=size))) for _ in range(amount)]
+            return [''.join(random.choices(charset, k=size)) for _ in range(amount)]
 
         @staticmethod
         def generate_ip_address(amount: int = 1, version=4) -> list[str]:
@@ -230,11 +255,13 @@ class FakeData:
                     ip_addresses.append('.'.join(str(random.randint(0, 255)) for _ in range(4)))
                 elif version == 6:
                     ip_addresses.append(
-                        ':'.join(''.join(str(random.choices('0123456789abcdef', k=4))) for _ in range(8)))
+                        ':'.join(''.join(random.choices('0123456789abcdef', k=4)) for _ in range(8)))
             return ip_addresses
 
         @classmethod
         def generate_url(cls, amount: int = 1, format: str = None) -> list[str]:
+            if not hasattr(cls, 'domains'):
+                cls.__init__()
             urls = []
             for _ in range(amount):
                 domain = random.choice(cls.domains)

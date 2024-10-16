@@ -1,28 +1,19 @@
 import os
-import re
 from datetime import datetime
 
 
 class Validate:
     @staticmethod
     def this_email(email_address: str) -> bool:
-        """
-        Validates an email address against a set of predefined rules.
-
-        Args:
-            email_address (str): The email address to be validated.
-
-        Returns:
-            bool: True if the email address is valid, False otherwise.
-        """
-        if len(email_address) < 1 or len(email_address) > 320:
+        if (" " in email_address or "@" not in email_address) and (not (1 <= len(email_address) <= 320)):
             return False
-        if " " in email_address:
+        local_part, domain_part = email_address.rsplit("@", 1)
+        if not local_part or not domain_part or "." not in domain_part:
             return False
-        pattern = re.compile(
-            r"^[a-zA-Z0-9!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        )
-        return bool(pattern.search(email_address))
+        domain_labels = domain_part.split(".")
+        if (not all(label.isalnum() for label in domain_labels)) and (not 2 <= len(domain_labels[-1]) <= 63):
+            return False
+        return True
 
     @staticmethod
     def _url_by_parsing(url: str) -> dict | bool:
