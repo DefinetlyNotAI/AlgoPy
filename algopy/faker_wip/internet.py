@@ -4,8 +4,9 @@ import string
 
 
 class Internet:
-    def __init__(self):
-        self.domains = ["example.com", "test.com", "sample.org", "demo.net"]
+    @classmethod
+    def __init__(cls):
+        cls.domains = ["example.com", "test.com", "sample.org", "demo.net"]
 
     @staticmethod
     def generate_username(amount: int = 1, size: int = 8,
@@ -27,10 +28,11 @@ class Internet:
                 ip_addresses.append(':'.join(''.join(random.choices('0123456789abcdef', k=4)) for _ in range(8)))
         return ip_addresses
 
-    def generate_url(self, amount: int = 1, format: str = None):
+    @classmethod
+    def generate_url(cls, amount: int = 1, format: str = None):
         urls = []
         for _ in range(amount):
-            domain = random.choice(self.domains)
+            domain = random.choice(cls.domains)
             path = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
             url = f"https://{domain}/{path}"
             if format:

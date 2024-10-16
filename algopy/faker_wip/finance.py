@@ -7,14 +7,15 @@ import validate
 
 
 class Financial:
-    def credit_card(self, amount: int = 1, precise: bool = False) -> list[dict[str, LiteralString | str]]:
+    @classmethod
+    def credit_card(cls, amount: int = 1, precise: bool = False) -> list[dict[str, LiteralString | str]]:
         credit_cards = []
         for _ in range(amount):
             credit_card_number = ''.join(random.choices(string.digits, k=15))
             credit_card_number += str(
                 (10 - sum(int(digit) for digit in credit_card_number) % 10) % 10)  # Luhn check digit
             if precise and not validate.Validate.CreditCard.any(credit_card_number):
-                return self.credit_card(amount, precise=True)
+                return cls.credit_card(amount, precise=True)
             cvv = ''.join(random.choices(string.digits, k=3))
             expiration_date = f"{random.randint(1, 12):02d}/{random.randint(22, 30):02d}"
             credit_cards.append({
