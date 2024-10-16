@@ -49,7 +49,7 @@ from algopy import PACKAGE_YOU_WANT
 PACKAGE_YOU_WANT.method_or_class_to_use()
 ```
 
-And all you have to do is read the documentation on the Wiki.
+And all you have to do is read the documentation on the Wiki. (WIP - Version 2.1.1)
 
 The following packages are available in **AlgoPy**:
 
