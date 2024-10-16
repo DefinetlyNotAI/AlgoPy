@@ -9,6 +9,7 @@
     <orderEntry type="module" module-name="Calcula-PC" />
   </component>
   <component name="PackageRequirementsSettings">
+    <option name="removeUnused" value="true" />
     <option name="modifyBaseFiles" value="true" />
   </component>
 </module>

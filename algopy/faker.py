@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime, timedelta
 
 
-class FakeData:
+class Faker:
     class Misc:
         @classmethod
         def __init__(cls, extra_words: list = None):
