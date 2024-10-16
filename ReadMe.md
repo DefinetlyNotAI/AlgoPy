@@ -44,11 +44,21 @@ To install: `pip install -r requirements.txt`
 To use **AlgoPy** in your project, you can import the desired package and class as follows:
 
 ```python
-import algopy.PACKAGE_TO_USE as WHATEVER_NAME_YOU_WANT
-WHATEVER_NAME_YOU_WANT = WHATEVER_NAME_YOU_WANT.CLASS_NAME()
+from algopy import PACKAGE_YOU_WANT
+
+PACKAGE_YOU_WANT.method_or_class_to_use()
 ```
 
 And all you have to do is read the documentation on the Wiki. (WIP - Version 2.1.1)
+
+The following packages are available in **AlgoPy**:
+
+- `log` for logging events and errors. Is a wrapper for colorlog.
+- `sort` for sorting data structures. Has many types of sorting algorithms and data structures.
+- `search` for searching data structures. Has many types of searching algorithms.
+- `find` for finding data in a different set of structures.
+- `convert` for converting numbers and sizes to different types (Like HEX to BIN and KB to MB etc).
+- `faker` for generating fake data for testing purposes.
 
 ### Prerequisites
 

@@ -68,6 +68,7 @@
         <list>
           <option value="type" />
           <option value="dir" />
+          <option value="format" />
         </list>
       </option>
     </inspection_tool>

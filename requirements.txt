@@ -1,3 +1,4 @@
+uuid~=1.30
 colorlog~=6.8.2
 DateTime~=5.5
 setuptools~=73.0.0
