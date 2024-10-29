@@ -195,27 +195,12 @@ class Convert:
             return int(Hexadecimal_Number, 16)
 
     class Roman:
-        @staticmethod
-        def to_dec(Roman: str) -> int:
+        @classmethod
+        def __init__(cls):
             """
-            Convert a Roman numeral to its decimal representation.
-
-            :param Roman: The Roman numeral to convert.
-            :return: The decimal representation of the Roman numeral.
+            Initialize the Roman numeral dictionary.
             """
-            if not isinstance(Roman, str):
-                raise Exception("Input must be a string.")
-            elif not Roman.isupper():
-                raise Exception("Input must be uppercase.")
-            elif Roman is None:
-                raise Exception("Input cannot be None.")
-
-            roman_to_numerical = Convert.Roman.__get_roman_to_numerical_mapping()
-            return Convert.Roman.__convert_roman_to_decimal(Roman, roman_to_numerical)
-
-        @staticmethod
-        def __get_roman_to_numerical_mapping() -> dict[str, int]:
-            return {
+            cls.roman_dict = {
                 "I": 1,
                 "V": 5,
                 "X": 10,
@@ -231,8 +216,33 @@ class Convert:
                 "CM": 900,
             }
 
+        @classmethod
+        def to_dec(cls, Roman: str) -> int:
+            """
+            Convert a Roman numeral to its decimal representation.
+
+            :param Roman: The Roman numeral to convert.
+            :return: The decimal representation of the Roman numeral.
+            """
+            if not isinstance(Roman, str):
+                raise Exception("Input must be a string.")
+            elif not Roman.isupper():
+                raise Exception("Input must be uppercase.")
+            elif Roman is None:
+                raise Exception("Input cannot be None.")
+
+            roman_to_numerical = cls.roman_dict
+            return cls.__convert_roman_to_decimal(Roman, roman_to_numerical)
+
         @staticmethod
         def __convert_roman_to_decimal(Roman: str, roman_to_numerical: dict) -> int:
+            """
+            Convert a Roman numeral string to its decimal representation.
+
+            :param Roman: The Roman numeral string to convert.
+            :param roman_to_numerical: A dictionary mapping Roman numeral strings to their decimal values.
+            :return: The decimal representation of the Roman numeral.
+            """
             i, num = 0, 0
             while i < len(Roman):
                 if i + 1 < len(Roman) and Roman[i: i + 2] in roman_to_numerical:
@@ -318,8 +328,8 @@ class Convert:
                 raise Exception("No temperature provided")
             return (fahrenheit - 32) * 5 / 9
 
-    @staticmethod
-    def memory(number: int, input_unit: str, output_unit: str) -> str:
+    @classmethod
+    def memory(cls, number: int, input_unit: str, output_unit: str) -> str:
         """
         Convert a memory size from one unit to another.
 
@@ -328,16 +338,20 @@ class Convert:
         :param output_unit: The unit of the output memory size.
         :return: The converted memory size in the output unit.
         """
-        memory_dict = Convert.__get_memory_dict()
-        Convert.__validate_memory_input(number, input_unit, output_unit, memory_dict)
+        cls.__validate_memory_input(number, input_unit, output_unit, cls.mem_values)
         if input_unit == output_unit:
             return f"{number} {output_unit}"
-        final_number = Convert.__convert_memory_size(number, input_unit, output_unit, memory_dict)
+        final_number = cls.__convert_memory_size(number, input_unit, output_unit, cls.mem_values)
         return f"{final_number:.15f}".rstrip("0").rstrip(".") + f" {output_unit}"
 
-    @staticmethod
-    def __get_memory_dict() -> dict:
-        return {
+    @classmethod
+    def __init__(cls):
+        """
+        Get a dictionary mapping memory units to their bit equivalents.
+
+        :return: A dictionary with memory units as keys and their bit equivalents as values.
+        """
+        cls.mem_values = {
             "bit": 1,
             "byte": 8,
             "kilobyte": 8000,
@@ -382,21 +396,45 @@ class Convert:
             "Pib": 1024 ** 5,
         }
 
-    @staticmethod
-    def __validate_memory_input(number: int, input_unit: str, output_unit: str, memory_dict: dict):
+    @classmethod
+    def __validate_memory_input(cls, number: int, input_unit: str, output_unit: str, memory_dict: dict):
+        """
+        Validate the input parameters for memory conversion.
+
+        :param number: The memory size to convert.
+        :param input_unit: The unit of the input memory size.
+        :param output_unit: The unit of the output memory size.
+        :param memory_dict: The dictionary mapping memory units to their bit equivalents.
+        :raises Exception: If any input is invalid.
+        """
         if not all([number, input_unit, output_unit]):
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
-        input_unit = Convert.__normalize_unit(input_unit)
-        output_unit = Convert.__normalize_unit(output_unit)
+        input_unit = cls.__normalize_unit(input_unit)
+        output_unit = cls.__normalize_unit(output_unit)
         if not isinstance(number, int) or input_unit not in memory_dict or output_unit not in memory_dict:
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
 
     @staticmethod
     def __normalize_unit(unit: str) -> str:
+        """
+        Normalize the memory unit to a standard format.
+
+        :param unit: The memory unit to normalize.
+        :return: The normalized memory unit.
+        """
         return unit.lower() if len(unit) > 3 and unit.lower() != "bit" else unit
 
-    @staticmethod
-    def __convert_memory_size(number: int, input_unit: str, output_unit: str, memory_dict: dict) -> float:
-        input_unit = Convert.__normalize_unit(input_unit)
-        output_unit = Convert.__normalize_unit(output_unit)
+    @classmethod
+    def __convert_memory_size(cls, number: int, input_unit: str, output_unit: str, memory_dict: dict) -> float:
+        """
+        Convert a memory size from one unit to another.
+
+        :param number: The memory size to convert.
+        :param input_unit: The unit of the input memory size.
+        :param output_unit: The unit of the output memory size.
+        :param memory_dict: The dictionary mapping memory units to their bit equivalents.
+        :return: The converted memory size in the output unit.
+        """
+        input_unit = cls.__normalize_unit(input_unit)
+        output_unit = cls.__normalize_unit(output_unit)
         return (number * memory_dict[input_unit]) / memory_dict[output_unit]
