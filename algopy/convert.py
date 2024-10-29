@@ -224,6 +224,8 @@ class Convert:
             :param Roman: The Roman numeral to convert.
             :return: The decimal representation of the Roman numeral.
             """
+            if getattr(cls, "roman_dict", None) is None:
+                cls.__init__()
             if not isinstance(Roman, str):
                 raise Exception("Input must be a string.")
             elif not Roman.isupper():
@@ -338,20 +340,7 @@ class Convert:
         :param output_unit: The unit of the output memory size.
         :return: The converted memory size in the output unit.
         """
-        cls.__validate_memory_input(number, input_unit, output_unit, cls.mem_values)
-        if input_unit == output_unit:
-            return f"{number} {output_unit}"
-        final_number = cls.__convert_memory_size(number, input_unit, output_unit, cls.mem_values)
-        return f"{final_number:.15f}".rstrip("0").rstrip(".") + f" {output_unit}"
-
-    @classmethod
-    def __init__(cls):
-        """
-        Get a dictionary mapping memory units to their bit equivalents.
-
-        :return: A dictionary with memory units as keys and their bit equivalents as values.
-        """
-        cls.mem_values = {
+        mem_values = {
             "bit": 1,
             "byte": 8,
             "kilobyte": 8000,
@@ -395,6 +384,11 @@ class Convert:
             "Tib": 1024 ** 4,
             "Pib": 1024 ** 5,
         }
+        cls.__validate_memory_input(number, input_unit, output_unit, mem_values)
+        if input_unit == output_unit:
+            return f"{number} {output_unit}"
+        final_number = cls.__convert_memory_size(number, input_unit, output_unit, mem_values)
+        return f"{final_number:.15f}".rstrip("0").rstrip(".") + f" {output_unit}"
 
     @classmethod
     def __validate_memory_input(cls, number: int, input_unit: str, output_unit: str, memory_dict: dict):
