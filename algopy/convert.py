@@ -203,7 +203,19 @@ class Convert:
             :param Roman: The Roman numeral to convert.
             :return: The decimal representation of the Roman numeral.
             """
-            roman_to_numerical = {
+            if not isinstance(Roman, str):
+                raise Exception("Input must be a string.")
+            elif not Roman.isupper():
+                raise Exception("Input must be uppercase.")
+            elif Roman is None:
+                raise Exception("Input cannot be None.")
+
+            roman_to_numerical = Convert.Roman.__get_roman_to_numerical_mapping()
+            return Convert.Roman.__convert_roman_to_decimal(Roman, roman_to_numerical)
+
+        @staticmethod
+        def __get_roman_to_numerical_mapping() -> dict[str, int]:
+            return {
                 "I": 1,
                 "V": 5,
                 "X": 10,
@@ -218,14 +230,10 @@ class Convert:
                 "CD": 400,
                 "CM": 900,
             }
-            if not isinstance(Roman, str):
-                raise Exception("Input must be a string.")
-            elif not Roman.isupper():
-                raise Exception("Input must be uppercase.")
-            elif Roman is None:
-                raise Exception("Input cannot be None.")
+
+        @staticmethod
+        def __convert_roman_to_decimal(Roman: str, roman_to_numerical: dict) -> int:
             i, num = 0, 0
-            Roman = Roman.upper()
             while i < len(Roman):
                 if i + 1 < len(Roman) and Roman[i: i + 2] in roman_to_numerical:
                     num += roman_to_numerical[Roman[i: i + 2]]
@@ -320,7 +328,16 @@ class Convert:
         :param output_unit: The unit of the output memory size.
         :return: The converted memory size in the output unit.
         """
-        memory_dict = {
+        memory_dict = Convert.__get_memory_dict()
+        Convert.__validate_memory_input(number, input_unit, output_unit, memory_dict)
+        if input_unit == output_unit:
+            return f"{number} {output_unit}"
+        final_number = Convert.__convert_memory_size(number, input_unit, output_unit, memory_dict)
+        return f"{final_number:.15f}".rstrip("0").rstrip(".") + f" {output_unit}"
+
+    @staticmethod
+    def __get_memory_dict() -> dict:
+        return {
             "bit": 1,
             "byte": 8,
             "kilobyte": 8000,
@@ -364,25 +381,22 @@ class Convert:
             "Tib": 1024 ** 4,
             "Pib": 1024 ** 5,
         }
+
+    @staticmethod
+    def __validate_memory_input(number: int, input_unit: str, output_unit: str, memory_dict: dict):
         if not all([number, input_unit, output_unit]):
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
-        if input_unit == output_unit:
-            return f"{number} {output_unit}"
-        input_unit = (
-            input_unit.lower()
-            if len(input_unit) > 3 and input_unit.lower() != "bit"
-            else input_unit
-        )
-        output_unit = (
-            output_unit.lower()
-            if len(output_unit) > 3 and output_unit.lower() != "bit"
-            else output_unit
-        )
-        if (
-                not isinstance(number, int)
-                or input_unit not in memory_dict
-                or output_unit not in memory_dict
-        ):
+        input_unit = Convert.__normalize_unit(input_unit)
+        output_unit = Convert.__normalize_unit(output_unit)
+        if not isinstance(number, int) or input_unit not in memory_dict or output_unit not in memory_dict:
             raise Exception(f"Invalid input: {number} {input_unit} -> {output_unit}")
-        final_number = (number * memory_dict[input_unit]) / memory_dict[output_unit]
-        return f"{final_number:.15f}".rstrip("0").rstrip(".") + f" {output_unit}"
+
+    @staticmethod
+    def __normalize_unit(unit: str) -> str:
+        return unit.lower() if len(unit) > 3 and unit.lower() != "bit" else unit
+
+    @staticmethod
+    def __convert_memory_size(number: int, input_unit: str, output_unit: str, memory_dict: dict) -> float:
+        input_unit = Convert.__normalize_unit(input_unit)
+        output_unit = Convert.__normalize_unit(output_unit)
+        return (number * memory_dict[input_unit]) / memory_dict[output_unit]
