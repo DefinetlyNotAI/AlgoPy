@@ -150,40 +150,26 @@ class Faker:
 
     class Personal:
         @classmethod
-        def __init__(cls, extra_first_names: list = None, extra_last_names: list = None, extra_cities: list = None,
-                     extra_countries: list = None, extra_street_names: list = None, extra_domains: list = None):
+        def __init__(cls, extra_data: dict = None):
             """
             Initialize the Personal class with optional extra data for name, address, and email generation.
 
-            :param extra_first_names: List of additional first names.
-            :param extra_last_names: List of additional last names.
-            :param extra_cities: List of additional cities.
-            :param extra_countries: List of additional countries.
-            :param extra_street_names: List of additional street names.
-            :param extra_domains: List of additional email domains.
+            :param extra_data: Dictionary containing additional data for first names, last names, cities, countries, street names, and domains.
             """
             cls.first_names = ["John", "Jane", "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hank"]
-            cls.last_names = ["Doe", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis",
-                              "Martinez"]
-            cls.cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio",
-                          "San Diego", "Dallas", "San Jose"]
-            cls.countries = ["USA", "Canada", "Mexico", "UK", "Germany", "France", "Italy", "Spain", "Australia",
-                             "Japan"]
+            cls.last_names = ["Doe", "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Martinez"]
+            cls.cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"]
+            cls.countries = ["USA", "Canada", "Mexico", "UK", "Germany", "France", "Italy", "Spain", "Australia", "Japan"]
             cls.street_names = ["Main", "Broadway", "Market", "Elm", "Maple", "Oak", "Pine", "Cedar", "Birch", "Walnut"]
-            cls.domains = ["example.com", "test.com", "demo.com", "fake.com", "sample.com", "mock.com", "dummy.com",
-                           "faux.com", "simulated.com", "placeholder.com"]
-            if extra_first_names:
-                cls.first_names.extend(extra_first_names)
-            if extra_last_names:
-                cls.last_names.extend(extra_last_names)
-            if extra_cities:
-                cls.cities.extend(extra_cities)
-            if extra_countries:
-                cls.countries.extend(extra_countries)
-            if extra_street_names:
-                cls.street_names.extend(extra_street_names)
-            if extra_domains:
-                cls.domains.extend(extra_domains)
+            cls.domains = ["example.com", "test.com", "demo.com", "fake.com", "sample.com", "mock.com", "dummy.com", "faux.com", "simulated.com", "placeholder.com"]
+
+            if extra_data:
+                cls.first_names.extend(extra_data.get("extra_first_names", []))
+                cls.last_names.extend(extra_data.get("extra_last_names", []))
+                cls.cities.extend(extra_data.get("extra_cities", []))
+                cls.countries.extend(extra_data.get("extra_countries", []))
+                cls.street_names.extend(extra_data.get("extra_street_names", []))
+                cls.domains.extend(extra_data.get("extra_domains", []))
 
         @classmethod
         def name(cls, format: str = None, amount: int = 1) -> list[str]:
@@ -212,12 +198,7 @@ class Faker:
                 cls.__init__()
             addresses = []
             for _ in range(amount):
-                address = {
-                    "street_address": f"{random.randint(1, 9999)} {random.choice(cls.street_names)} St",
-                    "city": random.choice(cls.cities),
-                    "country": random.choice(cls.countries),
-                    "postal_code": f"{random.randint(10000, 99999)}"
-                }
+                address = cls.__helper_address()
                 if format:
                     formatted_address = format
                     for key, value in address.items():
@@ -226,6 +207,16 @@ class Faker:
                 else:
                     addresses.append(address)
             return addresses
+
+        @classmethod
+        def __helper_address(cls):
+            address = {
+                "street_address": f"{random.randint(1, 9999)} {random.choice(cls.street_names)} St",
+                "city": random.choice(cls.cities),
+                "country": random.choice(cls.countries),
+                "postal_code": f"{random.randint(10000, 99999)}"
+            }
+            return address
 
         @staticmethod
         def phone_number(format: str = None, amount: int = 1) -> list[str]:
@@ -391,8 +382,7 @@ class Faker:
 
         @staticmethod
         def generate_username(amount: int = 1, size: int = 8,
-                              charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> \
-        list[str]:
+                              charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> list[str]:
             """
             Generate a list of random usernames.
 
@@ -405,8 +395,7 @@ class Faker:
 
         @staticmethod
         def generate_password(amount: int = 1, size: int = 12,
-                              charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> \
-        list[str]:
+                              charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> list[str]:
             """
             Generate a list of random passwords.
 
