@@ -50,6 +50,8 @@ class Faker:
             :return: List of generated UUIDs.
             :raises ValueError: If an invalid UUID version is provided or required arguments are missing.
             """
+            if version not in [1, 3, 4, 5]:
+                raise ValueError("Invalid UUID version. Use 1, 3, 4, or 5.")
             if version in [3, 5] and (namespace is None or name is None):
                 raise ValueError(f"UUID version {version} requires 'namespace' and 'name' arguments")
             uuid_func = {
@@ -96,7 +98,7 @@ class Faker:
             return checksum % 10
 
         @classmethod
-        def __generate_luhn_compliant_number(cls, length: int) -> str:
+        def __generate_compliant_number(cls, length: int) -> str:
             """
             Generate a Luhn-compliant card number of a specified length.
 
@@ -118,7 +120,7 @@ class Faker:
             """
             credit_cards = []
             for _ in range(amount):
-                credit_card_number = cls.__generate_luhn_compliant_number(16)
+                credit_card_number = cls.__generate_compliant_number(16)
                 cvv = ''.join(random.choices(string.digits, k=3))
                 expiration_date = f"{random.randint(1, 12):02d}/{random.randint(22, 30):02d}"
                 credit_cards.append({
@@ -176,6 +178,9 @@ class Faker:
             """
             Generate a list of random names.
 
+            Format string can contain {first_name} and {last_name} placeholders.
+            Example format: "{first_name} {last_name}".
+
             :param format: Optional format string for the names, using {first_name} and {last_name} as placeholders.
             :param amount: Number of names to generate.
             :return: List of generated names.
@@ -189,6 +194,9 @@ class Faker:
         def address(cls, format: str = None, amount: int = 1) -> list[str]:
             """
             Generate a list of random addresses.
+
+            Format string can contain {street_address}, {city}, {country}, and {postal_code} placeholders.
+            Example format: "{street_address}, {city}, {country} {postal_code}".
 
             :param format: Optional format string for the addresses, using {street_address}, {city}, {country}, and {postal_code} as placeholders.
             :param amount: Number of addresses to generate.
@@ -223,6 +231,9 @@ class Faker:
             """
             Generate a list of random phone numbers.
 
+            Format string can contain {phone_number} as a placeholder.
+            Example format: "John's phone number is {phone_number}".
+
             :param format: Optional format string for the phone numbers, using {phone_number} as a placeholder.
             :param amount: Number of phone numbers to generate.
             :return: List of generated phone numbers.
@@ -235,6 +246,9 @@ class Faker:
         def email(cls, format: str = None, amount: int = 1) -> list[str]:
             """
             Generate a list of random email addresses.
+
+            Format string can contain {email} as a placeholder.
+            Example format: "John's email is {email}"
 
             :param format: Optional format string for the email addresses, using {email} as a placeholder.
             :param amount: Number of email addresses to generate.
@@ -250,6 +264,9 @@ class Faker:
         def date(format: str = None, amount: int = 1) -> list[str]:
             """
             Generate a list of random dates.
+
+            Format string should be in the strftime format.
+            Example format: "%Y-%m-%d".
 
             :param format: Optional format string for the dates.
             :param amount: Number of dates to generate.
@@ -302,7 +319,7 @@ class Faker:
             return [str(random.choice(cls.job_titles)) for _ in range(amount)]
 
         @staticmethod
-        def employee_id(amount: int = 1, characters_to_use: str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") -> list[str]:
+        def employee_id(amount: int = 1, characters_to_use: str = (string.ascii_uppercase + string.digits)) -> list[str]:
             """
             Generate a list of random employee IDs.
 
@@ -376,13 +393,14 @@ class Faker:
 
             :param extra_domains: List of additional domains to include.
             """
-            cls.domains = ["example.com", "test.com", "sample.org", "demo.net"]
+            cls.domains = ["example.com", "test.com", "sample.org", "demo.net", "fake.com",
+                           "mock.org", "example.net", "test.org", "sample.com", "demo.net"]
             if extra_domains:
                 cls.domains.extend(extra_domains)
 
         @staticmethod
         def generate_username(amount: int = 1, size: int = 8,
-                              charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> list[str]:
+                              charset: str = string.ascii_letters) -> list[str]:
             """
             Generate a list of random usernames.
 
@@ -395,7 +413,7 @@ class Faker:
 
         @staticmethod
         def generate_password(amount: int = 1, size: int = 12,
-                              charset: str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-<>?!@#$%^&*()[]{};=-_") -> list[str]:
+                              charset: str = (string.ascii_letters + string.digits + string.punctuation)) -> list[str]:
             """
             Generate a list of random passwords.
 
@@ -421,12 +439,17 @@ class Faker:
                     ip_addresses.append('.'.join(str(random.randint(0, 255)) for _ in range(4)))
                 elif version == 6:
                     ip_addresses.append(':'.join(''.join(random.choices('0123456789abcdef', k=4)) for _ in range(8)))
+                else:
+                    raise ValueError("Invalid IP version. Use 4 or 6.")
             return ip_addresses
 
         @classmethod
         def generate_url(cls, amount: int = 1, format: str = None) -> list[str]:
             """
             Generate a list of random URLs.
+
+            Format string can contain {domain} and {path} placeholders.
+            Example format: "https://{domain}/{path}".
 
             :param amount: Number of URLs to generate.
             :param format: Optional format string for the URLs, using {domain} and {path} as placeholders.
