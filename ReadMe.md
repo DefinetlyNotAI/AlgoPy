@@ -77,37 +77,3 @@ make your changes, and submit a pull request.
 ## License
 
 **AlgoPy** is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-
----
-
-# Usage
-
-## Faker
-
-### Personal
-```python
-from algopy import faker
-
-# Initialize the Personal class with extra data
-extra_data = {
-    "extra_first_names": ["Liam", "Olivia"],
-    "extra_last_names": ["Anderson", "Clark"],
-    "extra_cities": ["Austin", "Seattle"],
-    "extra_countries": ["Brazil", "India"],
-    "extra_street_names": ["Sunset", "Ocean"],
-    "extra_domains": ["newdomain.com", "anotherdomain.org"]
-}
-
-# Create an instance of the Personal class with the extra data
-faker.Personal.__init__(extra_data=extra_data)
-
-# Generate random names, addresses, and emails using the updated data
-names = faker.Personal.name(amount=5)
-addresses = faker.Personal.address(amount=5)
-emails = faker.Personal.email(amount=5)
-
-print("Names:", names)
-print("Addresses:", addresses)
-print("Emails:", emails)
-```
