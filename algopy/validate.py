@@ -5,15 +5,13 @@ from datetime import datetime
 class Validate:
     @staticmethod
     def this_email(email_address: str) -> bool:
-        if (" " in email_address or "@" not in email_address) and (not (1 <= len(email_address) <= 320)):
-            return False
-        local_part, domain_part = email_address.rsplit("@", 1)
-        if not local_part or not domain_part or "." not in domain_part:
-            return False
-        domain_labels = domain_part.split(".")
-        if (not all(label.isalnum() for label in domain_labels)) and (not 2 <= len(domain_labels[-1]) <= 63):
-            return False
-        return True
+        if (1 <= len(email_address) <= 320) and " " not in email_address and "@" in email_address:
+            local_part, domain_part = email_address.rsplit("@", 1)
+            if local_part and domain_part and "." in domain_part:
+                domain_labels = domain_part.split(".")
+                if all(label.isalnum() for label in domain_labels) and 2 <= len(domain_labels[-1]) <= 63:
+                    return True
+        return False
 
     @staticmethod
     def _url_by_parsing(url: str) -> dict | bool:
@@ -55,49 +53,56 @@ class Validate:
                  enforce_https: bool = False) -> bool:
         parsed_url = cls._url_by_parsing(url)
         if not parsed_url:
-            error_message = 'Invalid URL: Reason - URL is empty or does not contain a protocol'
-            return error_message if text_error else False
+            return cls.__return_error('Invalid URL: Reason - URL is empty or does not contain a protocol', text_error)
 
-        # Validate protocol
-        if parsed_url['protocol'] not in ['http', 'https']:
-            error_message = 'Invalid URL: Reason - Protocol is not HTTP or HTTPS'
-            return error_message if text_error else False
-        elif enforce_https and parsed_url['protocol'] != 'https':
-            error_message = 'Invalid URL: Reason - HTTPS protocol is enforced'
-            return error_message if text_error else False
+        if not cls.__validate_protocol(parsed_url['protocol'], enforce_https, text_error):
+            return False
 
-        # Validate hostname
-        hostname = parsed_url['hostname']
+        if not cls.__validate_hostname(parsed_url['hostname'], text_error):
+            return False
+
+        if not cls.__validate_filename(parsed_url['filename'], text_error):
+            return False
+
+        if not parsed_url['TLD']:
+            return cls.__return_error('Invalid URL: Reason - TLD is not registered', text_error)
+
+        return True
+
+    @staticmethod
+    def __return_error(message: str, text_error: bool) -> bool:
+        return message if text_error else False
+
+    @classmethod
+    def __validate_protocol(cls, protocol: str, enforce_https: bool, text_error: bool) -> bool:
+        if protocol not in ['http', 'https']:
+            return cls.__return_error('Invalid URL: Reason - Protocol is not HTTP or HTTPS', text_error)
+        if enforce_https and protocol != 'https':
+            return cls.__return_error('Invalid URL: Reason - HTTPS protocol is enforced', text_error)
+        return True
+
+    @classmethod
+    def __validate_hostname(cls, hostname: str, text_error: bool) -> bool:
         if len(hostname) > 253:
-            error_message = 'Invalid URL: Reason - Hostname is too long'
-            return error_message if text_error else False
+            return cls.__return_error('Invalid URL: Reason - Hostname is too long', text_error)
         if hostname.count('.') < 1:
-            error_message = 'Invalid URL: Reason - Hostname does not contain a domain'
-            return error_message if text_error else False
+            return cls.__return_error('Invalid URL: Reason - Hostname does not contain a domain', text_error)
         hostname_labels = hostname.split('.')
         for label in hostname_labels:
             if not all(c.isalnum() or c == '-' for c in label):
-                error_message = 'Invalid URL: Reason - Invalid character in hostname'
-                return error_message if text_error else False
+                return cls.__return_error('Invalid URL: Reason - Invalid character in hostname', text_error)
             if label.startswith('-') or label.endswith('-'):
-                error_message = 'Invalid URL: Reason - Label starts or ends with a hyphen'
-                return error_message if text_error else False
+                return cls.__return_error('Invalid URL: Reason - Label starts or ends with a hyphen', text_error)
             if label.isdigit():
-                error_message = 'Invalid URL: Reason - Label is a number'
-                return error_message if text_error else False
+                return cls.__return_error('Invalid URL: Reason - Label is a number', text_error)
+        return True
 
-        # Validate filename
-        filename = parsed_url['filename']
+    @classmethod
+    def __validate_filename(cls, filename: str, text_error: bool) -> bool:
         if len(filename) > 256:
-            error_message = 'Invalid URL: Reason - Filename is too long'
-            return error_message if text_error else False
+            return cls.__return_error('Invalid URL: Reason - Filename is too long', text_error)
         if ' ' in filename:
-            error_message = 'Invalid URL: Reason - Filename contains spaces'
-            return error_message if text_error else False
-
-        if not parsed_url['TLD']:
-            error_message = 'Invalid URL: Reason - TLD is not registered'
-            return error_message if text_error else False
+            return cls.__return_error('Invalid URL: Reason - Filename contains spaces', text_error)
         return True
 
     @staticmethod
@@ -196,8 +201,8 @@ class Validate:
             """
             pass
 
-        @staticmethod
-        def __luhn_algorithm(card_number: str) -> bool:
+        @classmethod
+        def __luhn_algorithm(cls, card_number: str) -> bool:
             """
             Validates a card number using the Luhn algorithm.
 
@@ -209,18 +214,26 @@ class Validate:
             """
             if len(card_number) < 13 or len(card_number) > 19:
                 return False
+
             num_list = [int(digit) for digit in card_number]
             num_list.reverse()
-            total = 0
-            for i, num in enumerate(num_list):
-                if i % 2 == 1:
-                    doubled = num * 2
-                    if doubled > 9:
-                        doubled -= 9
-                    total += doubled
-                else:
-                    total += num
+
+            total = sum(cls.__luhn_double(num) if i % 2 == 1 else num for i, num in enumerate(num_list))
             return total % 10 == 0
+
+        @staticmethod
+        def __luhn_double(num: int) -> int:
+            """
+            Doubles the number and subtracts 9 if the result is greater than 9.
+
+            Args:
+                num (int): The number to be doubled.
+
+            Returns:
+                int: The processed number.
+            """
+            doubled = num * 2
+            return doubled - 9 if doubled > 9 else doubled
 
         @classmethod
         def american_express(cls, card_number: str) -> bool:

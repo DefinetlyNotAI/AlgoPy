@@ -2,7 +2,7 @@
 AlgoPy: A library for many different algorithms and other utilities.
 """
 
-from . import find, log, sort, validate, convert, faker
+from . import find, log, validate, convert, faker, sort
 
 find = find.Find
 log = log.Log
